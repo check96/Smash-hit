@@ -14,16 +14,19 @@ import videogame.GameConfig;
 public class Client extends Thread
 {
 	private GameManager game;
-	private String ip = "127.0.0.1";
+	private String ip;
+	private String username;
 	private int port = 12345; 
 	private Socket s;
 	private BufferedReader in;
 	private PrintWriter out;
 	private int id;
 	
-	public Client(GameManager _game)
+	public Client(GameManager _game, String ip, String username)
 	{
 		this.game = _game;
+		this.ip = ip;
+		this.username = username;
 		
 		id = Server.getID();
 		

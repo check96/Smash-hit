@@ -23,10 +23,9 @@ public class NetworkScreen implements Screen
 	private GameManager game;
 	private Stage stage;
 	private Button join;
-	private String ip;
 	private Label ipLabel;
 	private Label usernameLabel;
-	private TextField ipField;
+	private TextField ip;
 	private TextField username;
 	private boolean JOIN = false;
 	
@@ -49,9 +48,9 @@ public class NetworkScreen implements Screen
     	usernameLabel = new Label("Your username", new Label.LabelStyle(font, Color.BLACK));
 		usernameLabel.setPosition(80, 270);
     	
-    	ipField = new TextField("", mySkin);
-    	ipField.setPosition(300, 350);
-		ipField.setSize(200, 70);
+    	ip = new TextField("", mySkin);
+    	ip.setPosition(300, 350);
+		ip.setSize(200, 70);
 		
 		username = new TextField("", mySkin);
 		username.setPosition(300, 250);
@@ -72,7 +71,7 @@ public class NetworkScreen implements Screen
 	       stage.addActor(join);
 	       stage.addActor(username);
 	       stage.addActor(usernameLabel);
-	       stage.addActor(ipField);
+	       stage.addActor(ip);
 	       stage.addActor(ipLabel);
 	}
 	
@@ -93,7 +92,7 @@ public class NetworkScreen implements Screen
         {
         	join.setVisible(false);
         	JOIN = false;
-        	new Client(game);
+        	new Client(game,ip.getText(),username.getText());
         }
         stage.act();
 		stage.draw();
