@@ -5,19 +5,19 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import GameGui.GameManager;
-import GameGui.StartScreen;
 
 @SuppressWarnings("serial")
 public class Editor extends JFrame
 {
 	private PreviewPanel panel;
 	private toolsPanel tools;
+	private int numLevels;
 	
-	public Editor(GameManager _game, StartScreen screen)
+	public Editor()
 	{
-		panel = new PreviewPanel();
-		tools = new toolsPanel(panel, this, screen);
+		this.panel = new PreviewPanel(numLevels);
+		this.tools = new toolsPanel(panel, this);
+		
 		this.setTitle("editor");
 		Container contentPane = this.getContentPane();
 		panel.setPreferredSize(new Dimension(600,600));
@@ -33,6 +33,9 @@ public class Editor extends JFrame
 		
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setVisible(true);
+		this.setVisible(false);
 	}
+	
+	public void setNumLevels (int number) 	{ numLevels = number;}
+	
 }

@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import GameGui.EditorScreen;
 import GameGui.StartScreen;
 
 @SuppressWarnings("serial")
@@ -25,13 +26,11 @@ public class toolsPanel extends JPanel implements ActionListener
 	private ArrayList<JButton> buttons = new ArrayList<JButton>();
 	private BufferedImageLoader loader = new BufferedImageLoader();
 	public static ArrayList<BufferedImage> image = new ArrayList<BufferedImage>();
-	private StartScreen screen;
 
-	public toolsPanel(PreviewPanel pp, JFrame _frame, StartScreen _screen)
+	public toolsPanel(PreviewPanel pp, JFrame _frame)
 	{
 		super();
 
-		this.screen = _screen;
 		this.frame = _frame;
 		this.pp = pp;
 		this.setLayout(new BorderLayout());
@@ -75,8 +74,7 @@ public class toolsPanel extends JPanel implements ActionListener
 	{
 		if(e.getSource() == play)
 		{
-			GameConfig.EDITOR = true;
-			screen.SINGLE_PLAYER = true;
+			EditorScreen.CREATED = true;
 			frame.setVisible(false);
 		}
 		

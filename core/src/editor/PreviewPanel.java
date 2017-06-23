@@ -23,7 +23,7 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 	public static int[][] points = new int[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
 	public static Vector<Icon> icons = new Vector<Icon>();
 	
-	public PreviewPanel() 
+	public PreviewPanel(int numLevels) 
 	{
 		super();
 		addMouseListener(this);

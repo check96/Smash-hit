@@ -108,7 +108,7 @@ public class StartScreen implements Screen
     	if(EDITOR)
      	{
      		EDITOR = false;
-     		new Editor(game,this);
+     		game.setScreen(new EditorScreen(game));
      	}
     	if(SINGLE_PLAYER)
     	{

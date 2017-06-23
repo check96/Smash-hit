@@ -41,6 +41,7 @@ public class OptionScreen implements Screen
 	{
 		game = _game;
 		stage = new Stage(new ScreenViewport());
+		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
@@ -102,17 +103,16 @@ public class OptionScreen implements Screen
 	
 	@Override
 	public void render(float delta)
-	{
+	{		
+		Gdx.gl.glClearColor(1, 1, 1, 1);	
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		if(BACK)
 		{
 			BACK = false;
 			this.dispose();
 			game.setScreen(new StartScreen(game));
 		}
-		
-		Gdx.gl.glClearColor(1, 1, 1, 1);	
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    
         if(FULLSCREEN )
     		on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox-on.png"))));
     	else

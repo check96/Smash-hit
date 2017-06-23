@@ -2,7 +2,6 @@ package GameGui;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -17,11 +16,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.math.collision.BoundingBox;
 
 import entity.Destroyable;
-import entity.Objects;
 import entity.Player;
 import videogame.GameConfig;
 
@@ -49,7 +45,6 @@ public class AssetHandler
 	public  ArrayList<AnimationController> animationClock;
 	
 	public AssetManager manager;
-	private BoundingBox box = new BoundingBox();
 	private ModelBuilder modelBuilder;
 	
 	public AssetHandler()
