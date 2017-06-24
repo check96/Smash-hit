@@ -9,7 +9,6 @@ public class Countdown extends Thread
 	public Countdown()
 	{ 
 		time = initial_time;
-		this.start();
 	}
 	
 	public static int getTime() {return time;}

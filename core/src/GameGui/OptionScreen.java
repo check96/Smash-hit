@@ -35,12 +35,12 @@ public class OptionScreen implements Screen
 	private Table table;
 	private Slider slider;
 	private ImageButton on_off;
-	private boolean FULLSCREEN = false;
+	public boolean FULLSCREEN = false;
 	
 	public OptionScreen(GameManager _game)
 	{
-		game = _game;
-		stage = new Stage(new ScreenViewport());
+		this.game = _game;
+		this.stage = new Stage(new ScreenViewport());
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
@@ -107,11 +107,11 @@ public class OptionScreen implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);	
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
+		System.out.println(FULLSCREEN);
 		if(BACK)
 		{
 			BACK = false;
-			this.dispose();
-			game.setScreen(new StartScreen(game));
+			game.setScreen(game.startScreen);
 		}
         if(FULLSCREEN )
     		on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox-on.png"))));
@@ -138,7 +138,10 @@ public class OptionScreen implements Screen
 	public void hide() { }
 
 	@Override
-	public void dispose() { }
+	public void dispose()
+	{
+		stage.dispose();
+	}
 
 	@Override
 	public void show() 

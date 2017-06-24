@@ -13,11 +13,11 @@ import entity.Objects;
 
 public class MapGenerator extends Thread
 {
-	private AssetHandler assets;
+	public AssetHandler assets;
 	
-	public MapGenerator(AssetHandler _assets)
+	public MapGenerator()
 	{
-		assets = _assets;
+		assets = new AssetHandler();
 		
 		GameConfig.walls.add(new Destroyable(new Vector3(-5f,0,15),0,Objects.TOP_WALL));
 		GameConfig.walls.add(new Destroyable(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*4.5f),0,Objects.TOP_WALL));
@@ -206,8 +206,8 @@ public class MapGenerator extends Thread
 				if(GameConfig.newTools[k][h] != null)
 					cont++;
 		
-		System.out.println("newTools size: "+ cont);
-		System.out.println("newInstance size: "+GameConfig.newInstances.size());
+//		System.out.println("newTools size: "+ cont);
+//		System.out.println("newInstance size: "+GameConfig.newInstances.size());
 		
 		synchronized(GameConfig.tools)
 		{

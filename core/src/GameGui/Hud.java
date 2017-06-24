@@ -77,6 +77,7 @@ public class Hud implements Disposable
 
     public synchronized void update(float dt)
     {
+    	// update labels
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));

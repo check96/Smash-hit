@@ -10,8 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import videogame.Countdown;
-
 public class PauseScreen implements Screen
 {
 	private GameManager game;
@@ -21,21 +19,18 @@ public class PauseScreen implements Screen
 	private TextButton quit;
 	private boolean BACK = false;
 	private boolean QUIT = false;
-	private Countdown countdown;
 	
-	public PauseScreen(GameManager _game, GameScreen _screen, Countdown _countdown)
+	public PauseScreen(GameManager _game, GameScreen _screen)
 	{
 		this.game = _game;
 		this.screen = _screen;
 		
-		this.countdown = _countdown;
-		
-		synchronized(countdown)
+		synchronized(game.countdown)
 		{
 			try
 			{
 //				countdown.notify();
-				countdown.wait();
+				game.countdown.wait();
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
@@ -83,9 +78,9 @@ public class PauseScreen implements Screen
 		{
 			this.dispose();
 			
-			synchronized(countdown)
+			synchronized(game.countdown)
 			{
-				countdown.notify();
+				game.countdown.notify();
 			}
 			game.setScreen(screen);
 		}

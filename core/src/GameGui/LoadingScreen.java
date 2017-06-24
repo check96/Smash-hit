@@ -13,12 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-import videogame.MapGenerator;
-
 public class LoadingScreen implements Screen
 {
-	private MapGenerator mapGenerator;
-	private AssetHandler assets;
 	private GameManager game;
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
@@ -29,6 +25,7 @@ public class LoadingScreen implements Screen
 	public LoadingScreen(GameManager _game)
 	{
 		this.game = _game;
+		
 		camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 600);
         
@@ -43,12 +40,10 @@ public class LoadingScreen implements Screen
         Label loading = new Label("LOADING...", new Label.LabelStyle(font, Color.BLACK));
         loading.setPosition(camera.viewportWidth/2.5f -6, camera.viewportHeight/2 +10);
         stage.addActor(loading);
-
-        assets = new AssetHandler();
-		assets.load();
 		
-		mapGenerator = new MapGenerator(assets);
-		mapGenerator.start();
+		game.mapGenerator.assets.load();
+		game.mapGenerator.start();
+
 		shapeRenderer = new ShapeRenderer();
 	}
 
@@ -67,10 +62,10 @@ public class LoadingScreen implements Screen
 
         stage.act();
         stage.draw();
-        progress = MathUtils.lerp(progress, assets.manager.getProgress(), 0.1f);
+        progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
-        if (assets.manager.update() && progress >= assets.manager.getProgress() - 0.001f) 
-        	game.setScreen(new GameScreen(game, 0,assets,mapGenerator));
+        if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
+        	game.setScreen(new GameScreen(game));
  
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
@@ -82,29 +77,30 @@ public class LoadingScreen implements Screen
         shapeRenderer.end();
     }
 
-	    @Override
-	    public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
 
-	    }
+    }
 
-	    @Override
-	    public void pause() {
+    @Override
+    public void pause() {
 
-	    }
+    }
 
-	    @Override
-	    public void resume() {
+    @Override
+    public void resume() {
 
-	    }
+    }
 
-	    @Override
-	    public void hide() {
+    @Override
+    public void hide() {
 
-	    }
+    }
 
-	    @Override
-	    public void dispose()
-	    {
-	        shapeRenderer.dispose();
-	    }
-	}
+    @Override
+    public void dispose()
+    {
+    	stage.dispose();
+        shapeRenderer.dispose();
+    }
+}

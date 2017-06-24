@@ -17,10 +17,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
 
-import videogame.Countdown;
 import videogame.AI.Dijkstra;
 import videogame.GameConfig;
-import videogame.MapGenerator;
 import videogame.AI.Vertex;
 import videogame.World;
 
@@ -31,34 +29,29 @@ public class GameScreen implements Screen
 	private ModelBatch batch;
 	public static ArrayList<ModelInstance> playersInstance;
 	private ArrayList<ModelInstance> hints;
-	private AssetHandler assets;
 	private Environment environment;
 	private World world;
 	private int degrees = 90;
 	private Hud hud;
-	private MapGenerator mapGenerator;
 	private AnimationController animationController;
-	private int id;
-	private static Countdown countdown = new Countdown();
+	private int id = 0;
 	
-	public GameScreen(GameManager _game, int _id, AssetHandler _assets, MapGenerator mg)
+	public GameScreen(GameManager _game)
 	{
 		game = _game;
-		this.id = _id;
-		this.assets = _assets;
-		this.mapGenerator = mg;
 		
 		playersInstance = new ArrayList<ModelInstance>();
 		world = new World(id);
 		batch = new ModelBatch();
 		initCamera();
 		initEnvironment();
-		assets.loadPlayer();
+		game.mapGenerator.assets.loadPlayer();
 		
 		animationController = new AnimationController(playersInstance.get(0));
 		animationController.setAnimation("Armature|ArmatureAction",-1);
 		
 		hud = new Hud();
+		game.countdown.start();
 	}
 
 	private void initCamera() 
@@ -110,7 +103,7 @@ public class GameScreen implements Screen
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 		{
-			game.setScreen(new PauseScreen(game, this, countdown));
+			game.setScreen(new PauseScreen(game, this));
 		}
 			
 	}
@@ -119,7 +112,7 @@ public class GameScreen implements Screen
 	{
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-//		Gdx.gl30.enabl
+
 		handleInput();
 		handleAnimation();
 		world.update();
@@ -138,7 +131,7 @@ public class GameScreen implements Screen
 		batch.begin(cam);
 		
 		// render floor
-		batch.render(assets.floorInstance, environment);
+		batch.render(game.mapGenerator.assets.floorInstance, environment);
 
 		// render player instances
 		for(final ModelInstance playerInstance : playersInstance)			
@@ -182,17 +175,17 @@ public class GameScreen implements Screen
 		
 		if(GameConfig.GAME_OVER)
 		{
-			synchronized (countdown)
+			synchronized (game.countdown)
 			{
 				try
 				{
-					countdown.wait();
+					game.countdown.wait();
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
 				}
 			}
-			mapGenerator.interrupt();
+			game.mapGenerator.interrupt();
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));
 		}
@@ -202,7 +195,7 @@ public class GameScreen implements Screen
 	{
 		synchronized(GameConfig.toolsInstance)
 		{
-			for (AnimationController clock : assets.animationClock)
+			for (AnimationController clock : game.mapGenerator.assets.animationClock)
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)
@@ -222,7 +215,7 @@ public class GameScreen implements Screen
 		GameConfig.tools.clear();
 		GameConfig.toolsInstance.clear();
 		batch.dispose();
-		assets.dispose();
+		game.mapGenerator.assets.dispose();
 		hud.dispose();
 	}
 
@@ -237,7 +230,7 @@ public class GameScreen implements Screen
         float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_DIMENSION;
         for (Vertex vertex : path)
         {
-        	ModelInstance mod = new ModelInstance(assets.help);
+        	ModelInstance mod = new ModelInstance(game.mapGenerator.assets.help);
         	mod.transform.setToTranslation(vertex.x*5.5f +position, -4.1f, vertex.y*5.5f);
         	hints.add(mod);
 		}

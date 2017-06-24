@@ -25,6 +25,7 @@ public class EditorScreen implements Screen
 	private GameManager game;
 	private Stage stage;
 	private Editor editor;
+	
 	private Label levels;
 	private TextField numLevels;
 	private TextButton play;
@@ -40,12 +41,11 @@ public class EditorScreen implements Screen
 	public EditorScreen(GameManager _game) 
 	{
 		this.game = _game;
-		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
-		
 		stage = new Stage(new ScreenViewport());		
-		
 		editor = new Editor();
-		
+
+		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
+
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
         parameter.size = 30;
@@ -117,8 +117,7 @@ public class EditorScreen implements Screen
 		
 		if(BACK || (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)))
 		{
-			this.dispose();
-			game.setScreen(new StartScreen(game));
+			game.setScreen(game.startScreen);
 		}
 		
 		if(EDITOR)
@@ -155,22 +154,13 @@ public class EditorScreen implements Screen
 	}
 	
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void pause() { }
 	
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void resume() { }
 	
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() { }
 	
 	@Override
 	public void dispose()

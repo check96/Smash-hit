@@ -20,6 +20,9 @@ public class StartScreen implements Screen
 {
 	private GameManager game;
     private Stage stage;
+    public static EditorScreen editorScreen;	
+	public static OptionScreen optionScreen;
+
     public boolean SINGLE_PLAYER = false;
     private boolean MULTIPLAYER = false;
     private boolean OPTIONS = false;
@@ -29,7 +32,10 @@ public class StartScreen implements Screen
     {
     	game = _game;
         stage = new Stage(new ScreenViewport());
-
+        
+        editorScreen = new EditorScreen(game);
+		optionScreen = new OptionScreen(game);
+		
         int row_height = Gdx.graphics.getWidth();
         int col_width = Gdx.graphics.getWidth();
  
@@ -108,7 +114,7 @@ public class StartScreen implements Screen
     	if(EDITOR)
      	{
      		EDITOR = false;
-     		game.setScreen(new EditorScreen(game));
+     		game.setScreen(editorScreen);
      	}
     	if(SINGLE_PLAYER)
     	{
@@ -120,16 +126,16 @@ public class StartScreen implements Screen
     	{
     		GameConfig.MULTIPLAYER = true;
     		MULTIPLAYER = false;
-    		this.dispose();
     		game.setScreen(new SelectScreen(game));
     	}
     	else if(OPTIONS)
     	{
     		OPTIONS = false;
-    		this.dispose();
-    		game.setScreen(new OptionScreen(game));
+    		game.setScreen(optionScreen);
     	}
 
+    	System.out.println(optionScreen.FULLSCREEN);
+    	
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act();
@@ -161,5 +167,7 @@ public class StartScreen implements Screen
 	public void dispose()
 	{
 		stage.dispose();
+		editorScreen.dispose();
+		optionScreen.dispose();
 	}
 }
