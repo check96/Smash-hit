@@ -35,12 +35,14 @@ public class OptionScreen implements Screen
 	private Table table;
 	private Slider slider;
 	private ImageButton on_off;
-	public boolean FULLSCREEN = false;
+	public boolean FULLSCREEN = true;
 	
 	public OptionScreen(GameManager _game)
 	{
 		this.game = _game;
 		this.stage = new Stage(new ScreenViewport());
+		
+		FULLSCREEN = game.options.getBoolean("fullscreen");
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
@@ -63,6 +65,10 @@ public class OptionScreen implements Screen
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 			{
 				FULLSCREEN = !FULLSCREEN;
+				
+				game.options.putBoolean("fullscreen", FULLSCREEN);
+				game.options.flush();
+				
 				return true;
 			}
 		});
@@ -76,6 +82,10 @@ public class OptionScreen implements Screen
             {
             	float volume = slider.getValue();
             	GameConfig.soundtrack.setVolume(volume);
+            	
+//            	game.preferences.putFloat("volume", volume);
+//				game.preferences.flush();
+            	
                 return true;
             }
         });
@@ -107,7 +117,6 @@ public class OptionScreen implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);	
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		System.out.println(FULLSCREEN);
 		if(BACK)
 		{
 			BACK = false;
