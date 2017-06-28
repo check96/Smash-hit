@@ -10,6 +10,8 @@ import GameGui.AssetHandler;
 import editor.PreviewPanel;
 import entity.Destroyable;
 import entity.Objects;
+import entity.Walls;
+import entity.Wall;
 
 public class MapGenerator extends Thread
 {
@@ -19,10 +21,10 @@ public class MapGenerator extends Thread
 	{
 		assets = new AssetHandler();
 		
-		GameConfig.walls.add(new Destroyable(new Vector3(-5f,0,15),0,Objects.TOP_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*4.5f),0,Objects.TOP_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*2.5f),0,Objects.TOP_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-5f,7.5f, GameConfig.ROOM_DIMENSION *2.6f),0,Objects.HIGH_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5f,0,15),Walls.TOP_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*4.5f),Walls.TOP_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*2.5f),Walls.TOP_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(-5f,7.5f, GameConfig.ROOM_DIMENSION *2.6f),Walls.HIGH_WALL));
 	}
 	
 	public void run()
@@ -40,13 +42,13 @@ public class MapGenerator extends Thread
 				float position = dimension * (GameConfig.level - 1); 
 				
 				// create walls
-				GameConfig.walls.add(new Destroyable(new Vector3(position + 35f, 0,-4),0,Objects.VERTICAL_WALL));
-				GameConfig.walls.add(new Destroyable(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f),0, Objects.VERTICAL_WALL));
-				GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f),0, Objects.TOP_WALL));
-				GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f),0, Objects.TOP_WALL));
-				GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f),0,Objects.HIGH_WALL));
-				GameConfig.walls.add(new Destroyable(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),0, Objects.CEILING));
-//					 ^
+//				GameConfig.walls.add(new Wall(new Vector3(position + 37.5f, 0,-6),Walls.LEFT_WALL));
+//				GameConfig.walls.add(new Wall(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f), Walls.RIGHT_WALL));
+//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f), Walls.TOP_WALL));
+//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f), Walls.TOP_WALL));
+//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f), Walls.HIGH_WALL));
+				GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
+				//	 ^
 				// i |	  j ->
 				
 				for (int i = 0; i < GameConfig.newTools.length; i+=2)
@@ -59,7 +61,7 @@ public class MapGenerator extends Thread
 						if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 						{
 							float deskMoney = Math.abs(rand.nextInt()%4);
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(z, -4f, x), deskMoney, Objects.DESK);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(z, -5f, x), deskMoney, Objects.DESK);
 							
 							float chairMoney = Math.abs(rand.nextInt()%2);
 							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(z, -3.5f, x), chairMoney, Objects.CHAIR);
@@ -142,12 +144,13 @@ public class MapGenerator extends Thread
 		float position = dimension * (GameConfig.level - 1); 
 		
 		// create walls
-		GameConfig.walls.add(new Destroyable(new Vector3(position + 35f, 0,-4),0,Objects.VERTICAL_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f),0, Objects.VERTICAL_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f),0, Objects.TOP_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f),0, Objects.TOP_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f),0,Objects.HIGH_WALL));
-		GameConfig.walls.add(new Destroyable(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),0, Objects.CEILING));
+//		.transform.setToTranslation(37.5f,0,-6);
+		GameConfig.walls.add(new Wall(new Vector3(position + 37.5f, 0,-6),Walls.LEFT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f), Walls.RIGHT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f), Walls.TOP_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f), Walls.TOP_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f), Walls.HIGH_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
 
 //		load map and create tools
 		Random rand = new Random(System.currentTimeMillis());
@@ -164,7 +167,6 @@ public class MapGenerator extends Thread
 					
 					case 2: 	float printerMoney = Math.abs((rand.nextInt()%6)) +1;				
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-0.5f, -4f, z+0.3f),printerMoney, Objects.PRINTER);
-								System.out.println("logic: "+ GameConfig.newTools[i][j].getPosition());
 								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;

@@ -195,7 +195,7 @@ public class GameScreen implements Screen
 	{
 		synchronized(GameConfig.toolsInstance)
 		{
-			for (AnimationController clock : game.mapGenerator.assets.animationClock)
+			for (AnimationController clock : game.mapGenerator.assets.animation)
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)

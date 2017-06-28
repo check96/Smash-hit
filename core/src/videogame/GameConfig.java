@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import entity.Destroyable;
 import entity.Player;
+import entity.Wall;
 
 public class GameConfig
 {
@@ -38,7 +39,7 @@ public class GameConfig
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_DIMENSION][ROOM_DIMENSION];
 	
-	public static ArrayList<Destroyable> walls  = new ArrayList<Destroyable>();
+	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	
 	public static Vector<ArrayList<ModelInstance>> toolsInstance  = new Vector<ArrayList<ModelInstance>>();

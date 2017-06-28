@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector3;
 public enum Objects
 {
 	FLOOR(0,100,0,0,0,0),DESK(1,100,100,81,74f,141), PRINTER(2,60,300,35,18,30), PLANT(3,30,150,2.2f,6.2f,2.3f),
-	LOCKER(4,40,200,34.5f,58,54), CHAIR(5,50,50,34,58,53), DOOR(6,50,1000,4.5f,20.5f,1), VERTICAL_WALL(7,100,0,90,20,20),
-	TOP_WALL(7,100,0,2.5f,14.5f,43), HIGH_WALL(8,100,0,0,0,0), CEILING(8,100,0,0,0,0), CLOCK(9,200,500,0.5f,2,2.5f);
+	LOCKER(4,40,200,34.5f,58,54), CHAIR(5,50,50,34,58,53), DOOR(6,50,1000,4.5f,20.5f,1), CLOCK(7,200,500,0.5f,2,2.5f);
 	
 	public int id;
 	public int health;
