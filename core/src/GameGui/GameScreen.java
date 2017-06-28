@@ -60,7 +60,7 @@ public class GameScreen implements Screen
 		cam.position.set(GameConfig.players.get(id).getPosition());
 		cam.lookAt(GameConfig.DIRECTION);
 		cam.near = 1f;
-		cam.far = 300f;
+		cam.far = 1500f;
 		cam.direction.x += 0.4f;
 		cam.direction.z -= 0.6f;
 		cam.update();

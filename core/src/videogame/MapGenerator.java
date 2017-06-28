@@ -52,17 +52,17 @@ public class MapGenerator extends Thread
 				for (int i = 0; i < GameConfig.newTools.length; i+=2)
 					for (int j = 1; j < GameConfig.newTools[i].length-1; j+=2)
 					{
-						float x = i*5.5f + position;
-						float z = j*5.5f;
+						float x = j*5.5f+ position;
+						float z = i*5.5f;
 						
 						// create desk and chair in the middle of map
 						if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 						{
 							float deskMoney = Math.abs(rand.nextInt()%4);
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), deskMoney, Objects.DESK);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(z, -4f, x), deskMoney, Objects.DESK);
 							
 							float chairMoney = Math.abs(rand.nextInt()%2);
-							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(x, -3.5f, z), chairMoney, Objects.CHAIR);
+							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(z, -3.5f, x), chairMoney, Objects.CHAIR);
 						}
 					
 						// create printer, plant and locker on the sides
@@ -164,6 +164,7 @@ public class MapGenerator extends Thread
 					
 					case 2: 	float printerMoney = Math.abs((rand.nextInt()%6)) +1;				
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-0.5f, -4f, z+0.3f),printerMoney, Objects.PRINTER);
+								System.out.println("logic: "+ GameConfig.newTools[i][j].getPosition());
 								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
