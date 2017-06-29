@@ -129,9 +129,6 @@ public class GameScreen implements Screen
 		GameConfig.DIRECTION = cam.direction;
 
 		batch.begin(cam);
-		
-		// render floor
-		batch.render(game.mapGenerator.assets.floorInstance, environment);
 
 		// render player instances
 		for(final ModelInstance playerInstance : playersInstance)			
@@ -146,14 +143,11 @@ public class GameScreen implements Screen
 		{
 			for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 				batch.render(mod, environment);
-			
-			// render previous room's model instances
-//			if(GameConfig.actualLevel > 1)
-//				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-2))
-//					batch.render(mod, environment);
-//			
-//			// render next room's model instances
-//			if(GameConfig.level >= GameConfig.actualLevel+2)
+	
+			// render next room's model instances
+			System.out.println(GameConfig.level);
+			System.out.println(GameConfig.actualLevel);
+//			if(GameConfig.level >= GameConfig.actualLevel )
 //				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
 //					batch.render(mod, environment);
 		}

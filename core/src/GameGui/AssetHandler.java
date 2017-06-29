@@ -32,14 +32,16 @@ public class AssetHandler
 	private String printer = "printer/004.g3db";
 	private String locker = "drawer/drawers of office.g3db";
 	private String clock = "clock/clock.g3db";
-//	private Model floor;
+
 	private Model ceiling;
-	private ModelInstance sideWall;
-	private Model highWall;
-	private ModelInstance topWall;
-//	private Model model;
+	private ModelInstance rightWall;
+	private ModelInstance leftWall;
+	private ModelInstance backWall;
+	private ModelInstance forewardWall;
+	private Model wallModel;
+
 	public  Model help;
-	public  ModelInstance floorInstance;
+	private  ModelInstance floorInstance;
 	private ModelInstance wallInstance;
 	private Material wall;
 	//	private Texture texture;
@@ -55,41 +57,36 @@ public class AssetHandler
 		animation = new ArrayList<AnimationController>();
 	}
 	
-	// load models
-	public void load()
+	public void loadWalls()
 	{
 		Texture wallTexture = new Texture(Gdx.files.internal("texture/wall.jpeg"));
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
 		
-		sideWall = new ModelInstance(createPlaneModel(22,85, wall, 0, 0, 1, 1));
-		highWall = modelBuilder.createBox(0.3f, 5f, GameConfig.ROOM_DIMENSION *6f, new Material(
-											ColorAttribute.createDiffuse(Color.BROWN)),Usage.Position | Usage.Normal);
-		topWall = new ModelInstance(createPlaneModel(22,30, wall, 0, 0, 1, 1));
+		wallModel = createPlaneModel(22,85, wall, 0, 0, 1, 1);
 		
+		rightWall = new ModelInstance(wallModel);
+		leftWall = new ModelInstance(wallModel);
+		backWall = new ModelInstance(wallModel);
+		forewardWall = new ModelInstance(wallModel);
 		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_DIMENSION *5.5f, 1f, 10+GameConfig.ROOM_DIMENSION *6f,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
-	
-//		model = modelBuilder.createBox(1f, 2f, 1f, new Material(ColorAttribute.createDiffuse(Color.BLUE)),
-//				Usage.Position | Usage.Normal);
-		help = modelBuilder.createCylinder(5.5f, 0.1f, 5.5f,10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
-				Usage.Position | Usage.Normal);
-
+		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
 		Material floor = new Material();
+		
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));
 		
 		floorInstance = new ModelInstance(createPlaneModel(100, 100, floor, 0, 0, 1, 1));                        
 		floorInstance.transform.setToTranslation(45,-5,43);
 		floorInstance.transform.rotate(0,1,1,180);
-
-//		wallInstance =                         
-//		wallInstance.transform.setToTranslation(37.5f,0,-6);
-//		wallInstance.transform.rotate(0,0,1,-90);
-
-//		floor = modelBuilder.createBox(1500f,1f,1500f, material, Usage.Position | Usage.Normal);
-//		model = modelBuilder.createBox(2.8969812f,4.225076f,2.8289206f,	new Material(ColorAttribute.createDiffuse(Color.YELLOW)),	Usage.Position | Usage.Normal);
-
+	}
+	
+	// load models
+	public void load()
+	{	
+		help = modelBuilder.createCylinder(5.5f, 0.1f, 5.5f,10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+				Usage.Position | Usage.Normal);
 		manager.load(player, Model.class);
 		manager.load(chair, Model.class);
 		manager.load(clock, Model.class);
@@ -136,12 +133,14 @@ public class AssetHandler
 			{
 				Destroyable obj = GameConfig.newTools[i][j];
 				ModelInstance modInst = null;
-				if(obj != null)
+				if(obj instanceof Destroyable)
 				{
 					switch (obj.type)
 					{
 						case DESK:		float deskScale = 0.037f;
 										modInst = new ModelInstance(manager.get(desk, Model.class));
+										//animation.add(new AnimationController(modInst));
+										//animation.get(animation.size()-1).setAnimation("Armature|ArmatureAction",-1);
 										modInst.transform.setToTranslation(obj.getPosition());
 										modInst.transform.scl(deskScale);
 										break;
@@ -175,6 +174,7 @@ public class AssetHandler
 										modInst.transform.setToTranslation(obj.getPosition());
 										modInst.transform.rotate(0,1,0, 90);
 										break;
+										
 						
 						default:        break;
 					}
@@ -190,23 +190,28 @@ public class AssetHandler
 				ModelInstance modInst = null;
 				switch (Obj.type)
 				{
-					case TOP_WALL:		modInst = topWall;
+					case FOREWARD_WALL:	modInst = forewardWall ;
 										modInst.transform.setToTranslation(Obj.getPosition());
 										break;
-					case LEFT_WALL:		modInst = sideWall;
+					case LEFT_WALL:		modInst = leftWall;
+										System.out.println(Obj.getPosition());
 										modInst.transform.setToTranslation(Obj.getPosition());
-										modInst.transform.rotate(0,0,1,90);
+										System.out.println("cazzo");
+										//modInst.transform.rotate(0,0,1,90);
 										break;
 					case CEILING:		modInst = new ModelInstance(ceiling);
 										modInst.transform.setToTranslation(Obj.getPosition());
 										break;
-					case RIGHT_WALL:	modInst = sideWall;
+					case RIGHT_WALL:	modInst = rightWall;
+										modInst.transform.setToTranslation(Obj.getPosition());
+										break;
+					case BACK_WALL:		modInst = backWall;
+										modInst.transform.setToTranslation(Obj.getPosition());
+										break;
+					case FLOOR:			modInst = floorInstance;
 										modInst.transform.setToTranslation(Obj.getPosition());
 										break;
 										
-						/*	modInst = new ModelInstance(sideWall);
-										modInst.transform.setToTranslation(Obj.getPosition());
-										break;*/
 					default:			break;
 				}
 				if(modInst != null)
@@ -216,7 +221,7 @@ public class AssetHandler
 
 	public void dispose()
 	{
-		highWall.dispose();
+		wallModel.dispose();
 		ceiling.dispose();
 		manager.dispose();
 		help.dispose();

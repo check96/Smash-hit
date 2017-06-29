@@ -42,13 +42,13 @@ public class StartScreen implements Screen
         Skin mySkin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
         Table table = new Table(mySkin);
-        table.center();
+        table.bottom();
         table.setFillParent(true);
       
         // single player
         Button singlePlayer = new TextButton("Single Player",mySkin);
-        singlePlayer.setSize(col_width/5,row_height/16);
-        singlePlayer.setPosition(col_width/2,row_height/2);
+//        singlePlayer.setSize(col_width/5,row_height/16);
+//        singlePlayer.setPosition(col_width/2,row_height/2);
         singlePlayer.addListener(new InputListener(){
         	          @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -61,8 +61,8 @@ public class StartScreen implements Screen
  
         // multi player
         Button multiPlayer = new TextButton("multiplayer",mySkin);
-        multiPlayer.setSize(col_width/8,row_height/8);
-        multiPlayer.setPosition(col_width/2,row_height);
+//        multiPlayer.setSize(col_width/8,row_height/8);
+//        multiPlayer.setPosition(col_width/2,row_height);
         multiPlayer.addListener(new InputListener()
         {    
             @Override
@@ -75,8 +75,8 @@ public class StartScreen implements Screen
  
         // editor
         Button editor = new TextButton("Editor",mySkin);
-        editor.setSize(col_width/4,row_height/4);
-        editor.setPosition(col_width,row_height);
+//        editor.setSize(col_width/4,row_height/4);
+//        editor.setPosition(col_width,row_height);
         editor.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -89,8 +89,8 @@ public class StartScreen implements Screen
  
         // options
         Button options = new TextButton("Options",mySkin);
-        options.setSize(col_width/4,row_height/4);
-        options.setPosition(col_width,row_height*0.5f);
+//        options.setSize(col_width/4,row_height/4);
+//        options.setPosition(col_width,row_height*0.5f);
         options.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {

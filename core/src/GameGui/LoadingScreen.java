@@ -24,10 +24,9 @@ public class LoadingScreen implements Screen
 	
 	public LoadingScreen(GameManager _game)
 	{
-		this.game = _game;
+		game = _game;
 		
 		camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 600);
         
         stage = new Stage(new ScreenViewport(camera));
        

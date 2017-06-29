@@ -20,13 +20,28 @@ public class MapGenerator extends Thread
 	public MapGenerator()
 	{
 		assets = new AssetHandler();
-		
-		GameConfig.walls.add(new Wall(new Vector3(-5f,0,15),Walls.TOP_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*4.5f),Walls.TOP_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(-5f,0,GameConfig.ROOM_DIMENSION*2.5f),Walls.TOP_WALL));
-//		GameConfig.walls.add(new Wall(new Vector3(-5f,7.5f, GameConfig.ROOM_DIMENSION *2.6f),Walls.HIGH_WALL));
 	}
-	
+	public void createWalls(float position)
+	{
+		System.out.println("suca");
+		//create left wall
+		//GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.LEFT_WALL));
+		
+		//create right wall
+		GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
+		
+		//create back wall
+		GameConfig.walls.add(new Wall(new Vector3((GameConfig.level-1)*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.BACK_WALL));
+		
+		//create front wall
+		GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.FOREWARD_WALL));
+		
+		//create ceiling
+		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
+		
+		//create floor
+		GameConfig.walls.add(new Wall(new Vector3(40+position,0, GameConfig.ROOM_DIMENSION *2.6f),Walls.FLOOR));
+	}
 	public void run()
 	{
 		while(true)
@@ -40,14 +55,8 @@ public class MapGenerator extends Thread
 			{ 
 				float dimension = GameConfig.ROOM_DIMENSION * 5.5f;		//82.5
 				float position = dimension * (GameConfig.level - 1); 
+				createWalls(position);
 				
-				// create walls
-//				GameConfig.walls.add(new Wall(new Vector3(position + 37.5f, 0,-6),Walls.LEFT_WALL));
-//				GameConfig.walls.add(new Wall(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f), Walls.RIGHT_WALL));
-//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f), Walls.TOP_WALL));
-//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f), Walls.TOP_WALL));
-//				GameConfig.walls.add(new Wall(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f), Walls.HIGH_WALL));
-				GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
 				//	 ^
 				// i |	  j ->
 				
@@ -128,7 +137,6 @@ public class MapGenerator extends Thread
 	
 			try
 			{
-				//GameConfig.timing = System.currentTimeMillis();
 				sleep(10000);
 			} catch (InterruptedException e) 
 			{
@@ -145,12 +153,12 @@ public class MapGenerator extends Thread
 		
 		// create walls
 //		.transform.setToTranslation(37.5f,0,-6);
-		GameConfig.walls.add(new Wall(new Vector3(position + 37.5f, 0,-6),Walls.LEFT_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f), Walls.RIGHT_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f), Walls.TOP_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f), Walls.TOP_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(position + 37.5f, 0,-6),Walls.LEFT_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(position + 35f, 0,GameConfig.ROOM_DIMENSION *5.5f), Walls.RIGHT_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level,0,-5+dimension*0.261f), Walls.TOP_WALL));
+//		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension * GameConfig.level, 0,3+dimension*0.737f), Walls.TOP_WALL));
 //		GameConfig.walls.add(new Wall(new Vector3(-4f + dimension* GameConfig.level, 7.6f, GameConfig.ROOM_DIMENSION *2.6f), Walls.HIGH_WALL));
-		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
+//		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
 
 //		load map and create tools
 		Random rand = new Random(System.currentTimeMillis());
