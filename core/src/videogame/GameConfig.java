@@ -37,13 +37,12 @@ public class GameConfig
 	public static ArrayList<Player> players = new ArrayList<Player>(); 
 	
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
-	public static Destroyable[][] newTools = new Destroyable[ROOM_DIMENSION][ROOM_DIMENSION];
-	
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
-	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
-	
+	public static Destroyable[][] newTools = new Destroyable[ROOM_DIMENSION][ROOM_DIMENSION];
+		
 	public static Vector<ArrayList<ModelInstance>> toolsInstance  = new Vector<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
+	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	
 	public static void reset()
 	{

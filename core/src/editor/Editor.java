@@ -11,14 +11,15 @@ public class Editor extends JFrame
 {
 	private PreviewPanel panel;
 	private toolsPanel tools;
-	private int numLevels;
+	public int numLevels;
 	
-	public Editor()
+	public Editor(int _numLevels)
 	{
+		this.numLevels = _numLevels;
 		this.panel = new PreviewPanel(numLevels);
 		this.tools = new toolsPanel(panel, this);
-		
 		this.setTitle("editor");
+		
 		Container contentPane = this.getContentPane();
 		panel.setPreferredSize(new Dimension(600,600));
 		tools.setPreferredSize(new Dimension(250,600));
@@ -33,9 +34,12 @@ public class Editor extends JFrame
 		
 		this.pack();
 		this.setLocationRelativeTo(null);
-		this.setVisible(false);
-	}
+		this.setVisible(true);
+	}	
 	
-	public void setNumLevels (int number) 	{ numLevels = number;}
-	
+//	public void create()
+//	{
+//		for(int i = 1; i <= numLevels; i++)
+//			
+//	}
 }

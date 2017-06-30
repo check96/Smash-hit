@@ -34,17 +34,11 @@ public class AssetHandler
 	private String clock = "clock/clock.g3db";
 
 	private Model ceiling;
-	private ModelInstance rightWall;
-	private ModelInstance leftWall;
-	private ModelInstance backWall;
-	private ModelInstance forewardWall;
 	private Model wallModel;
 
 	public  Model help;
 	private  ModelInstance floorInstance;
-	private ModelInstance wallInstance;
 	private Material wall;
-	//	private Texture texture;
 	public  ArrayList<AnimationController> animation;
 	
 	public AssetManager manager;
@@ -63,28 +57,24 @@ public class AssetHandler
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
 		
-		wallModel = createPlaneModel(22,85, wall, 0, 0, 1, 1);
+		wallModel = createPlaneModel(22,90, wall, 0, 0, 1, 1);
 		
-		rightWall = new ModelInstance(wallModel);
-		leftWall = new ModelInstance(wallModel);
-		backWall = new ModelInstance(wallModel);
-		forewardWall = new ModelInstance(wallModel);
+		System.out.println(wallModel instanceof Model);
+		
 		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_DIMENSION *5.5f, 1f, 10+GameConfig.ROOM_DIMENSION *6f,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
 		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
 		Material floor = new Material();
-		
-		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));
-		
+		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
+
 		floorInstance = new ModelInstance(createPlaneModel(100, 100, floor, 0, 0, 1, 1));                        
-		floorInstance.transform.setToTranslation(45,-5,43);
-		floorInstance.transform.rotate(0,1,1,180);
 	}
 	
 	// load models
 	public void load()
 	{	
+		loadWalls();
 		help = modelBuilder.createCylinder(5.5f, 0.1f, 5.5f,10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 				Usage.Position | Usage.Normal);
 		manager.load(player, Model.class);
@@ -121,7 +111,6 @@ public class AssetHandler
 		
 			GameScreen.playersInstance.add(mod);
 		}
-//		GameScreen.floorInstance = new ModelInstance(floor);
 	}
 
 	// load model instances
@@ -174,7 +163,6 @@ public class AssetHandler
 										modInst.transform.setToTranslation(obj.getPosition());
 										modInst.transform.rotate(0,1,0, 90);
 										break;
-										
 						
 						default:        break;
 					}
@@ -185,37 +173,43 @@ public class AssetHandler
 			}
 		
 			// load walls and door instances
-			for (Wall Obj : GameConfig.walls)
+			for (Wall obj : GameConfig.walls)
 			{	
-				ModelInstance modInst = null;
-				switch (Obj.type)
+				ModelInstance wallInst = null;
+				switch (obj.type)
 				{
-					case FOREWARD_WALL:	modInst = forewardWall ;
-										modInst.transform.setToTranslation(Obj.getPosition());
+					case FOREWARD_WALL:	wallInst = new ModelInstance(wallModel);
+										wallInst.transform.setToTranslation(obj.getPosition());
+										wallInst.transform.rotate(0,1,0,-90);
+										wallInst.transform.rotate(0,0,1,90);
 										break;
-					case LEFT_WALL:		modInst = leftWall;
-										System.out.println(Obj.getPosition());
-										modInst.transform.setToTranslation(Obj.getPosition());
-										System.out.println("cazzo");
-										//modInst.transform.rotate(0,0,1,90);
+					case LEFT_WALL:		wallInst = new ModelInstance(wallModel);
+										wallInst.transform.setToTranslation(obj.getPosition());
+										wallInst.transform.rotate(0,0,1,90);
 										break;
-					case CEILING:		modInst = new ModelInstance(ceiling);
-										modInst.transform.setToTranslation(Obj.getPosition());
+					case CEILING:		wallInst = new ModelInstance(ceiling);
+										wallInst.transform.setToTranslation(obj.getPosition());
 										break;
-					case RIGHT_WALL:	modInst = rightWall;
-										modInst.transform.setToTranslation(Obj.getPosition());
+					case RIGHT_WALL:	wallInst = new ModelInstance(wallModel);
+										wallInst.transform.setToTranslation(obj.getPosition());
+										wallInst.transform.rotate(0,1,0,180);
+										wallInst.transform.rotate(0,0,1,90);
 										break;
-					case BACK_WALL:		modInst = backWall;
-										modInst.transform.setToTranslation(Obj.getPosition());
+					case BACK_WALL:		wallInst = new ModelInstance(wallModel);
+										wallInst.transform.setToTranslation(obj.getPosition());
+										wallInst.transform.rotate(0,1,0,90);
+										wallInst.transform.rotate(0,0,1,90);
 										break;
-					case FLOOR:			modInst = floorInstance;
-										modInst.transform.setToTranslation(Obj.getPosition());
+					case FLOOR:			wallInst = floorInstance;
+										wallInst.transform.setToTranslation(obj.getPosition());
+										wallInst.transform.setToTranslation(45,-5,43);
+										wallInst.transform.rotate(0,1,1,180);
 										break;
 										
 					default:			break;
 				}
-				if(modInst != null)
-					GameConfig.wallsInstance.add(modInst);
+				if(wallInst != null)
+					GameConfig.wallsInstance.add(wallInst);
 			}
 	}
 

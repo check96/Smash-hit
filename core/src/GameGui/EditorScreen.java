@@ -42,7 +42,6 @@ public class EditorScreen implements Screen
 	{
 		this.game = _game;
 		stage = new Stage(new ScreenViewport());		
-		editor = new Editor();
 
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
@@ -123,9 +122,7 @@ public class EditorScreen implements Screen
 		if(EDITOR)
 		{
 			EDITOR = false;
-			editor.setNumLevels(Integer.parseInt(numLevels.getText()));
-			editor.setVisible(true);
-			Gdx.graphics.setWindowedMode(0, 0);
+			editor = new Editor(Integer.parseInt(numLevels.getText()));
 			table.add(play).expandX().padLeft(1);
 		}
 		
@@ -133,7 +130,7 @@ public class EditorScreen implements Screen
 		{
 			CREATED = false;
 			editor.setVisible(false);
-			Gdx.graphics.setWindowedMode(1280,640);
+//			Gdx.graphics.setWindowedMode(1280,640);
 		}
 
 		if(PLAY)

@@ -23,9 +23,9 @@ public abstract class AbstractGameObject implements ICollidable
 	public boolean collide(ICollidable c)
 	{	
 		AbstractGameObject a =(AbstractGameObject) c;
-		if (getX() < a.getX() + a.getSize().x && a.getX() < getX() + getSize().x &&
-			getY() < a.getY() + a.getSize().y && a.getY() < getY() + getSize().y &&
-			getZ() < a.getZ() + a.getSize().z && a.getZ() < getZ() + getSize().z)
+		if (getX() <= a.getX() + a.getSize().x && a.getX() <= getX() + getSize().x &&
+			getY() <= a.getY() + a.getSize().y && a.getY() <= getY() + getSize().y &&
+			getZ() <= a.getZ() + a.getSize().z && a.getZ() <= getZ() + getSize().z)
 				return true;
 		
 		return false;

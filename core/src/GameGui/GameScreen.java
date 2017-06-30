@@ -138,15 +138,20 @@ public class GameScreen implements Screen
 		for(final ModelInstance mod : hints)
 			batch.render(mod, environment);
 		
+		// render walls
+		for (final ModelInstance wall : GameConfig.wallsInstance)
+			batch.render(wall, environment);
+
 		// render tools instance
 		synchronized (GameConfig.toolsInstance)
 		{
+//			System.out.println(GameConfig.actualLevel);
 			for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 				batch.render(mod, environment);
 	
 			// render next room's model instances
-			System.out.println(GameConfig.level);
-			System.out.println(GameConfig.actualLevel);
+//			System.out.println(GameConfig.level);
+//			System.out.println(GameConfig.actualLevel);
 //			if(GameConfig.level >= GameConfig.actualLevel )
 //				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
 //					batch.render(mod, environment);

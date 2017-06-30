@@ -21,26 +21,27 @@ public class MapGenerator extends Thread
 	{
 		assets = new AssetHandler();
 	}
+	
 	public void createWalls(float position)
 	{
-		System.out.println("suca");
 		//create left wall
-		//GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.LEFT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0f,-5), Walls.LEFT_WALL));
 		
 		//create right wall
-		GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0,GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
 		
 		//create back wall
-		GameConfig.walls.add(new Wall(new Vector3((GameConfig.level-1)*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.BACK_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-4.3f + position/2,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.BACK_WALL));
 		
 		//create front wall
-		GameConfig.walls.add(new Wall(new Vector3(GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,0), Walls.FOREWARD_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-4 + GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.FOREWARD_WALL));
 		
 		//create ceiling
 		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
 		
 		//create floor
 		GameConfig.walls.add(new Wall(new Vector3(40+position,0, GameConfig.ROOM_DIMENSION *2.6f),Walls.FLOOR));
+		
 	}
 	public void run()
 	{
@@ -70,10 +71,10 @@ public class MapGenerator extends Thread
 						if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 						{
 							float deskMoney = Math.abs(rand.nextInt()%4);
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(z, -5f, x), deskMoney, Objects.DESK);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5f, z), deskMoney, Objects.DESK);
 							
 							float chairMoney = Math.abs(rand.nextInt()%2);
-							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(z, -3.5f, x), chairMoney, Objects.CHAIR);
+							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(x, -3.5f, z), chairMoney, Objects.CHAIR);
 						}
 					
 						// create printer, plant and locker on the sides

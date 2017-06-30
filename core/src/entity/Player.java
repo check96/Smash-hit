@@ -22,7 +22,7 @@ public class Player extends AbstractGameObject
 	
 	public void move()
 	{				
-		float position = GameConfig.ROOM_DIMENSION *5.5f* (GameConfig.actualLevel-1);
+//		float position = GameConfig.ROOM_DIMENSION *5.5f* (GameConfig.actualLevel-1);
 		
 //    	int i = (int)((getX()-position)/5.5f);
 //    	int j = (int)(getZ()/5.5f);

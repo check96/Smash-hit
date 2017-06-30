@@ -17,14 +17,16 @@ import GameGui.EditorScreen;
 @SuppressWarnings("serial")
 public class toolsPanel extends JPanel implements ActionListener
 {
-	private JFrame frame;
+	private Editor frame;
 	private PreviewPanel pp;
+	private JButton next = new JButton("NEXT");
 	private JButton play = new JButton("PLAY");
 	private ArrayList<JButton> buttons = new ArrayList<JButton>();
 	private BufferedImageLoader loader = new BufferedImageLoader();
 	public static ArrayList<BufferedImage> image = new ArrayList<BufferedImage>();
-
-	public toolsPanel(PreviewPanel pp, JFrame _frame)
+	private int numLevelsCreated = 0;
+	
+	public toolsPanel(PreviewPanel pp, Editor _frame)
 	{
 		super();
 
@@ -34,6 +36,9 @@ public class toolsPanel extends JPanel implements ActionListener
 		
 		play.addActionListener(this);
 		play.setPreferredSize(new Dimension(60, 60));
+
+		next.addActionListener(this);
+		next.setPreferredSize(new Dimension(60, 60));
 
 		buttons.add(new JButton());
 		image.add(loader.loadImage("/Icons/black.png"));
@@ -61,14 +66,29 @@ public class toolsPanel extends JPanel implements ActionListener
 			buttons.get(i).setIcon(new ImageIcon(image.get(i).getScaledInstance(30,30,0)));
 			buttonPanel.add(buttons.get(i));
 		}
-		
+		System.out.println("numLevels: "+frame.numLevels);
 		this.add(buttonPanel);
-		this.add(play, BorderLayout.SOUTH);
+		if(frame.numLevels > 1)
+			this.add(next, BorderLayout.SOUTH);
+		else
+			this.add(play, BorderLayout.SOUTH);
 	}
 
 	@SuppressWarnings("static-access")
 	public void actionPerformed(ActionEvent e)
 	{
+		if(e.getSource() == next)
+		{
+			if(numLevelsCreated == frame.numLevels-1)
+			{
+				System.out.println("ciao");
+//				this.remove(next);
+				this.add(play, BorderLayout.SOUTH);
+			}
+			numLevelsCreated++;
+			System.out.println("created: "+numLevelsCreated);
+		}
+		
 		if(e.getSource() == play)
 		{
 			EditorScreen.CREATED = true;
