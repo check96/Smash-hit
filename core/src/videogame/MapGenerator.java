@@ -22,25 +22,26 @@ public class MapGenerator extends Thread
 		assets = new AssetHandler();
 	}
 	
-	public void createWalls(float position)
+	public void createWalls()
 	{
+		float position = (GameConfig.level-1)*GameConfig.ROOM_DIMENSION*5.5f;
 		//create left wall
-		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0f,-5), Walls.LEFT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_DIMENSION*2.75f)+position,0,-5), Walls.LEFT_WALL));
 		
 		//create right wall
-		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0,-2.5f+GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-5 + GameConfig.ROOM_DIMENSION*2.75f)+position,0,-2.5f+GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
 		
 		//create back wall
-		GameConfig.walls.add(new Wall(new Vector3(-4.3f + position/2,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.BACK_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_DIMENSION*5.5f)+(GameConfig.level-2)*GameConfig.ROOM_DIMENSION*5.5f,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.BACK_WALL));
 		
 		//create front wall
-		GameConfig.walls.add(new Wall(new Vector3(-4 + GameConfig.level*GameConfig.ROOM_DIMENSION*5.5f,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.FOREWARD_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_DIMENSION*5.5f)+ position,0,-2 +GameConfig.ROOM_DIMENSION*2.5f), Walls.FOREWARD_WALL));
 		
 		//create ceiling
-		GameConfig.walls.add(new Wall(new Vector3(40+position, 10.6f, GameConfig.ROOM_DIMENSION *2.6f),Walls.CEILING));
+		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_DIMENSION*2.75f)+position, 10.6f, GameConfig.ROOM_DIMENSION*2.6f),Walls.CEILING));
 		
 		//create floor
-		GameConfig.walls.add(new Wall(new Vector3(40+position,0, GameConfig.ROOM_DIMENSION *2.6f),Walls.FLOOR));
+		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_DIMENSION*2.75f)+position,-5, GameConfig.ROOM_DIMENSION*2.6f),Walls.FLOOR));
 		
 	}
 	public void run()
@@ -56,7 +57,7 @@ public class MapGenerator extends Thread
 			{ 
 				float dimension = GameConfig.ROOM_DIMENSION * 5.5f;		//82.5
 				float position = dimension * (GameConfig.level - 1); 
-				createWalls(position);
+				createWalls();
 				
 				//	 ^
 				// i |	  j ->

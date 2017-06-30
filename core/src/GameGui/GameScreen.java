@@ -139,9 +139,8 @@ public class GameScreen implements Screen
 			batch.render(mod, environment);
 		
 		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(36,-4,36.5f);
+		model.transform.setToTranslation(36,-4.8f,36.5f);
 		batch.render(model, environment);
-		
 		
 		// render walls
 		for (final ModelInstance wall : GameConfig.wallsInstance)
@@ -150,26 +149,14 @@ public class GameScreen implements Screen
 		// render tools instance
 		synchronized (GameConfig.toolsInstance)
 		{
-//			System.out.println(GameConfig.actualLevel);
 			for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 				batch.render(mod, environment);
 	
 			// render next room's model instances
-//			System.out.println(GameConfig.level);
-//			System.out.println(GameConfig.actualLevel);
-//			if(GameConfig.level >= GameConfig.actualLevel )
-//				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
-//					batch.render(mod, environment);
+			if(GameConfig.level > GameConfig.actualLevel+1 )
+				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
+					batch.render(mod, environment);
 		}
-		
-		
-		// render walls
-		synchronized (GameConfig.toolsInstance)
-		{
-			for(final ModelInstance mod : GameConfig.wallsInstance)
-				batch.render(mod, environment);
-		}
-		
 		batch.end();
 
 		// update and render hud

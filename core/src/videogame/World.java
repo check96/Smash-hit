@@ -58,15 +58,14 @@ public class World
 		int i = 0, j = 0;;
 		synchronized (GameConfig.players)
 		{
-			i = (int) (GameConfig.players.get(id).getX() / GameConfig.ROOM_DIMENSION);
-			j = (int) (GameConfig.players.get(id).getZ() / GameConfig.ROOM_DIMENSION);
+			i = (int) (GameConfig.players.get(id).getX() / GameConfig.ROOM_DIMENSION) % GameConfig.ROOM_DIMENSION;
+			j = (int) (GameConfig.players.get(id).getZ() / GameConfig.ROOM_DIMENSION) % GameConfig.ROOM_DIMENSION;
 		}
 		
 		if(i != GameConfig.ROOM_DIMENSION-1)
 		{
 			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
 			{
-				System.out.println("not null");
 				if(GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j]));
 				{
 					System.out.print("collide with: "+GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j].toString()+" on: ");

@@ -78,6 +78,7 @@ public class AssetHandler
 		
 		grid = modelBuilder.createLineGrid(15,15, 5.5f, 5.5f, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
 				Usage.Position | Usage.Normal);
+
 		manager.load(player, Model.class);
 		manager.load(chair, Model.class);
 		manager.load(clock, Model.class);
@@ -203,7 +204,6 @@ public class AssetHandler
 										break;
 					case FLOOR:			wallInst = floorInstance;
 										wallInst.transform.setToTranslation(obj.getPosition());
-										wallInst.transform.setToTranslation(45,-5,43);
 										wallInst.transform.rotate(0,1,1,180);
 										break;
 										
