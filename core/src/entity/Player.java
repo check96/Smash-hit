@@ -6,12 +6,11 @@ import videogame.GameConfig;
 
 public class Player extends AbstractGameObject
 {	
-	private float speed = 10f;
+	private float speed = 5f;
 	private Weapon weapon;
-	public Player (Vector3 _position, Weapon _weapon)
+	public Player (Vector3 _position)
 	{
 		super(_position, new Vector3(2,10.5f,2));
-		this.weapon = _weapon;
 	}
 	
 	public void setWeapon(Weapon weapon) {this.weapon = weapon;}

@@ -36,6 +36,7 @@ public class AssetHandler
 	private Model ceiling;
 	private Model wallModel;
 
+	public Model grid;
 	public  Model help;
 	private  ModelInstance floorInstance;
 	private Material wall;
@@ -56,10 +57,7 @@ public class AssetHandler
 		Texture wallTexture = new Texture(Gdx.files.internal("texture/wall.jpeg"));
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
-		
 		wallModel = createPlaneModel(22,90, wall, 0, 0, 1, 1);
-		
-		System.out.println(wallModel instanceof Model);
 		
 		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_DIMENSION *5.5f, 1f, 10+GameConfig.ROOM_DIMENSION *6f,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
@@ -76,6 +74,9 @@ public class AssetHandler
 	{	
 		loadWalls();
 		help = modelBuilder.createCylinder(5.5f, 0.1f, 5.5f,10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+				Usage.Position | Usage.Normal);
+		
+		grid = modelBuilder.createLineGrid(15,15, 5.5f, 5.5f, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
 				Usage.Position | Usage.Normal);
 		manager.load(player, Model.class);
 		manager.load(chair, Model.class);

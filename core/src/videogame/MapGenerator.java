@@ -28,7 +28,7 @@ public class MapGenerator extends Thread
 		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0f,-5), Walls.LEFT_WALL));
 		
 		//create right wall
-		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0,GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5+GameConfig.level*GameConfig.ROOM_DIMENSION*2.75f,0,-2.5f+GameConfig.ROOM_DIMENSION*5.5f), Walls.RIGHT_WALL));
 		
 		//create back wall
 		GameConfig.walls.add(new Wall(new Vector3(-4.3f + position/2,0,-2+GameConfig.ROOM_DIMENSION*2.75f), Walls.BACK_WALL));
@@ -71,10 +71,10 @@ public class MapGenerator extends Thread
 						if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 						{
 							float deskMoney = Math.abs(rand.nextInt()%4);
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5f, z), deskMoney, Objects.DESK);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x, -5f, z), deskMoney, Objects.DESK);
 							
 							float chairMoney = Math.abs(rand.nextInt()%2);
-							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(x, -3.5f, z), chairMoney, Objects.CHAIR);
+							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-2+x, -3.5f, z), chairMoney, Objects.CHAIR);
 						}
 					
 						// create printer, plant and locker on the sides
@@ -85,17 +85,17 @@ public class MapGenerator extends Thread
 						if(r == 1 || r == 2)
 						{
 							float printerMoney = Math.abs((rand.nextInt()%6)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x -0.5f, -4f, z +0.3f), printerMoney, Objects.PRINTER);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x -2.5f -0.5f, -4f, z +0.5f), printerMoney, Objects.PRINTER);
 						}
 						else if(r == 3 || r == 4)
 						{
 							float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -10f, z - 0.5f), plantMoney, Objects.PLANT);
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x - 2f, -10f, z - 0.5f), plantMoney, Objects.PLANT);
 						}
 						else if (r == 5 || r ==6)	
 						{
 							float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -3f, z), lockerMoney, Objects.LOCKER);			
+							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2.5f, -3f, z-1), lockerMoney, Objects.LOCKER);			
 						}
 					}
 //					*/				

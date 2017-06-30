@@ -78,11 +78,11 @@ public class GameScreen implements Screen
 	{
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
 			GameConfig.LEFT = true;
-		if (Gdx.input.isKeyPressed(Input.Keys.D))
+		else if (Gdx.input.isKeyPressed(Input.Keys.D))
 			GameConfig.RIGHT = true;
 		if (Gdx.input.isKeyPressed(Input.Keys.W))
 			GameConfig.ON = true;
-		if (Gdx.input.isKeyPressed(Input.Keys.S))
+		else if (Gdx.input.isKeyPressed(Input.Keys.S))
 			GameConfig.BACK = true;		
 		if (Gdx.input.isKeyJustPressed(Input.Keys.F))
 			help();
@@ -137,6 +137,11 @@ public class GameScreen implements Screen
 		// render hints
 		for(final ModelInstance mod : hints)
 			batch.render(mod, environment);
+		
+		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
+		model.transform.setToTranslation(36,-4,36.5f);
+		batch.render(model, environment);
+		
 		
 		// render walls
 		for (final ModelInstance wall : GameConfig.wallsInstance)

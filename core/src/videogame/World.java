@@ -14,8 +14,8 @@ public class World
 	public World(int _id)
 	{ 
 		this.id = _id;
-		Player player = new Player(new Vector3(0,-4.5f,28), null);
-		Weapon weapon = new Weapon(new Vector3(20,6,5), 50);
+		Player player = new Player(new Vector3(0,-4.5f,28));
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), 50);
 		player.setWeapon(weapon);
 		
 		GameConfig.players.add(id, player);		
@@ -36,8 +36,8 @@ public class World
 //		System.out.println();
 //		System.out.println();
 		
-//		checkCollsion();
 		GameConfig.players.get(id).move();
+//		checkCollsion();
 		
 		GameConfig.ON =false;
 		GameConfig.LEFT = false;
@@ -62,79 +62,137 @@ public class World
 			j = (int) (GameConfig.players.get(id).getZ() / GameConfig.ROOM_DIMENSION);
 		}
 		
-		if(GameConfig.ON && i != GameConfig.ROOM_DIMENSION-1)
-			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] != null);
-				GameConfig.ON = false;
-
-		if(GameConfig.BACK && i != 0)
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j] != null)
-				GameConfig.BACK = false;
-		 
-		if(GameConfig.LEFT && j!=0)
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i][j-1] != null)
-				GameConfig.LEFT = false;
-		
-		if(GameConfig.RIGHT && j!=GameConfig.ROOM_DIMENSION-1)
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i][j+1] != null)
-				GameConfig.RIGHT = false;
-		
-		/*
-			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] == null);		
-			{	System.out.println("not null");
-				if (GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j]))
+		if(i != GameConfig.ROOM_DIMENSION-1)
+		{
+			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
+			{
+				System.out.println("not null");
+				if(GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j]));
 				{
-					System.out.println("collide");
-					GameConfig.ON = false;
-					GameConfig.BACK = true;
-					GameConfig.players.get(id).move();
-					GameConfig.BACK = false;
-					
-					if(GameConfig.HIT)
+					System.out.print("collide with: "+GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j].toString()+" on: ");
+					if(GameConfig.ON)
 					{
-						GameConfig.HIT = false;
-						hit(i+1,j);
+						System.out.println("ON");
+						GameConfig.BACK = true;
+						GameConfig.ON = false;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.BACK)
+					{
+						System.out.println("BACK");
+						GameConfig.BACK = false;
+						GameConfig.ON = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.RIGHT)
+					{
+						System.out.println("RIGHT");
+						GameConfig.RIGHT = false;
+						GameConfig.LEFT = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.LEFT)
+					{
+						System.out.println("LEFT");
+						GameConfig.RIGHT = true;
+						GameConfig.LEFT = false;
+						GameConfig.players.get(id).move();
 					}
 				}
 			}
 		}
-		else if(GameConfig.BACK && i != 0)
+	/*	else if(i != 0)
 		{
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j] != null)
-			{
-				if (GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j]))
+			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j] != null)
+				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j].collide(GameConfig.players.get(id)));
 				{
-					GameConfig.ON = true;
-					GameConfig.BACK = false;
-					GameConfig.players.get(id).move();
-					GameConfig.ON = false;
-				}	
-			}
-		}
-		if(GameConfig.RIGHT && j!=GameConfig.ROOM_DIMENSION-1)
-		{
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i][j+1] != null)
-			{
-				if (GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j+1]))
-				{
-					GameConfig.RIGHT = false;
-					GameConfig.LEFT = true;
-					GameConfig.players.get(id).move();
-					GameConfig.LEFT = false;
+					if(GameConfig.ON)
+					{
+						GameConfig.BACK = true;
+						GameConfig.ON = false;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.BACK)
+					{
+						GameConfig.BACK = false;
+						GameConfig.ON = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.RIGHT)
+					{
+						GameConfig.RIGHT = false;
+						GameConfig.LEFT = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.LEFT)
+					{
+						GameConfig.RIGHT = true;
+						GameConfig.LEFT = false;
+						GameConfig.players.get(id).move();
+					}
 				}
-			}
 		}
-		else if(GameConfig.LEFT && j!=0)
+		else if(j!=0)
 		{
-			if( GameConfig.tools.get(GameConfig.actualLevel-1)[i][j-1] != null)
-			{
-				if (GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j-1]))
+			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j-1] != null)
+				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j-1].collide(GameConfig.players.get(id)));
 				{
-					GameConfig.LEFT = false;
-					GameConfig.RIGHT = true;
-					GameConfig.players.get(id).move();
-					GameConfig.RIGHT = false;
-				}			
-			}
+					if(GameConfig.ON)
+					{
+						GameConfig.BACK = true;
+						GameConfig.ON = false;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.BACK)
+					{
+						GameConfig.BACK = false;
+						GameConfig.ON = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.RIGHT)
+					{
+						GameConfig.RIGHT = false;
+						GameConfig.LEFT = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.LEFT)
+					{
+						GameConfig.RIGHT = true;
+						GameConfig.LEFT = false;
+						GameConfig.players.get(id).move();
+					}
+				}
+		}
+		else if(j!=GameConfig.ROOM_DIMENSION-1)
+		{
+			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j+1] != null)
+				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j+1].collide(GameConfig.players.get(id)));
+				{
+					if(GameConfig.ON)
+					{
+						GameConfig.BACK = true;
+						GameConfig.ON = false;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.BACK)
+					{
+						GameConfig.BACK = false;
+						GameConfig.ON = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.RIGHT)
+					{
+						GameConfig.RIGHT = false;
+						GameConfig.LEFT = true;
+						GameConfig.players.get(id).move();
+					}
+					else if(GameConfig.LEFT)
+					{
+						GameConfig.RIGHT = true;
+						GameConfig.LEFT = false;
+						GameConfig.players.get(id).move();
+					}
+				}
 		}*/
 	}
 
