@@ -18,6 +18,7 @@ public class GameManager extends Game
 	@Override
 	public void create()
 	{			
+
 		options = Gdx.app.getPreferences("options");
 		scores = Gdx.app.getPreferences("Scores");
 		
