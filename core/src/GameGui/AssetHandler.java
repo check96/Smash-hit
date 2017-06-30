@@ -38,7 +38,7 @@ public class AssetHandler
 
 	public Model grid;
 	public  Model help;
-	private  ModelInstance floorInstance;
+	private  Model floorModel;
 	private Material wall;
 	public  ArrayList<AnimationController> animation;
 	
@@ -66,7 +66,7 @@ public class AssetHandler
 		Material floor = new Material();
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
 
-		floorInstance = new ModelInstance(createPlaneModel(100, 100, floor, 0, 0, 1, 1));                        
+		floorModel = createPlaneModel(100, 100, floor, 0, 0, 1, 1);                        
 	}
 	
 	// load models
@@ -202,7 +202,7 @@ public class AssetHandler
 										wallInst.transform.rotate(0,1,0,90);
 										wallInst.transform.rotate(0,0,1,90);
 										break;
-					case FLOOR:			wallInst = floorInstance;
+					case FLOOR:			wallInst = new ModelInstance(floorModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,1,1,180);
 										break;
@@ -216,6 +216,7 @@ public class AssetHandler
 
 	public void dispose()
 	{
+		floorModel.dispose();
 		wallModel.dispose();
 		ceiling.dispose();
 		manager.dispose();
