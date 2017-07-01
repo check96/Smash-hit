@@ -15,10 +15,10 @@ public class GameConfig
 {
 	public static long timing = 0;
 	public static final int ROOM_DIMENSION = 15;
-	public static final float volume = 1;
+	public static float volume = 1;
 	public static Music soundtrack = null;
 	// sound massimo un mega
-	public static int SCORE = 0;
+	public static int SCORE = 10;
 	public static int COINS = 0;
 	public static int actualLevel = 1;
 	public static int level = 1;

@@ -32,6 +32,11 @@ public class GameOverScreen implements Screen
 	{
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+
+		int coins = game.options.getInteger("coins");
+		game.options.putInteger("coins", coins+GameConfig.COINS);
+		game.options.flush();
+		
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
