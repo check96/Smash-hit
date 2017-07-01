@@ -15,6 +15,6 @@ public class Wall extends AbstractGameObject
 	@Override
 	public String toString()
 	{
-		return(type + "  (" + boundingBox.Position.x +","+boundingBox.Position.z+") ");
+		return(type + "  (" + Position.x +","+ Position.z+") ");
 	}
 }

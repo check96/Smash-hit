@@ -19,7 +19,7 @@ public class Weapon extends AbstractGameObject
 		
 	public void move(Player player)
 	{
-		this.boundingBox.Position.x = player.getPosition().x + 5;
-		this.boundingBox.Position.z = player.getPosition().z;
+		this.Position.x = player.getPosition().x + 3;
+		this.Position.z = player.getPosition().z;
 	}
 }

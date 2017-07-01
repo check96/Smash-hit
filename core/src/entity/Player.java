@@ -8,14 +8,14 @@ public class Player extends AbstractGameObject
 {	
 	private float speed = 5f;
 	private Weapon weapon;
-	public Player (Vector3 _position)
-	{
-		super(_position, new Vector3(2,10.5f,2));
-	}
 	
+	public Player (Vector3 _position, float _radius)
+	{
+		super(_position, _radius);
+	}
 	public void setWeapon(Weapon weapon) {this.weapon = weapon;}
-	public void setX(float _x)  {boundingBox.Position.x = _x;}	
-	public void setZ(float _z)  {boundingBox.Position.z = _z;}
+	public void setX(float _x)  {Position.x = _x;}	
+	public void setZ(float _z)  {Position.z = _z;}
 	
 	public final Weapon getWeapon() {return weapon;}
 	
@@ -31,30 +31,25 @@ public class Player extends AbstractGameObject
 
 		if(GameConfig.RIGHT)
 		{
-			boundingBox.Position.x -= GameConfig.DIRECTION.z/speed;	
-			boundingBox.Position.z += GameConfig.DIRECTION.x/speed;
-		
-//			GameConfig.RIGHT = false;
+			Position.x -= GameConfig.DIRECTION.z/speed;	
+			Position.z += GameConfig.DIRECTION.x/speed;
 		}
 		if(GameConfig.LEFT)	
 		{
-			boundingBox.Position.x += GameConfig.DIRECTION.z/speed;
-			boundingBox.Position.z -= GameConfig.DIRECTION.x/speed; 
-//			GameConfig.LEFT = false;
+			Position.x += GameConfig.DIRECTION.z/speed;
+			Position.z -= GameConfig.DIRECTION.x/speed; 
 		}
 		
 		if(GameConfig.ON)	
 		{
-			boundingBox.Position.x += GameConfig.DIRECTION.x/speed;
-			boundingBox.Position.z += GameConfig.DIRECTION.z/speed;
-//			GameConfig.ON = false;
+			Position.x += GameConfig.DIRECTION.x/speed;
+			Position.z += GameConfig.DIRECTION.z/speed;
 		}
 		
 		if(GameConfig.BACK)	
 		{
-			boundingBox.Position.x -= GameConfig.DIRECTION.x/speed;	
-			boundingBox.Position.z -= GameConfig.DIRECTION.z/speed;
-//			GameConfig.BACK = false;
+			Position.x -= GameConfig.DIRECTION.x/speed;	
+			Position.z -= GameConfig.DIRECTION.z/speed;
 		}
 		
 		weapon.move(this);

@@ -15,7 +15,7 @@ public class World
 	public World(int _id)
 	{ 
 		this.id = _id;
-		Player player = new Player(new Vector3(0,-4.5f,28));
+		Player player = new Player(new Vector3(0,-4.5f,28),2);
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), Weapons.MACE);
 		player.setWeapon(weapon);
 		
@@ -38,7 +38,7 @@ public class World
 //		System.out.println();
 		
 		GameConfig.players.get(id).move();
-//		checkCollsion();
+		checkCollsion();
 		
 		GameConfig.ON =false;
 		GameConfig.LEFT = false;
@@ -59,10 +59,41 @@ public class World
 		int i = 0, j = 0;;
 		synchronized (GameConfig.players)
 		{
-			i = (int) (GameConfig.players.get(id).getX() / GameConfig.ROOM_DIMENSION) % GameConfig.ROOM_DIMENSION;
-			j = (int) (GameConfig.players.get(id).getZ() / GameConfig.ROOM_DIMENSION) % GameConfig.ROOM_DIMENSION;
+			i = (int) (GameConfig.players.get(id).getX() / 5.5f) % GameConfig.ROOM_DIMENSION;
+			j = (int) (GameConfig.players.get(id).getZ() / 5.5f) % GameConfig.ROOM_DIMENSION;
+		}
+	
+		if(i < GameConfig.ROOM_DIMENSION-1)	//controllo a destra
+		{
+			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
+			{
+				System.out.println(GameConfig.players.get(id).getPosition());
+				System.out.println(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j].getPosition());
+				System.out.println();
+				
+				if(GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j]))
+				{
+					if(GameConfig.RIGHT)
+						GameConfig.RIGHT = false;
+					
+				}
+			}
 		}
 		
+		if(i > 0)	//controllo a sinistra
+		{
+			
+		}
+		
+		if(j > 0)	//controllo sopra
+		{
+			
+		}
+		if(j < GameConfig.ROOM_DIMENSION-1)	//controllo sotto
+		{
+			
+		}
+		/*
 		if(i != GameConfig.ROOM_DIMENSION-1)
 		{
 			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
