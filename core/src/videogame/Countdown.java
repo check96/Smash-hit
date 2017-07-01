@@ -2,8 +2,9 @@ package videogame;
 
 public class Countdown extends Thread
 {
-	private static int initial_time = 500;
+	private static int initial_time = 20;
 	private static int time;
+	public boolean pause = true;
 	
 	public Countdown()
 	{ 
@@ -16,7 +17,8 @@ public class Countdown extends Thread
 	{
 		while(true)
 		{
-			time--;
+			if(!pause)
+				time--;
 			
 			synchronized(this)
 			{
@@ -28,7 +30,6 @@ public class Countdown extends Thread
 					e.printStackTrace();
 				}
 			}
-			
 		}
 	}
 	
@@ -39,6 +40,6 @@ public class Countdown extends Thread
 	
 	public static synchronized void reset() 
 	{
-		time = initial_time+1;
+		time = initial_time;
 	}
 }

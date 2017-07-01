@@ -18,10 +18,36 @@ public class MapGenerator extends Thread
 {
 	public AssetHandler assets;
 	private GameManager game;
+	public boolean pause = true;
 	public MapGenerator(GameManager _game)
 	{
 		assets = new AssetHandler();
 		game = _game;
+	}
+	
+	public void run()
+	{
+		while(true)
+		{
+			if(!pause )
+			{
+				if(!GameConfig.EDITOR)
+					createRoom();
+				else			// load editor map
+					loadRoom();
+			}
+
+			synchronized(this)
+			{
+				try 
+				{
+					this.wait(10000);
+				} catch (InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	public void createWalls()
@@ -46,144 +72,49 @@ public class MapGenerator extends Thread
 		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_DIMENSION*2.75f)+position,-5, GameConfig.ROOM_DIMENSION*2.6f),Walls.FLOOR));
 		
 	}
-	public void run()
+	
+	private void loadRoom()
 	{
-		while(true)
+		Random rand = new Random(System.currentTimeMillis());
+		GameConfig.EDITOR = false;
+		for(int i = 1; i<= Editor.numLevels; i++)
 		{
-			Random rand = new Random(System.currentTimeMillis());
-
-			// initialize the map
-			GameConfig.newTools = new Destroyable[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
-			
-			if(!GameConfig.EDITOR)
-			{ 
-				float dimension = GameConfig.ROOM_DIMENSION * 5.5f;		//82.5
-				float position = dimension * (GameConfig.level - 1); 
-				createWalls();
-				
-				//	 ^
-				// i |	  j ->
-				
-				for (int i = 0; i < GameConfig.newTools.length; i+=2)
-					for (int j = 1; j < GameConfig.newTools[i].length-1; j+=2)
-					{
-						float x = j*5.5f+ position;
-						float z = i*5.5f;
-						
-						// create desk and chair in the middle of map
-						if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
-						{
-							float deskMoney = Math.abs(rand.nextInt()%4);
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x, -5f, z), deskMoney, Objects.DESK);
-							
-							float chairMoney = Math.abs(rand.nextInt()%2);
-							GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-2+x, -3.5f, z), chairMoney, Objects.CHAIR);
-						}
-					
-						// create printer, plant and locker on the sides
-						int r = 0;
-						if(i==0 || i == GameConfig.newTools.length-1 || j == GameConfig.newTools.length-1)
-							r = Math.abs(rand.nextInt())%8;
-						
-						if(r == 1 || r == 2)
-						{
-							float printerMoney = Math.abs((rand.nextInt()%6)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x -2.5f -0.5f, -4f, z +0.5f), printerMoney, Objects.PRINTER);
-						}
-						else if(r == 3 || r == 4)
-						{
-							float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x - 2f, -10f, z - 0.5f), plantMoney, Objects.PLANT);
-						}
-						else if (r == 5 || r ==6)	
-						{
-							float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-							GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2.5f, -3f, z-1), lockerMoney, Objects.LOCKER);			
-						}
-					}
-			
-				// clear positions near the doors
-				GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2 +1] = null;
-				GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2 -1] = null;
-				GameConfig.newTools[GameConfig.ROOM_DIMENSION -1][GameConfig.ROOM_DIMENSION/2 +1] = null;
-				GameConfig.newTools[GameConfig.ROOM_DIMENSION -1][GameConfig.ROOM_DIMENSION/2 -1] = null;
-				
-				// create the clock
-				int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_DIMENSION-6))+3;
-
-					// 	choose side of clock (right or left)
-				int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_DIMENSION -1;
-				
-				float x = w*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
-				float z = h*5.5f;
-				
-				float clockMoney = Math.abs((rand.nextInt()%3)) +1;
-				GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
-				
-				// 	create door
-				GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_DIMENSION *5.5f,
-						-5,GameConfig.ROOM_DIMENSION*2.746f), 0, Objects.DOOR);
-
-				// load tools model
-				assets.loadTools();
-				
-				// add new tools to tools
-				upgrade();				
-			}
-		
-			// load editor map
-			if(GameConfig.EDITOR)
+			int[][] points = new int[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
+			String line = game.editorLevels.getString("level"+i);
+			 
+			for(int j=0; j<points.length; j++)
 			{
-				GameConfig.EDITOR = false;
-				for(int i = 1; i<= Editor.numLevels; i++)
-				{
-					int[][] points = new int[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
-					String line = game.editorLevels.getString("level"+i);
-					 
-					for(int j=0; j<points.length; j++)
-					{
-						String subLine = line.substring(j*15, j*15+15);
-						for(int k=0; k<points[j].length; k++)
-							points[j][k] = subLine.charAt(k) - 48;
-					}
-
-					uploadTools(points);
-
-					// create the clock
-					int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_DIMENSION-6))+3;
-
-						// 	choose side of clock (right or left)
-					int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_DIMENSION -1;
-					
-					float x = w*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
-					float z = h*5.5f;
-					
-					float clockMoney = Math.abs((rand.nextInt()%3)) +1;
-					GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
-					
-					// 	create door
-					GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_DIMENSION *5.5f,
-							-5,GameConfig.ROOM_DIMENSION*2.746f), 0, Objects.DOOR);
-
-					// load tools model
-					assets.loadTools();
-					
-					// add new tools to tools
-					upgrade();				
-
-				}
+				String subLine = line.substring(j*15, j*15+15);
+				for(int k=0; k<points[j].length; k++)
+					points[j][k] = subLine.charAt(k) - 48;
 			}
+
+			uploadTools(points);
+
+			// create the clock
+			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_DIMENSION-6))+3;
+
+				// 	choose side of clock (right or left)
+			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_DIMENSION -1;
 			
-			try
-			{
-				sleep(10000);
-			} catch (InterruptedException e) 
-			{
-				e.printStackTrace();
-			}
+			float x = w*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
+			float z = h*5.5f;
+			
+			float clockMoney = Math.abs((rand.nextInt()%3)) +1;
+			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
+			
+			// 	create door
+			GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_DIMENSION *5.5f,
+					-5,GameConfig.ROOM_DIMENSION*2.746f), 0, Objects.DOOR);
+
+			// load tools model
+			assets.loadTools();
+			
+			// add new tools to tools
+			upgrade();				
 		}
 	}
-	
+
 	// ONLY for editor
 	public void uploadTools(int[][] map)
 	{		
@@ -226,10 +157,89 @@ public class MapGenerator extends Thread
 				}
 			}
 		}
+	
+	private void createRoom()
+	{
+		Random rand = new Random(System.currentTimeMillis());
+
+		// initialize the map
+		GameConfig.newTools = new Destroyable[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
 		
-	@SuppressWarnings("unchecked")
+		createWalls();
+		
+		//	 ^
+		// i |	  j ->
+		
+		for (int i = 0; i < GameConfig.newTools.length; i+=2)
+			for (int j = 1; j < GameConfig.newTools[i].length-1; j+=2)
+			{
+				float x = j*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
+				float z = i*5.5f;
+				
+				// create desk and chair in the middle of map
+				if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
+				{
+					float deskMoney = Math.abs(rand.nextInt()%4);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x, -5f, z), deskMoney, Objects.DESK);
+					
+					float chairMoney = Math.abs(rand.nextInt()%2);
+					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-2+x, -3.5f, z), chairMoney, Objects.CHAIR);
+				}
+			
+				// create printer, plant and locker on the sides
+				int r = 0;
+				if(i==0 || i == GameConfig.newTools.length-1 || j == GameConfig.newTools.length-1)
+					r = Math.abs(rand.nextInt())%8;
+				
+				if(r == 1 || r == 2)
+				{
+					float printerMoney = Math.abs((rand.nextInt()%6)) +1;
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x -2.5f -0.5f, -4f, z +0.5f), printerMoney, Objects.PRINTER);
+				}
+				else if(r == 3 || r == 4)
+				{
+					float plantMoney = Math.abs((rand.nextInt()%5)) +1;
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x - 2f, -10f, z - 0.5f), plantMoney, Objects.PLANT);
+				}
+				else if (r == 5 || r ==6)	
+				{
+					float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2.5f, -3f, z-1), lockerMoney, Objects.LOCKER);			
+				}
+			}
+	
+		// clear positions near the doors
+		GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2 +1] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2 -1] = null;
+		GameConfig.newTools[GameConfig.ROOM_DIMENSION -1][GameConfig.ROOM_DIMENSION/2 +1] = null;
+		GameConfig.newTools[GameConfig.ROOM_DIMENSION -1][GameConfig.ROOM_DIMENSION/2 -1] = null;
+		
+		// create the clock
+		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_DIMENSION-6))+3;
+
+			// 	choose side of clock (right or left)
+		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_DIMENSION -1;
+		
+		float x = w*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
+		float z = h*5.5f;
+		
+		float clockMoney = Math.abs((rand.nextInt()%3)) +1;
+		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
+		
+		// 	create door
+		GameConfig.newTools[0][GameConfig.ROOM_DIMENSION/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_DIMENSION *5.5f,
+				-5,GameConfig.ROOM_DIMENSION*2.746f), 0, Objects.DOOR);
+
+		// load tools model
+		assets.loadTools();
+		
+		// add new tools to tools
+		upgrade();				
+	}
+
 	
 	// clone newTools and newInstances and add them to tools and toolsInstance
+	@SuppressWarnings("unchecked")
 	public void upgrade()
 	{
 		GameConfig.level++;

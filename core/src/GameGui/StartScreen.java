@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import network.SelectScreen;
 import videogame.GameConfig;
@@ -30,8 +30,12 @@ public class StartScreen implements Screen
     public StartScreen(GameManager _game)
     {
     	game = _game;
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
+        game.mapGenerator.assets.load();
+		game.mapGenerator.start();
+		game.countdown.start();
+		
         editorScreen = new EditorScreen(game);
 		optionScreen = new OptionScreen(game);
 		

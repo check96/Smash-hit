@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import editor.Editor;
 import videogame.GameConfig;
@@ -41,7 +41,7 @@ public class EditorScreen implements Screen
 	public EditorScreen(GameManager _game) 
 	{
 		this.game = _game;
-		stage = new Stage(new ScreenViewport());		
+		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));		
 
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 

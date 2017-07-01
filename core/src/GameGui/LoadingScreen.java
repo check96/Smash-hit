@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class LoadingScreen implements Screen
 {
@@ -27,7 +27,7 @@ public class LoadingScreen implements Screen
 		game = _game;
 		
 		camera = new OrthographicCamera();
-        stage = new Stage(new ScreenViewport(camera));
+        stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),camera));
        
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
@@ -39,8 +39,11 @@ public class LoadingScreen implements Screen
         loading.setPosition(camera.viewportWidth/2.5f -6, camera.viewportHeight/2 +10);
         stage.addActor(loading);
 		
-		game.mapGenerator.assets.load();
-		game.mapGenerator.start();
+        synchronized(game.mapGenerator)
+		{
+        	game.mapGenerator.pause = false;
+        	game.mapGenerator.notify();
+		}
 
 		shapeRenderer = new ShapeRenderer();
 	}
@@ -63,7 +66,9 @@ public class LoadingScreen implements Screen
         progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
+        {
         	game.setScreen(new GameScreen(game));
+        }
  
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLACK);
@@ -76,8 +81,9 @@ public class LoadingScreen implements Screen
     }
 
     @Override
-    public void resize(int width, int height) {
-
+    public void resize(int width, int height)
+    {
+    	stage.getViewport().update(width, height, true);
     }
 
     @Override

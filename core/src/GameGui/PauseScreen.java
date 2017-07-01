@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 public class PauseScreen implements Screen
 {
@@ -23,20 +23,9 @@ public class PauseScreen implements Screen
 	public PauseScreen(GameManager _game, GameScreen _screen)
 	{
 		this.game = _game;
-		this.screen = _screen;
-		
-		synchronized(game.countdown)
-		{
-			try
-			{
-//				countdown.notify();
-				game.countdown.wait();
-			} catch (InterruptedException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		stage = new Stage(new ScreenViewport());
+		this.screen = _screen;		
+
+		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
@@ -80,6 +69,7 @@ public class PauseScreen implements Screen
 			
 			synchronized(game.countdown)
 			{
+				game.countdown.pause = false;
 				game.countdown.notify();
 			}
 			game.setScreen(screen);
@@ -96,28 +86,19 @@ public class PauseScreen implements Screen
 	}
 
 	@Override
-	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-		
+	public void resize(int width, int height)
+	{
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
-	public void pause() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void pause() { }
 
 	@Override
-	public void resume() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void resume() { }
 
 	@Override
-	public void hide() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void hide() { }
 
 	@Override
 	public void dispose()

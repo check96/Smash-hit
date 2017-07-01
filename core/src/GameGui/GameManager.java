@@ -26,8 +26,8 @@ public class GameManager extends Game
 		editorLevels.putString("levels", "");
 		editorLevels.flush();
 		
-		startScreen = new StartScreen(this);
 		mapGenerator = new MapGenerator(this);
+		startScreen = new StartScreen(this);
 		this.setScreen(startScreen);		
 	}
 }

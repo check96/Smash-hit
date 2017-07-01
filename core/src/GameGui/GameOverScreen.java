@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import videogame.GameConfig;
 
@@ -30,7 +30,7 @@ public class GameOverScreen implements Screen
 	public GameOverScreen(GameManager _game)
 	{
 		game = _game;
-		stage = new Stage(new ScreenViewport());
+		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));

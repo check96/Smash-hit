@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import videogame.GameConfig;
 
@@ -40,7 +40,7 @@ public class OptionScreen implements Screen
 	public OptionScreen(GameManager _game)
 	{
 		this.game = _game;
-		this.stage = new Stage(new ScreenViewport());
+		this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
 		FULLSCREEN = game.options.getBoolean("fullscreen");
 		

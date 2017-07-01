@@ -50,8 +50,9 @@ public class GameScreen implements Screen
 		animationController = new AnimationController(playersInstance.get(0));
 		animationController.setAnimation("Armature|ArmatureAction",-1);
 		
+		game.countdown.pause = false;
+		
 		hud = new Hud();
-		game.countdown.start();
 	}
 
 	private void initCamera() 
@@ -103,9 +104,9 @@ public class GameScreen implements Screen
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 		{
+			game.countdown.pause = true;
 			game.setScreen(new PauseScreen(game, this));
 		}
-			
 	}
 		
 	public void render(float delta) 
@@ -168,15 +169,12 @@ public class GameScreen implements Screen
 		{
 			synchronized (game.countdown)
 			{
-				try
-				{
-					game.countdown.wait();
-				} catch (InterruptedException e)
-				{
-					e.printStackTrace();
-				}
+				game.countdown.pause = true;
 			}
-			game.mapGenerator.interrupt();
+			synchronized(game.mapGenerator)
+			{
+				game.mapGenerator.pause = true;
+			}
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));
 		}
@@ -206,7 +204,7 @@ public class GameScreen implements Screen
 		GameConfig.tools.clear();
 		GameConfig.toolsInstance.clear();
 		batch.dispose();
-		game.mapGenerator.assets.dispose();
+//		game.mapGenerator.assets.dispose();
 		hud.dispose();
 	}
 
