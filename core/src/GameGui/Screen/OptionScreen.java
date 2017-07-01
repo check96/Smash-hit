@@ -1,4 +1,4 @@
-package GameGui;
+package GameGui.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import GameGui.GameManager;
 import videogame.GameConfig;
 
 public class OptionScreen implements Screen 

@@ -2,7 +2,7 @@ package videogame;
 
 public class Countdown extends Thread
 {
-	private static int initial_time = 20;
+	private static int initial_time = 500;
 	private static int time;
 	public boolean pause = true;
 	

@@ -1,4 +1,4 @@
-package GameGui;
+package GameGui.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import GameGui.GameManager;
 import network.SelectScreen;
 import videogame.GameConfig;
 

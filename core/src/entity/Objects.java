@@ -10,7 +10,7 @@ public enum Objects
 	public int id;
 	public int health;
 	public int score;
-	public Vector3 size;
+	Vector3 size;
 	
 	private Objects(int id, int health, int score, float x, float y, float z)
 	{

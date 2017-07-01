@@ -11,8 +11,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import GameGui.EditorScreen;
 import GameGui.GameManager;
+import GameGui.Screen.EditorScreen;
 
 @SuppressWarnings("serial")
 public class toolsPanel extends JPanel implements ActionListener

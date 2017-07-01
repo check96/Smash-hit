@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
+import GameGui.Screen.GameScreen;
 import entity.Destroyable;
 import entity.Player;
 import entity.Wall;

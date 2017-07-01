@@ -6,6 +6,7 @@ import entity.Destroyable;
 import entity.Objects;
 import entity.Player;
 import entity.Weapon;
+import entity.Weapons;
 
 public class World 
 {
@@ -15,7 +16,7 @@ public class World
 	{ 
 		this.id = _id;
 		Player player = new Player(new Vector3(0,-4.5f,28));
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), 50);
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), Weapons.MACE);
 		player.setWeapon(weapon);
 		
 		GameConfig.players.add(id, player);		

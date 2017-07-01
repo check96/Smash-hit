@@ -1,4 +1,4 @@
-package GameGui;
+package GameGui.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +17,8 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Vector3;
 
+import GameGui.GameManager;
+import GameGui.Hud;
 import videogame.AI.Dijkstra;
 import videogame.GameConfig;
 import videogame.AI.Vertex;

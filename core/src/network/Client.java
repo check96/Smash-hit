@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import GameGui.GameManager;
-import GameGui.GameScreen;
-import GameGui.LoadingScreen;
+import GameGui.Screen.GameScreen;
+import GameGui.Screen.LoadingScreen;
 import videogame.GameConfig;
 
 public class Client extends Thread
