@@ -26,15 +26,15 @@ public class Converter
 		}
 	}
 	
-	public static void toFile(BufferedWriter write, int [][] points)
+	public static void toFile(BufferedWriter write)
 	{
-		for(int i=0; i<points.length; i++)
+		for(int i=0; i<PreviewPanel.points.length; i++)
 		{
-			for(int j=0; j<points[i].length; j++)
+			for(int j=0; j<PreviewPanel.points[i].length; j++)
 			{
 				try
 				{
-					write.append(Integer.toString(points[i][j]).charAt(0));
+					write.append(Integer.toString(PreviewPanel.points[PreviewPanel.points.length-i][j]).charAt(0));
 				} catch (IOException e)
 				{
 					e.printStackTrace();

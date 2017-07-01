@@ -50,7 +50,7 @@ public class Menu extends JMenuBar implements ActionListener
 		if(e.getSource() == load)
 			fileChooser.loadFiles();
 		else if(e.getSource() == save)
-			fileChooser.saveFile(PreviewPanel.points);
+			fileChooser.saveFile();//PreviewPanel.points);
 		else if(e.getSource() == exit)	
 		{
 			System.out.println("exit");

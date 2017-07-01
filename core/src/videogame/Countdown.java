@@ -4,7 +4,6 @@ public class Countdown extends Thread
 {
 	private static int initial_time = 500;
 	private static int time;
-	private static boolean isRunning = true;
 	
 	public Countdown()
 	{ 
@@ -38,12 +37,8 @@ public class Countdown extends Thread
 		time += _time; 
 	}
 	
-//	public synchronized void restart()	{isRunning = true;}	
-//	public statisynchronized void pause()  { isRunning = false;}
-
 	public static synchronized void reset() 
 	{
 		time = initial_time+1;
-//		isRunning = true;
 	}
 }

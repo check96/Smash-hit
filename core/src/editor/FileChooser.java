@@ -39,7 +39,7 @@ public class FileChooser extends JFileChooser
       uploadIcons();
     }
 
-    public void saveFile(int[][] points)
+    public void saveFile()
     {
       try
       {
@@ -48,7 +48,7 @@ public class FileChooser extends JFileChooser
         {
 			File f = fileChooser.getSelectedFile();
 			write = new BufferedWriter(new FileWriter(f));
-			Converter.toFile(write, points);
+			Converter.toFile(write);
 			write.flush();
 			write.close();
         }

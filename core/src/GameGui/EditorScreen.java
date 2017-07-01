@@ -122,7 +122,7 @@ public class EditorScreen implements Screen
 		if(EDITOR)
 		{
 			EDITOR = false;
-			editor = new Editor(Integer.parseInt(numLevels.getText()));
+			editor = new Editor(Integer.parseInt(numLevels.getText()),game);
 			table.add(play).expandX().padLeft(1);
 		}
 		

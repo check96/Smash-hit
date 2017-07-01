@@ -27,7 +27,6 @@ public class LoadingScreen implements Screen
 		game = _game;
 		
 		camera = new OrthographicCamera();
-        
         stage = new Stage(new ScreenViewport(camera));
        
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));

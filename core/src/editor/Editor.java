@@ -6,18 +6,20 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import GameGui.GameManager;
+
 @SuppressWarnings("serial")
 public class Editor extends JFrame
 {
 	private PreviewPanel panel;
 	private toolsPanel tools;
-	public int numLevels;
+	public static int numLevels;
 	
-	public Editor(int _numLevels)
+	public Editor(int _numLevels, GameManager _game)
 	{
-		this.numLevels = _numLevels;
+		Editor.numLevels = _numLevels;
 		this.panel = new PreviewPanel(numLevels);
-		this.tools = new toolsPanel(panel, this);
+		this.tools = new toolsPanel(panel, this, _game);
 		this.setTitle("editor");
 		
 		Container contentPane = this.getContentPane();
@@ -36,10 +38,4 @@ public class Editor extends JFrame
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}	
-	
-//	public void create()
-//	{
-//		for(int i = 1; i <= numLevels; i++)
-//			
-//	}
 }

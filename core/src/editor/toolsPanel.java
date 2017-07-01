@@ -9,10 +9,10 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import GameGui.EditorScreen;
+import GameGui.GameManager;
 
 @SuppressWarnings("serial")
 public class toolsPanel extends JPanel implements ActionListener
@@ -25,13 +25,15 @@ public class toolsPanel extends JPanel implements ActionListener
 	private BufferedImageLoader loader = new BufferedImageLoader();
 	public static ArrayList<BufferedImage> image = new ArrayList<BufferedImage>();
 	private int numLevelsCreated = 0;
+	private GameManager game;
 	
-	public toolsPanel(PreviewPanel pp, Editor _frame)
+	public toolsPanel(PreviewPanel pp, Editor _frame, GameManager _game)
 	{
 		super();
 
 		this.frame = _frame;
 		this.pp = pp;
+		this.game = _game;
 		this.setLayout(new BorderLayout());
 		
 		play.addActionListener(this);
@@ -66,12 +68,10 @@ public class toolsPanel extends JPanel implements ActionListener
 			buttons.get(i).setIcon(new ImageIcon(image.get(i).getScaledInstance(30,30,0)));
 			buttonPanel.add(buttons.get(i));
 		}
-		System.out.println("numLevels: "+frame.numLevels);
+
 		this.add(buttonPanel);
-		if(frame.numLevels > 1)
-			this.add(next, BorderLayout.SOUTH);
-		else
-			this.add(play, BorderLayout.SOUTH);
+
+		this.add(next, BorderLayout.SOUTH);
 	}
 
 	@SuppressWarnings("static-access")
@@ -81,18 +81,11 @@ public class toolsPanel extends JPanel implements ActionListener
 		{
 			if(numLevelsCreated == frame.numLevels-1)
 			{
-				System.out.println("ciao");
-//				this.remove(next);
-				this.add(play, BorderLayout.SOUTH);
+				EditorScreen.CREATED = true;
+				frame.setVisible(false);
 			}
 			numLevelsCreated++;
-			System.out.println("created: "+numLevelsCreated);
-		}
-		
-		if(e.getSource() == play)
-		{
-			EditorScreen.CREATED = true;
-			frame.setVisible(false);
+			saveLevel();
 		}
 		
 		if(e.getSource() == buttons.get(0))
@@ -107,5 +100,27 @@ public class toolsPanel extends JPanel implements ActionListener
 				pp.image = this.image.get(i);
 				pp.id = i;
 			}
+	}
+
+	private void saveLevel()
+	{
+		String level = "";
+		for(int i=0; i<PreviewPanel.points.length; i++)
+		{
+			for(int j=0; j<PreviewPanel.points[i].length; j++)
+				level += Integer.toString(PreviewPanel.points[i][j]).charAt(0);
+			
+//			level += '\n';
+		}
+
+		game.editorLevels.putString("level"+numLevelsCreated, level);
+		game.editorLevels.flush();
+		
+		PreviewPanel.icons.clear();
+		for(int i=0; i<PreviewPanel.points.length; i++)
+			for(int j=0; j<PreviewPanel.points[i].length; j++)
+				PreviewPanel.points[i][j] = 0;
+
+		pp.repaint();
 	}
 }
