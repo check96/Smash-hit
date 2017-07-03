@@ -3,6 +3,8 @@ package GameGui.Screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -27,19 +29,25 @@ public class StartScreen implements Screen
     private boolean MULTIPLAYER = false;
     private boolean OPTIONS = false;
     private boolean EDITOR = false;
+ 
+    private SpriteBatch spriteBatch;
+	private Texture background;
     
     public StartScreen(GameManager _game)
     {
     	game = _game;
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
+        spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("menu_background.png"));
+
         game.mapGenerator.assets.load();
 		game.mapGenerator.start();
 		game.countdown.start();
 		
         editorScreen = new EditorScreen(game);
 		optionScreen = new OptionScreen(game);
-		
+
         Skin mySkin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
         Table table = new Table(mySkin);
@@ -111,7 +119,6 @@ public class StartScreen implements Screen
     	if(SINGLE_PLAYER)
     	{
     		SINGLE_PLAYER = false;
-    		this.dispose();
     		game.setScreen(new LoadingScreen(game));
     	}
     	else if(MULTIPLAYER)
@@ -128,6 +135,11 @@ public class StartScreen implements Screen
     	
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
+        
         stage.act();
         stage.draw();
     }
@@ -156,6 +168,7 @@ public class StartScreen implements Screen
 	@Override
 	public void dispose()
 	{
+		spriteBatch.dispose();
 		stage.dispose();
 		editorScreen.dispose();
 		optionScreen.dispose();

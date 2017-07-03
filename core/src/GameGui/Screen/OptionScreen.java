@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -38,6 +39,9 @@ public class OptionScreen implements Screen
 	private ImageButton on_off;
 	public boolean FULLSCREEN = true;
 	
+	private SpriteBatch spriteBatch;
+	private Texture background;
+	
 	public OptionScreen(GameManager _game)
 	{
 		this.game = _game;
@@ -45,6 +49,9 @@ public class OptionScreen implements Screen
 		
 		FULLSCREEN = game.options.getBoolean("fullscreen");
 		
+		spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("menu_background.png"));
+
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
@@ -59,13 +66,18 @@ public class OptionScreen implements Screen
 		table.center();
         table.setFillParent(true);
         
-		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.BLACK));
+		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.WHITE));
 		
 		on_off = new ImageButton(skin);
 		on_off.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 			{
 				FULLSCREEN = !FULLSCREEN;
+				
+				if(FULLSCREEN)
+					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); 
+				else	
+					Gdx.graphics.setWindowedMode(1280, 640);
 				
 				game.options.putBoolean("fullscreen", FULLSCREEN);
 				game.options.flush();
@@ -74,7 +86,7 @@ public class OptionScreen implements Screen
 			}
 		});
 		
-		fullscreen = new Label("FULLSCREEN", new Label.LabelStyle(font, Color.BLACK));
+		fullscreen = new Label("FULLSCREEN", new Label.LabelStyle(font, Color.WHITE));
 		
 		volume = new ImageButton(skin);
 		volume.addListener(new InputListener()
@@ -99,7 +111,7 @@ public class OptionScreen implements Screen
 	            return true;
             }
         });
-		back.setSize(400,0);
+		back.setSize(300,100);
         back.setPosition(Gdx.graphics.getWidth()/3.5f, 100);
         
 		table.add(musicLabel).expandX().padLeft(1);
@@ -124,10 +136,14 @@ public class OptionScreen implements Screen
 			game.setScreen(game.startScreen);
 		}
         if(FULLSCREEN )
-    		on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox-on.png"))));
+        	on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox-on.png"))));
     	else
     		on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox.png"))));
-    
+        
+        spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
+        
 		stage.act();
 		stage.draw();
 	}

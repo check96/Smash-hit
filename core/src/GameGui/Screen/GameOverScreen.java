@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -24,16 +26,21 @@ public class GameOverScreen implements Screen
     private Stage stage;
     private TextButton quit;
 	private TextButton retry;
-	private Label gameOver;
 	private boolean QUIT = false;
 	private boolean RETRY = false;
+	 
+	private SpriteBatch spriteBatch;
+	private Texture background;
 	
 	public GameOverScreen(GameManager _game)
 	{
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 
+		spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("menu_background.png"));
 		int coins = game.options.getInteger("coins");
+		
 		game.options.putInteger("coins", coins+GameConfig.COINS);
 		game.options.flush();
 		
@@ -42,7 +49,7 @@ public class GameOverScreen implements Screen
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
-        parameter.size = 55;
+        parameter.size = 105;
     	BitmapFont font = generator.generateFont(parameter);
     	
 		quit = new TextButton("QUIT", skin);
@@ -67,16 +74,13 @@ public class GameOverScreen implements Screen
             }
         });
 		Table table = new Table();
-        table.top();
+        table.center();
         table.setFillParent(true);
         
-		gameOver = new Label("GAME OVER", new Label.LabelStyle(font, Color.BLACK));
-		
-		table.add(gameOver).expandX().padTop(10);
+		table.add(quit).expandX().padTop(1);
+		table.add(retry).expandX().padTop(1);
 		
 		stage.addActor(table);
-		stage.addActor(quit);
-		stage.addActor(retry);
 	}
 	
 	
@@ -106,11 +110,13 @@ public class GameOverScreen implements Screen
         	this.dispose();
         	game.setScreen(game.startScreen);
         }
+       
+        spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
         
 		stage.act();
 		stage.draw();
-	
-		
 	}
 
 	@Override

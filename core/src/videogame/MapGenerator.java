@@ -41,7 +41,7 @@ public class MapGenerator extends Thread
 			{
 				try 
 				{
-					this.wait(10000);
+					this.wait(10000000);
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
@@ -150,7 +150,7 @@ public class MapGenerator extends Thread
 								break;
 					
 					case 5:		float chairMoney = Math.abs(rand.nextInt()%2);		
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x + 1f, -3f, z+4),chairMoney, Objects.CHAIR);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-3, -3f, z+3),chairMoney, Objects.CHAIR);
 								break; 
 					
 					default:	break;

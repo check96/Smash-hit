@@ -141,9 +141,9 @@ public class GameScreen implements Screen
 		for(final ModelInstance mod : hints)
 			batch.render(mod, environment);
 		
-		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(36,-4.8f,36.5f);
-		batch.render(model, environment);
+//		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
+//		model.transform.setToTranslation(36,-4.8f,36.5f);
+//		batch.render(model, environment);
 		
 		// render walls
 		for (final ModelInstance wall : GameConfig.wallsInstance)
@@ -163,10 +163,10 @@ public class GameScreen implements Screen
 		batch.end();
 
 		// update and render hud
-		hud.update(delta);
-		hud.stage.act();
-		hud.stage.draw();
-		
+//		hud.update(delta);
+//		hud.stage.act();
+//		hud.stage.draw();
+//		
 		if(GameConfig.GAME_OVER)
 		{
 			synchronized (game.countdown)
