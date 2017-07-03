@@ -28,10 +28,10 @@ public class AssetHandler
 	private String player = "player/player.g3db";		// su blender scalato di 0.0015
 	private String door = "door/untitled.g3db";
 	private String desk = "desk/table.g3db";
-	private String chair = "chair/untitled.g3db";
-	private String plant = "plant/indoor plant_02_+2.g3db";
-	private String printer = "printer/004.g3db";
-	private String locker = "drawer/drawers of office.g3db";
+	private String chair = "chair/chair.g3db";
+	private String plant = "plant/plant.g3db";
+	private String printer = "printer/printer.g3db";
+	private String locker = "drawer/drawer.g3db";
 	private String clock = "clock/clock.g3db";
 
 	private Model ceiling;
@@ -129,34 +129,29 @@ public class AssetHandler
 				{
 					switch (obj.type)
 					{
-						case DESK:		float deskScale = 0.037f;
-										modInst = new ModelInstance(manager.get(desk, Model.class));
+						case DESK:		modInst = new ModelInstance(manager.get(desk, Model.class));
 										//animation.add(new AnimationController(modInst));
 										//animation.get(animation.size()-1).setAnimation("Armature|ArmatureAction",-1);
 										modInst.transform.setToTranslation(obj.getPosition());
-										modInst.transform.scl(deskScale);
 										break;
-						case CHAIR:		float chairScale = 0.015f;						
-										modInst = new ModelInstance(manager.get(chair, Model.class));
+										
+						case CHAIR:		modInst = new ModelInstance(manager.get(chair, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
-										modInst.transform.scl(chairScale);
 										modInst.transform.rotate(0,1,0, -90);
 										break;
-						case PLANT:		float plantScale = 0.008f;
-										modInst = new ModelInstance(manager.get(plant, Model.class));
+										
+						case PLANT:		modInst = new ModelInstance(manager.get(plant, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
-										modInst.transform.scl(plantScale);
 										break;
-						case PRINTER:	float printerScale = 0.2f;
-										modInst = new ModelInstance(manager.get(printer, Model.class));
+										
+						case PRINTER:	modInst = new ModelInstance(manager.get(printer, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
-										modInst.transform.scl(printerScale);
 										break;
-						case LOCKER:	float lockerScale = 0.05f;
-										modInst = new ModelInstance(manager.get(locker, Model.class));
+										
+						case LOCKER:	modInst = new ModelInstance(manager.get(locker, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
-										modInst.transform.scl(lockerScale);
 										break;
+										
 						case CLOCK:		modInst = new ModelInstance(manager.get(clock,Model.class));
 										animation.add(new AnimationController(modInst));
 										animation.get(animation.size()-1).setAnimation("clock|clockAction",-1);
