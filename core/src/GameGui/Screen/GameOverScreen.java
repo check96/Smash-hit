@@ -2,16 +2,12 @@ package GameGui.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -38,20 +34,14 @@ public class GameOverScreen implements Screen
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("menu_background.png"));
-		int coins = game.options.getInteger("coins");
+        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 		
+        int coins = game.options.getInteger("coins");
 		game.options.putInteger("coins", coins+GameConfig.COINS);
 		game.options.flush();
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
-    	
-        parameter.size = 105;
-    	BitmapFont font = generator.generateFont(parameter);
-    	
 		quit = new TextButton("QUIT", skin);
 		quit.setSize(200, 80);
 		quit.setPosition(350, 150);

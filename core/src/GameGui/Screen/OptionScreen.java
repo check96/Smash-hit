@@ -50,7 +50,7 @@ public class OptionScreen implements Screen
 		FULLSCREEN = game.options.getBoolean("fullscreen");
 		
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("menu_background.png"));
+        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 

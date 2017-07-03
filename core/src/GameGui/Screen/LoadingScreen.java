@@ -5,7 +5,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,9 +20,10 @@ import GameGui.GameManager;
 public class LoadingScreen implements Screen
 {
 	private GameManager game;
-	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
 	private Stage stage;
+	private SpriteBatch spriteBatch;
+	private Texture background;
 	
 	private float progress;
 	
@@ -28,6 +31,9 @@ public class LoadingScreen implements Screen
 	{
 		game = _game;
 		
+		spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
+
 		camera = new OrthographicCamera();
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),camera));
        
@@ -46,14 +52,11 @@ public class LoadingScreen implements Screen
         	game.mapGenerator.pause = false;
         	game.mapGenerator.notify();
 		}
-
-		shapeRenderer = new ShapeRenderer();
 	}
 
 	@Override
 	public void show()
 	{
-	    shapeRenderer.setProjectionMatrix(camera.combined);
 	    this.progress = 0f;
 	}
 
@@ -67,19 +70,14 @@ public class LoadingScreen implements Screen
         stage.draw();
         progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
+        spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
+        
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
         	game.setScreen(new GameScreen(game));
         }
- 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(camera.viewportWidth/3 +10, camera.viewportHeight / 2 -8, camera.viewportWidth/3 - 64, 16);
-
-        shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(camera.viewportWidth/3 +10, camera.viewportHeight / 2 -8, progress * (camera.viewportWidth/3 - 64), 16);
-       
-        shapeRenderer.end();
     }
 
     @Override
@@ -107,6 +105,5 @@ public class LoadingScreen implements Screen
     public void dispose()
     {
     	stage.dispose();
-        shapeRenderer.dispose();
     }
 }

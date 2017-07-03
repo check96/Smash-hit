@@ -39,7 +39,7 @@ public class StartScreen implements Screen
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
         spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("menu_background.png"));
+        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
         game.mapGenerator.assets.load();
 		game.mapGenerator.start();

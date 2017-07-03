@@ -18,7 +18,7 @@ public class GameConfig
 	public static float volume = 1;
 	public static Music soundtrack = null;
 	// sound massimo un mega
-	public static int SCORE = 10;
+	public static int SCORE = 0;
 	public static int COINS = 0;
 	public static int actualLevel = 1;
 	public static int level = 1;
@@ -66,9 +66,15 @@ public class GameConfig
 		tools.clear();
 		tools = new ArrayList<Destroyable[][]>();
 		newTools = new Destroyable[ROOM_DIMENSION][ROOM_DIMENSION];
+		
 		toolsInstance.clear();
 		toolsInstance  = new Vector<ArrayList<ModelInstance>>();
 		newInstances.clear();
 		newInstances  = new ArrayList<ModelInstance>();
+		
+		walls.clear();
+		walls  = new ArrayList<Wall>();
+		wallsInstance.clear();
+		wallsInstance  = new ArrayList<ModelInstance>();
 	}
 }

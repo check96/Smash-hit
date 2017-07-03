@@ -163,10 +163,10 @@ public class GameScreen implements Screen
 		batch.end();
 
 		// update and render hud
-//		hud.update(delta);
-//		hud.stage.act();
-//		hud.stage.draw();
-//		
+		hud.update(delta);
+		hud.stage.act();
+		hud.stage.draw();
+		
 		if(GameConfig.GAME_OVER)
 		{
 			synchronized (game.countdown)
