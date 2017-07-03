@@ -42,6 +42,9 @@ public class GameScreen implements Screen
 	{
 		game = _game;
 		
+		GameConfig.gameSoundtrack.play();
+		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+		
 		playersInstance = new ArrayList<ModelInstance>();
 		world = new World(id);
 		batch = new ModelBatch();
@@ -141,9 +144,9 @@ public class GameScreen implements Screen
 		for(final ModelInstance mod : hints)
 			batch.render(mod, environment);
 		
-//		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-//		model.transform.setToTranslation(36,-4.8f,36.5f);
-//		batch.render(model, environment);
+		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
+		model.transform.setToTranslation(36,-4.8f,36.5f);
+		batch.render(model, environment);
 		
 		// render walls
 		for (final ModelInstance wall : GameConfig.wallsInstance)

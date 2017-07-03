@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences;
 
 import GameGui.Screen.StartScreen;
 import videogame.Countdown;
+import videogame.GameConfig;
 import videogame.MapGenerator;
 
 public class GameManager extends Game
@@ -24,11 +25,13 @@ public class GameManager extends Game
 		scores = Gdx.app.getPreferences("Scores");
 		editorLevels = Gdx.app.getPreferences("levels");
 		
-		editorLevels.putString("levels", "");
-		editorLevels.flush();
+		GameConfig.volume = options.getFloat("volume");
+		GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
+		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
 		
 		mapGenerator = new MapGenerator(this);
 		startScreen = new StartScreen(this);
+		
 		this.setScreen(startScreen);		
 	}
 }

@@ -38,6 +38,7 @@ public class StartScreen implements Screen
     	game = _game;
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
+        GameConfig.menuSoundtrack.play();
         spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
@@ -119,6 +120,7 @@ public class StartScreen implements Screen
     	if(SINGLE_PLAYER)
     	{
     		SINGLE_PLAYER = false;
+    		GameConfig.menuSoundtrack.stop();
     		game.setScreen(new LoadingScreen(game));
     	}
     	else if(MULTIPLAYER)

@@ -91,6 +91,7 @@ public class GameOverScreen implements Screen
         	RETRY = false;
         	this.dispose();
         	GameConfig.reset();
+        	GameConfig.gameSoundtrack.stop();
         	game.setScreen(new LoadingScreen(game));
         }
         
@@ -98,6 +99,8 @@ public class GameOverScreen implements Screen
         {
         	QUIT = false;
         	this.dispose();
+        	GameConfig.gameSoundtrack.stop();
+        	GameConfig.menuSoundtrack.play();
         	game.setScreen(game.startScreen);
         }
        

@@ -118,8 +118,7 @@ public class MapGenerator extends Thread
 	// ONLY for editor
 	public void uploadTools(int[][] map)
 	{		
-		float dimension = GameConfig.ROOM_DIMENSION * 5.5f;		//82.5
-		float position = dimension * (GameConfig.level - 1); 
+		float position = GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1); 
 		
 		// create walls
 		createWalls();
@@ -138,19 +137,19 @@ public class MapGenerator extends Thread
 								break;
 					
 					case 2: 	float printerMoney = Math.abs((rand.nextInt()%6)) +1;				
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-0.5f, -4f, z+0.3f),printerMoney, Objects.PRINTER);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z),printerMoney, Objects.PRINTER);
 								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -4.5f, z - 0.5f),plantMoney, Objects.PLANT);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z),plantMoney, Objects.PLANT);
 								break;
 					
 					case 4:		float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -3f, z), lockerMoney, Objects.LOCKER);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), lockerMoney, Objects.LOCKER);
 								break;
 					
 					case 5:		float chairMoney = Math.abs(rand.nextInt()%2);		
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-3, -3f, z+3),chairMoney, Objects.CHAIR);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4, z),chairMoney, Objects.CHAIR);
 								break; 
 					
 					default:	break;
@@ -173,17 +172,17 @@ public class MapGenerator extends Thread
 		for (int i = 0; i < GameConfig.newTools.length; i+=2)
 			for (int j = 1; j < GameConfig.newTools[i].length-1; j+=2)
 			{
-				float x = j*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
-				float z = i*5.5f;
+				float x = i*5.5f + GameConfig.ROOM_DIMENSION * 5.5f * (GameConfig.level - 1);
+				float z = j*5.5f;
 				
 				// create desk and chair in the middle of map
 				if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 				{
 					float deskMoney = Math.abs(rand.nextInt()%4);
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x, -5f, z), deskMoney, Objects.DESK);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4, z), deskMoney, Objects.DESK);
 					
 					float chairMoney = Math.abs(rand.nextInt()%2);
-					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-2+x, -4.6f, z), chairMoney, Objects.CHAIR);
+					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(x, -4, z), chairMoney, Objects.CHAIR);
 				}
 			
 				// create printer, plant and locker on the sides
@@ -194,17 +193,17 @@ public class MapGenerator extends Thread
 				if(r == 1 || r == 2)
 				{
 					float printerMoney = Math.abs((rand.nextInt()%6)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x -2.5f -0.5f, -4.6f, z +0.5f), printerMoney, Objects.PRINTER);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -4f, z), printerMoney, Objects.PRINTER);
 				}
 				else if(r == 3 || r == 4)
 				{
 					float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(-2+x - 2f, -4.6f, z - 0.5f), plantMoney, Objects.PLANT);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -4, z), plantMoney, Objects.PLANT);
 				}
 				else if (r == 5 || r ==6)	
 				{
 					float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2.5f, -4.6f, z-1), lockerMoney, Objects.LOCKER);			
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), lockerMoney, Objects.LOCKER);			
 				}
 			}
 	

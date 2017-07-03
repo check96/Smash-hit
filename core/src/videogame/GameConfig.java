@@ -3,6 +3,7 @@ package videogame;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
@@ -16,7 +17,8 @@ public class GameConfig
 	public static long timing = 0;
 	public static final int ROOM_DIMENSION = 15;
 	public static float volume = 1;
-	public static Music soundtrack = null;
+	public static Music gameSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Atlas_rise.ogg"));
+	public static Music menuSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Given_up.ogg"));
 	// sound massimo un mega
 	public static int SCORE = 0;
 	public static int COINS = 0;

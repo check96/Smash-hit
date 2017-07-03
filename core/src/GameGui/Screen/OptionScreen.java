@@ -7,18 +7,18 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
@@ -27,17 +27,15 @@ import videogame.GameConfig;
 public class OptionScreen implements Screen 
 {	
 	private GameManager game;
-	public static boolean MUSIC = true;
-	public static boolean BACK = false;
+	private boolean BACK = false;
 	private Stage stage;
-	private ImageButton volume;
+	private Slider volume;
 	private TextButton back;
 	private Label musicLabel;
 	private Label fullscreen;
 	private Table table;
-	private Slider slider;
-	private ImageButton on_off;
-	public boolean FULLSCREEN = true;
+	private CheckBox on_off;
+	private boolean FULLSCREEN = true;
 	
 	private SpriteBatch spriteBatch;
 	private Texture background;
@@ -60,15 +58,29 @@ public class OptionScreen implements Screen
     	
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
-		slider = new Slider(0, 1, 0.1f, false, skin);
+		volume = new Slider(0, 1, 0.1f, false, skin);
+		volume.setValue(GameConfig.volume);
+		volume.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameConfig.volume = volume.getValue();
+				
+            	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
+            	GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+            	
+            	game.options.putFloat("volume", GameConfig.volume);
+				game.options.flush();
+			}
+		});
 		
 		table = new Table(skin);
-		table.center();
         table.setFillParent(true);
         
 		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.WHITE));
 		
-		on_off = new ImageButton(skin);
+		on_off = new CheckBox("", skin);
+		on_off.setChecked(FULLSCREEN);
 		on_off.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 			{
@@ -87,23 +99,8 @@ public class OptionScreen implements Screen
 		});
 		
 		fullscreen = new Label("FULLSCREEN", new Label.LabelStyle(font, Color.WHITE));
-		
-		volume = new ImageButton(skin);
-		volume.addListener(new InputListener()
-		{
-            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
-            {
-            	float volume = slider.getValue();
-            	GameConfig.soundtrack.setVolume(volume);
-            	
-//            	game.preferences.putFloat("volume", volume);
-//				game.preferences.flush();
-            	
-                return true;
-            }
-        });
-    
-        back = new TextButton("BACK",skin);
+
+		back = new TextButton("BACK",skin);
 		back.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
@@ -114,11 +111,11 @@ public class OptionScreen implements Screen
 		back.setSize(300,100);
         back.setPosition(Gdx.graphics.getWidth()/3.5f, 100);
         
-		table.add(musicLabel).expandX().padLeft(1);
-		table.add(slider).expandX().padRight(1);
+		table.add(musicLabel).expandX();
+		table.add(volume).expandX();
 		table.row();
-		table.add(fullscreen).expandX().padRight(1);
-		table.add(on_off).expandX().padLeft(1);
+		table.add(fullscreen).expandX();
+		table.add(on_off).expandX();
 		
 		stage.addActor(table);
 		stage.addActor(back);
@@ -135,11 +132,8 @@ public class OptionScreen implements Screen
 			BACK = false;
 			game.setScreen(game.startScreen);
 		}
-        if(FULLSCREEN )
-        	on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox-on.png"))));
-    	else
-    		on_off.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/checkbox.png"))));
-        
+		on_off.setChecked(FULLSCREEN);
+		
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
@@ -173,6 +167,5 @@ public class OptionScreen implements Screen
 	public void show() 
 	{
 		Gdx.input.setInputProcessor(stage);
-		slider.setValue(GameConfig.volume);
 	}
 }
