@@ -15,7 +15,7 @@ public class World
 	public World(int _id)
 	{ 
 		this.id = _id;
-		Player player = new Player(new Vector3(0,-4.5f,28),2);
+		Player player = new Player(new Vector3(0,-4.5f,28),new Vector3(5,5,5));
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), Weapons.MACE);
 		player.setWeapon(weapon);
 		
@@ -62,38 +62,8 @@ public class World
 			i = (int) (GameConfig.players.get(id).getX() / 5.5f) % GameConfig.ROOM_DIMENSION;
 			j = (int) (GameConfig.players.get(id).getZ() / 5.5f) % GameConfig.ROOM_DIMENSION;
 		}
-	
-		if(i < GameConfig.ROOM_DIMENSION-1)	//controllo a destra
-		{
-			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
-			{
-				System.out.println(GameConfig.players.get(id).getPosition());
-				System.out.println(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j].getPosition());
-				System.out.println();
-				
-				if(GameConfig.players.get(id).collide(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j]))
-				{
-					if(GameConfig.RIGHT)
-						GameConfig.RIGHT = false;
-					
-				}
-			}
-		}
 		
-		if(i > 0)	//controllo a sinistra
-		{
-			
-		}
-		
-		if(j > 0)	//controllo sopra
-		{
-			
-		}
-		if(j < GameConfig.ROOM_DIMENSION-1)	//controllo sotto
-		{
-			
-		}
-		/*
+		//*
 		if(i != GameConfig.ROOM_DIMENSION-1)
 		{
 			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i+1][j] instanceof Destroyable)
@@ -132,7 +102,7 @@ public class World
 				}
 			}
 		}
-	/*	else if(i != 0)
+		else if(i != 0)
 		{
 			if(GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j] != null)
 				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i-1][j].collide(GameConfig.players.get(id)));
@@ -224,7 +194,7 @@ public class World
 						GameConfig.players.get(id).move();
 					}
 				}
-		}*/
+		}
 	}
 
 	private void hit(int i, int j)
