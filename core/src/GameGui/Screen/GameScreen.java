@@ -221,11 +221,11 @@ public class GameScreen implements Screen
         List<Vertex> path = Dijkstra.getShortestPath();
         
         //	create hints model
-        float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_DIMENSION;
+        float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_SIZE;
         for (Vertex vertex : path)
         {
         	ModelInstance mod = new ModelInstance(game.mapGenerator.assets.help);
-        	mod.transform.setToTranslation(vertex.x*5.5f +position, -4.1f, vertex.y*5.5f);
+        	mod.transform.setToTranslation(vertex.x * GameConfig.CELL_SIZE +position, -4.1f, vertex.x * GameConfig.CELL_SIZE);
         	hints.add(mod);
 		}
      }

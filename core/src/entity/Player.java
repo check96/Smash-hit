@@ -21,14 +21,6 @@ public class Player extends AbstractGameObject
 	
 	public void move()
 	{				
-//		float position = GameConfig.ROOM_DIMENSION *5.5f* (GameConfig.actualLevel-1);
-		
-//    	int i = (int)((getX()-position)/5.5f);
-//    	int j = (int)(getZ()/5.5f);
-//    	
-//		System.out.println("x: "+getX()+"  z: "+getZ());
-//		System.out.println("i: "+i+"  j: "+j);
-
 		if(GameConfig.RIGHT)
 		{
 			Position.x -= GameConfig.DIRECTION.z/speed;	

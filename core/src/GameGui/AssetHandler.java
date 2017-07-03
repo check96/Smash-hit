@@ -60,7 +60,7 @@ public class AssetHandler
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
 		wallModel = createPlaneModel(22,90, wall, 0, 0, 1, 1);
 		
-		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_DIMENSION *5.5f, 1f, 10+GameConfig.ROOM_DIMENSION *6f,
+		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE, 1f, 10+GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
 		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
@@ -74,10 +74,10 @@ public class AssetHandler
 	public void load()
 	{	
 		loadWalls();
-		help = modelBuilder.createCylinder(5.5f, 0.1f, 5.5f,10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+		help = modelBuilder.createCylinder(GameConfig.CELL_SIZE, 0.1f, GameConfig.CELL_SIZE, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 				Usage.Position | Usage.Normal);
 		
-		grid = modelBuilder.createLineGrid(15,15, 5.5f, 5.5f, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+		grid = modelBuilder.createLineGrid(15,15, GameConfig.CELL_SIZE, GameConfig.CELL_SIZE, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
 				Usage.Position | Usage.Normal);
 
 		manager.load(player, Model.class);

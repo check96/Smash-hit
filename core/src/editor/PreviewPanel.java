@@ -17,10 +17,10 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 {
 	private int width = 600;
 	private int height = 600;
-	private int dimIcon = width/GameConfig.ROOM_DIMENSION;
+	private int dimIcon = width/GameConfig.ROOM_SIZE;
 	public BufferedImage image = null;
 	public int id = 0;	
-	public static int[][] points = new int[GameConfig.ROOM_DIMENSION][GameConfig.ROOM_DIMENSION];
+	public static int[][] points = new int[GameConfig.ROOM_SIZE][GameConfig.ROOM_SIZE];
 	public static Vector<Icon> icons = new Vector<Icon>();
 	
 	public PreviewPanel(int numLevels) 
@@ -69,7 +69,7 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 		removeDuplicate(x, y);
 		
 		Icon i = new Icon(x,y,image);
-		points[GameConfig.ROOM_DIMENSION-1 - y][x] = id;
+		points[GameConfig.ROOM_SIZE-1 - y][x] = id;
 		
 		icons.add(i);
 		repaint();
