@@ -7,8 +7,8 @@ import videogame.GameConfig;
 public enum Walls
 {
 	RIGHT_WALL(85,22,1), LEFT_WALL(85,22,1), FOREWARD_WALL(1,22,42),
-	BACK_WALL(1,22,85), CEILING(GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,1,GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE),
-	FLOOR(GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,1,GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE);
+	BACK_WALL(1,22,85), CEILING(GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,1,GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH),
+	FLOOR(GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,1,GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH);
 	
 	Vector3 size;
 	

@@ -8791,7 +8791,7 @@
 	], 
 	"animations": [
 		{
-			"id": "Armature|Armature|Armature|ArmatureAction|Armature|ArmatureAction", 
+			"id": "Armature|ArmatureAction", 
 			"bones": [
 				{
 					"boneId": "Bone", 

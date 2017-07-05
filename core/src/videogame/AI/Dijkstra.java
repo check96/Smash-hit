@@ -9,8 +9,8 @@ import videogame.GameConfig;
 
 public class Dijkstra
 {
-	private static int startX = GameConfig.ROOM_SIZE-1;
-	private static int startY = GameConfig.ROOM_SIZE/2 +1;
+	private static int startX = GameConfig.ROOM_ROW-1;
+	private static int startY = GameConfig.ROOM_COLUMN/2 +1;
 	private static int clockX = -1;
 	private static int clockY = -1;
 	private static int endX;
@@ -84,13 +84,13 @@ public class Dijkstra
     
     private static void createMap()
     {
-    	float position = GameConfig.ROOM_SIZE *GameConfig.CELL_SIZE* (GameConfig.actualLevel-1);
+    	float position = GameConfig.ROOM_ROW *GameConfig.CELL_HEIGHT* (GameConfig.actualLevel-1);
     			
-    	endX = (int)((GameConfig.players.get(0).getX()-position)/GameConfig.CELL_SIZE);
-    	endY = (int)(GameConfig.players.get(0).getZ()/GameConfig.CELL_SIZE);
+    	endX = (int)((GameConfig.players.get(0).getX()-position)/GameConfig.CELL_HEIGHT);
+    	endY = (int)(GameConfig.players.get(0).getZ()/GameConfig.CELL_WIDTH);
     	
         // mark all the vertices
-		float[][] map = new float[GameConfig.ROOM_SIZE][GameConfig.ROOM_SIZE];
+		float[][] map = new float[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		for (int i = 0; i < map.length; i++)
 			for (int j = 0; j < map.length; j++)
@@ -106,7 +106,7 @@ public class Dijkstra
 					
 					if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].type == Objects.CLOCK)
 					{
-						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_SIZE);
+						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_HEIGHT);
 					}
 				}
 			}

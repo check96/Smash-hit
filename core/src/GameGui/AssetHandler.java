@@ -41,7 +41,7 @@ public class AssetHandler
 	public  Model help;
 	private  Model floorModel;
 	private Material wall;
-	public  ArrayList<AnimationController> animation;
+	public  ArrayList<AnimationController> clockAnimation;
 	
 	public AssetManager manager;
 	private ModelBuilder modelBuilder;
@@ -50,7 +50,7 @@ public class AssetHandler
 	{
 		manager = new AssetManager();
 		modelBuilder = new ModelBuilder();
-		animation = new ArrayList<AnimationController>();
+		clockAnimation = new ArrayList<AnimationController>();
 	}
 	
 	public void loadWalls()
@@ -58,26 +58,26 @@ public class AssetHandler
 		Texture wallTexture = new Texture(Gdx.files.internal("texture/wall.jpeg"));
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
-		wallModel = createPlaneModel(22,90, wall, 0, 0, 1, 1);
+		wallModel = createPlaneModel(22,GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, wall, 0, 0, 1, 1);
 		
-		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE, 1f, 10+GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,
+		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT, 1f, 10+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
 		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
 		Material floor = new Material();
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
 
-		floorModel = createPlaneModel(100, 100, floor, 0, 0, 1, 1);                        
+		floorModel = createPlaneModel(GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT +10, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);                        
 	}
 	
 	// load models
 	public void load()
 	{	
 		loadWalls();
-		help = modelBuilder.createCylinder(GameConfig.CELL_SIZE, 0.1f, GameConfig.CELL_SIZE, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+		help = modelBuilder.createCylinder(GameConfig.CELL_HEIGHT, 0.1f, GameConfig.CELL_WIDTH, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 				Usage.Position | Usage.Normal);
 		
-		grid = modelBuilder.createLineGrid(15,15, GameConfig.CELL_SIZE, GameConfig.CELL_SIZE, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+		grid = modelBuilder.createLineGrid(GameConfig.ROOM_ROW,GameConfig.ROOM_COLUMN, GameConfig.CELL_HEIGHT, GameConfig.CELL_WIDTH, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
 				Usage.Position | Usage.Normal);
 
 		manager.load(player, Model.class);
@@ -153,8 +153,8 @@ public class AssetHandler
 										break;
 										
 						case CLOCK:		modInst = new ModelInstance(manager.get(clock,Model.class));
-										animation.add(new AnimationController(modInst));
-										animation.get(animation.size()-1).setAnimation("clock|clockAction",-1);
+										clockAnimation.add(new AnimationController(modInst));
+										clockAnimation.get(clockAnimation.size()-1).setAnimation("clock|clockAction",-1);
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;
 						case DOOR:		modInst = new ModelInstance(manager.get(door,Model.class));

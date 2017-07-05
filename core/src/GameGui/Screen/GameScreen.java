@@ -35,7 +35,8 @@ public class GameScreen implements Screen
 	private World world;
 	private int degrees = 90;
 	private Hud hud;
-	private AnimationController animationController;
+	private AnimationController playerController;
+	private ArrayList<AnimationController> destroyedController;
 	private int id = 0;
 	
 	public GameScreen(GameManager _game)
@@ -48,16 +49,21 @@ public class GameScreen implements Screen
 		playersInstance = new ArrayList<ModelInstance>();
 		world = new World(id);
 		batch = new ModelBatch();
+
+		game.mapGenerator.assets.loadPlayer();
 		initCamera();
 		initEnvironment();
-		game.mapGenerator.assets.loadPlayer();
-		
-		animationController = new AnimationController(playersInstance.get(0));
-		animationController.setAnimation("Armature|ArmatureAction",-1);
+		initAnimation();
 		
 		game.countdown.pause = false;
-		
 		hud = new Hud();
+	}
+
+	private void initAnimation()
+	{
+		destroyedController = new ArrayList<AnimationController>();
+		playerController = new AnimationController(playersInstance.get(0));
+		playerController.setAnimation("Armature|ArmatureAction",-1);
 	}
 
 	private void initCamera() 
@@ -68,6 +74,7 @@ public class GameScreen implements Screen
 		cam.near = 1f;
 		cam.far = 1500f;
 		cam.direction.x += 0.4f;
+		cam.direction.y -= 0.5f;
 		cam.direction.z -= 0.6f;
 		cam.update();
 	}
@@ -102,9 +109,8 @@ public class GameScreen implements Screen
 			cam.direction.rotate(-2,0,1,0);
 			degrees -= 2;
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
 		{
-//			animationController.setAnimation("Armature|hit",-1);
 			GameConfig.HIT = true;
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
@@ -121,14 +127,14 @@ public class GameScreen implements Screen
 
 		handleInput();
 		handleAnimation();
-		world.update();
+		world.update(delta);
 
 		// move player instance
 		playersInstance.get(id).transform.setToTranslation(GameConfig.players.get(id).getPosition());
 		playersInstance.get(id).transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		Vector3 pos = new Vector3(GameConfig.players.get(id).getPosition().x,GameConfig.players.get(id).getPosition().y+6.5f, GameConfig.players.get(id).getPosition().z);
+		Vector3 pos = new Vector3(GameConfig.players.get(id).getPosition().x-15,GameConfig.players.get(id).getPosition().y+13.5f, GameConfig.players.get(id).getPosition().z);
 		cam.position.set(pos);
 		
 		cam.update();
@@ -145,7 +151,7 @@ public class GameScreen implements Screen
 			batch.render(mod, environment);
 		
 		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(36,-4.8f,36.5f);
+		model.transform.setToTranslation(40,-4.8f,45);
 		batch.render(model, environment);
 		
 		// render walls
@@ -163,6 +169,10 @@ public class GameScreen implements Screen
 				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
 					batch.render(mod, environment);
 		}
+		
+		for (final ModelInstance instance : GameConfig.destroyed)
+			batch.render(instance, environment);
+		
 		batch.end();
 
 		// update and render hud
@@ -189,19 +199,34 @@ public class GameScreen implements Screen
 	{
 		synchronized(GameConfig.toolsInstance)
 		{
-			for (AnimationController clock : game.mapGenerator.assets.animation)
+			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)
 		{
-//			animationController.setAnimation("Armature|ArmatureAction",-1);
-			animationController.update(Gdx.graphics.getDeltaTime());
+			playerController.setAnimation("Armature|ArmatureAction",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
 		}
-//		else if(GameConfig.HIT)
-//		{
-//			
-//			animationController.update(Gdx.graphics.getDeltaTime());
-//		}
+		if(GameConfig.HIT)
+		{
+			playerController.setAnimation("Armature|hit",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
+		}
+
+		for(final ModelInstance instance : GameConfig.destroyed)
+			destroyedController.add(new AnimationController(instance));
+		
+		for (AnimationController controller : destroyedController)
+		{
+//			controller.setAnimation("Armature|ArmatureAction",-1);
+			controller.update(Gdx.graphics.getDeltaTime());
+		}
+
+		for(AnimationController controller : destroyedController)
+			if(!controller.inAction)
+				GameConfig.destroyed.remove(destroyedController.indexOf(controller));
+				
+		destroyedController.clear();
 	}
 
 	public void dispose()
@@ -221,11 +246,11 @@ public class GameScreen implements Screen
         List<Vertex> path = Dijkstra.getShortestPath();
         
         //	create hints model
-        float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_SIZE;
+        float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_ROW;
         for (Vertex vertex : path)
         {
         	ModelInstance mod = new ModelInstance(game.mapGenerator.assets.help);
-        	mod.transform.setToTranslation(vertex.x * GameConfig.CELL_SIZE +position, -4.1f, vertex.x * GameConfig.CELL_SIZE);
+        	mod.transform.setToTranslation(vertex.x * GameConfig.CELL_HEIGHT +position, -4.1f, vertex.x * GameConfig.CELL_WIDTH);
         	hints.add(mod);
 		}
      }

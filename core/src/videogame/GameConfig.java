@@ -15,8 +15,10 @@ import entity.Wall;
 public class GameConfig
 {
 	public static long timing = 0;
-	public static final float CELL_SIZE = 5.5f;
-	public static final int ROOM_SIZE = 15;
+	public static final int ROOM_ROW = 15;
+	public static final int ROOM_COLUMN = 10;
+	public static final int CELL_WIDTH = 10;
+	public static final int CELL_HEIGHT = 6;
 	public static float volume = 1;
 	public static Music gameSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Atlas_rise.ogg"));
 	public static Music menuSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Given_up.ogg"));
@@ -40,8 +42,9 @@ public class GameConfig
 	public static ArrayList<Player> players = new ArrayList<Player>(); 
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
-	public static Destroyable[][] newTools = new Destroyable[ROOM_SIZE][ROOM_SIZE];
-		
+	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
+	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
+	
 	public static Vector<ArrayList<ModelInstance>> toolsInstance  = new Vector<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
@@ -67,7 +70,7 @@ public class GameConfig
 		players = new ArrayList<Player>();
 		tools.clear();
 		tools = new ArrayList<Destroyable[][]>();
-		newTools = new Destroyable[ROOM_SIZE][ROOM_SIZE];
+		newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
 		
 		toolsInstance.clear();
 		toolsInstance  = new Vector<ArrayList<ModelInstance>>();

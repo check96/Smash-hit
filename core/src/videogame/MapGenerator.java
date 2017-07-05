@@ -41,7 +41,7 @@ public class MapGenerator extends Thread
 			{
 				try 
 				{
-					this.wait(10000000);
+					this.wait(10000);
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
@@ -52,24 +52,24 @@ public class MapGenerator extends Thread
 	
 	public void createWalls()
 	{
-		float position = (GameConfig.level-1) * GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE;
+		float position = (GameConfig.level-1) * GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT;
 		//create left wall
-		GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_SIZE*2.75f)+position,0,-5), Walls.LEFT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-5), Walls.LEFT_WALL));
 		
 		//create right wall
-		GameConfig.walls.add(new Wall(new Vector3((-5 + GameConfig.ROOM_SIZE*2.75f)+position,0,-2.5f+GameConfig.ROOM_SIZE*GameConfig.CELL_SIZE), Walls.RIGHT_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-2.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH), Walls.RIGHT_WALL));
 		
 		//create back wall
-		GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_SIZE*GameConfig.CELL_SIZE)+(GameConfig.level-2)*GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,0,-2+GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE/2), Walls.BACK_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+(GameConfig.level-2)*GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,0,-2+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
 		
 		//create front wall
-		GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_SIZE*GameConfig.CELL_SIZE)+ position,0,-2 +GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE/2), Walls.FOREWARD_WALL));
+		GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_WALL));
 		
 		//create ceiling
-		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE/2)+position, 10.6f, GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE/2),Walls.CEILING));
+		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
 		
 		//create floor
-		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE/2)+position,-5, GameConfig.ROOM_SIZE*GameConfig.CELL_SIZE/2),Walls.FLOOR));
+		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,-5, -2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),Walls.FLOOR));
 		
 	}
 	
@@ -79,12 +79,12 @@ public class MapGenerator extends Thread
 		GameConfig.EDITOR = false;
 		for(int i = 1; i<= Editor.numLevels; i++)
 		{
-			int[][] points = new int[GameConfig.ROOM_SIZE][GameConfig.ROOM_SIZE];
+			int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 			String line = game.editorLevels.getString("level"+i);
 			 
 			for(int j=0; j<points.length; j++)
 			{
-				String subLine = line.substring(j * GameConfig.ROOM_SIZE, j * GameConfig.ROOM_SIZE + GameConfig.ROOM_SIZE);
+				String subLine = line.substring(j * GameConfig.ROOM_ROW, j * GameConfig.ROOM_ROW + GameConfig.ROOM_COLUMN);
 				for(int k=0; k<points[j].length; k++)
 					points[j][k] = subLine.charAt(k) - 48;
 			}
@@ -92,20 +92,20 @@ public class MapGenerator extends Thread
 			uploadTools(points);
 
 			// create the clock
-			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_SIZE-6))+3;
+			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_COLUMN-6))+3;
 
 				// 	choose side of clock (right or left)
-			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_SIZE -1;
+			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_ROW -1;
 			
-			float x = w*GameConfig.CELL_SIZE + GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE * (GameConfig.level - 1);
-			float z = h*GameConfig.CELL_SIZE;
+			float x = w*GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+			float z = h*GameConfig.CELL_WIDTH;
 			
 			float clockMoney = Math.abs((rand.nextInt()%3)) +1;
 			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
 			
 			// 	create door
-			GameConfig.newTools[0][GameConfig.ROOM_SIZE/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_SIZE *GameConfig.CELL_SIZE,
-					-5,GameConfig.ROOM_SIZE*2.746f), 0, Objects.DOOR);
+			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW *GameConfig.CELL_HEIGHT,
+					-5,GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 			// load tools model
 			assets.loadTools();
@@ -118,7 +118,7 @@ public class MapGenerator extends Thread
 	// ONLY for editor
 	public void uploadTools(int[][] map)
 	{		
-		float position = GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE * (GameConfig.level - 1); 
+		float position = GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1); 
 		
 		// create walls
 		createWalls();
@@ -128,28 +128,28 @@ public class MapGenerator extends Thread
 		for(int i = 0; i < map.length; i++)
 			for(int j = 0; j < map[i].length; j++)
 			{
-				float x = i*GameConfig.CELL_SIZE + position;
-				float z = j*GameConfig.CELL_SIZE;
+				float x = i*GameConfig.CELL_HEIGHT + position;
+				float z = j*GameConfig.CELL_WIDTH;
 				switch (map[i][j])
 				{
 					case 1:		float deskMoney = Math.abs(rand.nextInt()%4);	
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), deskMoney, Objects.DESK);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4.6f, z), deskMoney, Objects.DESK);
 								break;
 					
 					case 2: 	float printerMoney = Math.abs((rand.nextInt()%6)) +1;				
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z),printerMoney, Objects.PRINTER);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5f, z),printerMoney, Objects.PRINTER);
 								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z),plantMoney, Objects.PLANT);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4.8f, z),plantMoney, Objects.PLANT);
 								break;
 					
 					case 4:		float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), lockerMoney, Objects.LOCKER);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4.8f, z), lockerMoney, Objects.LOCKER);
 								break;
 					
 					case 5:		float chairMoney = Math.abs(rand.nextInt()%2);		
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4, z),chairMoney, Objects.CHAIR);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4.8f, z),chairMoney, Objects.CHAIR);
 								break; 
 					
 					default:	break;
@@ -162,7 +162,7 @@ public class MapGenerator extends Thread
 		Random rand = new Random(System.currentTimeMillis());
 
 		// initialize the map
-		GameConfig.newTools = new Destroyable[GameConfig.ROOM_SIZE][GameConfig.ROOM_SIZE];
+		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		createWalls();
 		
@@ -170,19 +170,19 @@ public class MapGenerator extends Thread
 		// i |	  j ->
 		
 		for (int i = 0; i < GameConfig.newTools.length; i+=2)
-			for (int j = 1; j < GameConfig.newTools[i].length-1; j+=2)
+			for (int j = 1; j < GameConfig.newTools[i].length-1; j++)
 			{
-				float x = i*GameConfig.CELL_SIZE + GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE * (GameConfig.level - 1);
-				float z = j*GameConfig.CELL_SIZE;
+				float x = i*GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+				float z = j*GameConfig.CELL_WIDTH;
 				
 				// create desk and chair in the middle of map
 				if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 				{
 					float deskMoney = Math.abs(rand.nextInt()%4);
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4, z), deskMoney, Objects.DESK);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), deskMoney, Objects.DESK);
 					
 					float chairMoney = Math.abs(rand.nextInt()%2);
-					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(x, -4, z), chairMoney, Objects.CHAIR);
+					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-1+(i+1)*GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1), -5, z), chairMoney, Objects.CHAIR);
 				}
 			
 				// create printer, plant and locker on the sides
@@ -193,41 +193,41 @@ public class MapGenerator extends Thread
 				if(r == 1 || r == 2)
 				{
 					float printerMoney = Math.abs((rand.nextInt()%6)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -4f, z), printerMoney, Objects.PRINTER);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), printerMoney, Objects.PRINTER);
 				}
 				else if(r == 3 || r == 4)
 				{
 					float plantMoney = Math.abs((rand.nextInt()%5)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x - 2f, -4, z), plantMoney, Objects.PLANT);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), plantMoney, Objects.PLANT);
 				}
 				else if (r == 5 || r ==6)	
 				{
 					float lockerMoney = Math.abs((rand.nextInt()%5)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -4f, z), lockerMoney, Objects.LOCKER);			
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), lockerMoney, Objects.LOCKER);			
 				}
 			}
 	
 		// clear positions near the doors
-		GameConfig.newTools[0][GameConfig.ROOM_SIZE/2 +1] = null;
-		GameConfig.newTools[0][GameConfig.ROOM_SIZE/2 -1] = null;
-		GameConfig.newTools[GameConfig.ROOM_SIZE -1][GameConfig.ROOM_SIZE/2 +1] = null;
-		GameConfig.newTools[GameConfig.ROOM_SIZE -1][GameConfig.ROOM_SIZE/2 -1] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 -1] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
 		
 		// create the clock
-		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_SIZE-6))+3;
+		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
 
 			// 	choose side of clock (right or left)
-		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_SIZE -1;
+		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
 		
-		float x = w * GameConfig.CELL_SIZE + GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE * (GameConfig.level - 1);
-		float z = h * GameConfig.CELL_SIZE;
+		float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+		float z = h * GameConfig.CELL_WIDTH;
 		
 		float clockMoney = Math.abs((rand.nextInt()%3)) +1;
 		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
 		
 		// 	create door
-		GameConfig.newTools[0][GameConfig.ROOM_SIZE/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_SIZE * GameConfig.CELL_SIZE,
-				-5, GameConfig.ROOM_SIZE*GameConfig.CELL_SIZE/2), 0, Objects.DOOR);
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+				-5, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();
