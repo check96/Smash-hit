@@ -17,8 +17,8 @@ public class GameConfig
 	public static long timing = 0;
 	public static final int ROOM_ROW = 15;
 	public static final int ROOM_COLUMN = 10;
-	public static final int CELL_WIDTH = 10;
 	public static final int CELL_HEIGHT = 6;
+	public static final int CELL_WIDTH = 9;
 	public static float volume = 1;
 	public static Music gameSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Atlas_rise.ogg"));
 	public static Music menuSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Given_up.ogg"));

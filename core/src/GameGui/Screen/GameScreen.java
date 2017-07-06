@@ -151,13 +151,16 @@ public class GameScreen implements Screen
 			batch.render(mod, environment);
 		
 		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(40,-4.8f,45);
+		model.transform.setToTranslation(40,-4.8f,41.5f);
 		batch.render(model, environment);
 		
 		// render walls
-		for (final ModelInstance wall : GameConfig.wallsInstance)
-			batch.render(wall, environment);
-
+		synchronized (GameConfig.wallsInstance)
+		{
+			for (final ModelInstance wall : GameConfig.wallsInstance)
+				batch.render(wall, environment);
+		}
+		
 		// render tools instance
 		synchronized (GameConfig.toolsInstance)
 		{
@@ -250,7 +253,7 @@ public class GameScreen implements Screen
         for (Vertex vertex : path)
         {
         	ModelInstance mod = new ModelInstance(game.mapGenerator.assets.help);
-        	mod.transform.setToTranslation(vertex.x * GameConfig.CELL_HEIGHT +position, -4.1f, vertex.x * GameConfig.CELL_WIDTH);
+        	mod.transform.setToTranslation(-2+vertex.x * GameConfig.CELL_HEIGHT +position, -4.7f, 1 + vertex.y * GameConfig.CELL_WIDTH);
         	hints.add(mod);
 		}
      }

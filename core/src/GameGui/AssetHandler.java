@@ -74,7 +74,7 @@ public class AssetHandler
 	public void load()
 	{	
 		loadWalls();
-		help = modelBuilder.createCylinder(GameConfig.CELL_HEIGHT, 0.1f, GameConfig.CELL_WIDTH, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
+		help = modelBuilder.createCylinder(GameConfig.CELL_HEIGHT*0.9f, 0.1f, GameConfig.CELL_WIDTH*0.9f, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 				Usage.Position | Usage.Normal);
 		
 		grid = modelBuilder.createLineGrid(GameConfig.ROOM_ROW,GameConfig.ROOM_COLUMN, GameConfig.CELL_HEIGHT, GameConfig.CELL_WIDTH, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
@@ -171,6 +171,8 @@ public class AssetHandler
 			}
 		
 			// load walls and door instances
+		synchronized (GameConfig.walls)
+		{
 			for (Wall obj : GameConfig.walls)
 			{	
 				ModelInstance wallInst = null;
@@ -180,34 +182,37 @@ public class AssetHandler
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,1,0,-90);
 										wallInst.transform.rotate(0,0,1,90);
-										break;
+									break;
 					case LEFT_WALL:		wallInst = new ModelInstance(wallModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,0,1,90);
-										break;
+									break;
 					case CEILING:		wallInst = new ModelInstance(ceiling);
 										wallInst.transform.setToTranslation(obj.getPosition());
-										break;
+									break;
 					case RIGHT_WALL:	wallInst = new ModelInstance(wallModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,1,0,180);
 										wallInst.transform.rotate(0,0,1,90);
-										break;
+									break;
 					case BACK_WALL:		wallInst = new ModelInstance(wallModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,1,0,90);
 										wallInst.transform.rotate(0,0,1,90);
-										break;
+									break;
 					case FLOOR:			wallInst = new ModelInstance(floorModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,1,1,180);
-										break;
-										
-					default:			break;
+									break;
+					default:	break;
 				}
-				if(wallInst != null)
-					GameConfig.wallsInstance.add(wallInst);
+				synchronized (GameConfig.wallsInstance)
+				{
+					if(wallInst != null)
+						GameConfig.wallsInstance.add(wallInst);
+				}
 			}
+		}	
 	}
 
 	public void dispose()

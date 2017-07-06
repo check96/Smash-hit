@@ -53,24 +53,27 @@ public class MapGenerator extends Thread
 	public void createWalls()
 	{
 		float position = (GameConfig.level-1) * GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT;
-		//create left wall
-		GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-5), Walls.LEFT_WALL));
+
+		synchronized(GameConfig.walls)
+		{
+			//create left wall
+			GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-5), Walls.LEFT_WALL));
 		
-		//create right wall
-		GameConfig.walls.add(new Wall(new Vector3((-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-2.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH), Walls.RIGHT_WALL));
-		
-		//create back wall
-		GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+(GameConfig.level-2)*GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,0,-2+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
-		
-		//create front wall
-		GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_WALL));
-		
-		//create ceiling
-		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
-		
-		//create floor
-		GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,-5, -2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),Walls.FLOOR));
-		
+			//create right wall
+			GameConfig.walls.add(new Wall(new Vector3((-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,0,-2.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH), Walls.RIGHT_WALL));
+			
+			//create back wall
+			GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+(GameConfig.level-2)*GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,0,-2+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
+			
+			//create front wall
+			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_WALL));
+			
+			//create ceiling
+			GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
+			
+			//create floor
+			GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,-5, -2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),Walls.FLOOR));
+		}
 	}
 	
 	private void loadRoom()
@@ -209,8 +212,10 @@ public class MapGenerator extends Thread
 	
 		// clear positions near the doors
 		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = null;
 		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 -1] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
 		
 		// create the clock
@@ -227,7 +232,7 @@ public class MapGenerator extends Thread
 		
 		// 	create door
 		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
-				-5, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
+				-5, 2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();

@@ -10,7 +10,7 @@ import videogame.GameConfig;
 public class Dijkstra
 {
 	private static int startX = GameConfig.ROOM_ROW-1;
-	private static int startY = GameConfig.ROOM_COLUMN/2 +1;
+	private static int startY = GameConfig.ROOM_COLUMN/2;
 	private static int clockX = -1;
 	private static int clockY = -1;
 	private static int endX;
@@ -74,8 +74,6 @@ public class Dijkstra
         for (Vertex vertex = end; vertex != null; vertex = vertex.previous)
             path.add(vertex);
        
-        path.remove(0);
-        path.remove(path.size()-1);
 //        System.out.println("Distance from "+ start.toString() + " to " + end.toString() + " is: "+ end.minDistance);
 //        System.out.println("Path: " + path);
 //        System.out.println();
@@ -85,36 +83,39 @@ public class Dijkstra
     private static void createMap()
     {
     	float position = GameConfig.ROOM_ROW *GameConfig.CELL_HEIGHT* (GameConfig.actualLevel-1);
-    			
-    	endX = (int)((GameConfig.players.get(0).getX()-position)/GameConfig.CELL_HEIGHT);
-    	endY = (int)(GameConfig.players.get(0).getZ()/GameConfig.CELL_WIDTH);
+    		
+    	synchronized (GameConfig.players)
+		{   
+    		if(GameConfig.players.get(0).getX() < 0)
+    			endX = 0;
+    		else
+    			endX = (int) (GameConfig.players.get(0).getX() / GameConfig.CELL_HEIGHT) +1; //% GameConfig.ROOM_ROW;
+			
+    		endY = (int) (GameConfig.players.get(0).getZ() / GameConfig.CELL_WIDTH);// % GameConfig.ROOM_COLUMN;
+    	}
+
     	
         // mark all the vertices
 		float[][] map = new float[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		for (int i = 0; i < map.length; i++)
-			for (int j = 0; j < map.length; j++)
+			for (int j = 0; j < map[i].length; j++)
 			{
-				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j] == null)
-					map[i][j] = 2;
-				else
+				map[i][j] = 2;
+				if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j] != null)
 				{
 					if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getMoneyReward() != 0)
 						map[i][j] = 1 / GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getMoneyReward();
-					else
-						map[i][j] = 2;
 					
 					if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].type == Objects.CLOCK)
-					{
 						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_HEIGHT);
-					}
 				}
 			}
 	
 		vertex = new ArrayList<Vertex>();
 
 		for (int i = 0; i < map.length; i++)
-			for (int j = 0; j < map.length; j++)
+			for (int j = 0; j < map[i].length; j++)
 				vertex.add(new Vertex(i,j));
 		
 		// create adjacencies

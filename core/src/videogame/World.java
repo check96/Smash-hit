@@ -19,8 +19,8 @@ public class World
 	public World(int _id)
 	{ 
 		this.id = _id;
-		Player player = new Player(new Vector3(0,-4.8f,28),new Vector3(5,5,5));
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,28), Weapons.MACE);
+		Player player = new Player(new Vector3(0,-4.8f,45),new Vector3(5,5,5));
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40), Weapons.MACE);
 		player.setWeapon(weapon);
 		
 		GameConfig.players.add(id, player);		
@@ -34,7 +34,7 @@ public class World
 		}
 		
 		GameConfig.players.get(id).move();
-		checkCollsion(delta);
+//		checkCollsion(delta);
 		
 		GameConfig.ON =false;
 		GameConfig.LEFT = false;
