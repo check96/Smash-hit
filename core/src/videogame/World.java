@@ -13,17 +13,13 @@ import entity.Weapons;
 
 public class World 
 {
-	private int id;
 	private Destroyable[][] map;
 	
-	public World(int _id)
+	public World()
 	{ 
-		this.id = _id;
-		Player player = new Player(new Vector3(0,-4.8f,45),new Vector3(5,5,5));
+		GameConfig.player = new Player(new Vector3(0,-4.8f,45),new Vector3(5,5,5));
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40), Weapons.MACE);
-		player.setWeapon(weapon);
-		
-		GameConfig.players.add(id, player);		
+		GameConfig.player.setWeapon(weapon);
 	}
 
 	public void update(float delta)
@@ -33,7 +29,7 @@ public class World
 			map = GameConfig.tools.get(GameConfig.actualLevel-1);
 		}
 		
-		GameConfig.players.get(id).move();
+		GameConfig.player.move();
 //		checkCollsion(delta);
 		
 		GameConfig.ON =false;
@@ -42,9 +38,9 @@ public class World
 		GameConfig.BACK = false;
 		GameConfig.HIT = false;
 		
-		synchronized (GameConfig.players)
+		synchronized (GameConfig.player)
 		{
-			if(GameConfig.players.get(id).getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+			if(GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
 				GameConfig.actualLevel++;
 		}		
 		checkGameOver();
@@ -58,43 +54,54 @@ public class World
 	private void checkCollsion(float delta)
 	{
 		int i = 0, j = 0;
-		synchronized (GameConfig.players)
+		synchronized (GameConfig.player)
 		{
-			i = (int) (GameConfig.players.get(id).getX() / GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
-			j = (int) (GameConfig.players.get(id).getZ() / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+			if(GameConfig.player.getX() < 0)
+    			i = 0;
+    		else
+    			i = (int) ((GameConfig.player.getX() / GameConfig.CELL_HEIGHT) +1 )% GameConfig.ROOM_ROW;
+			
+    		j = (int) (GameConfig.player.getZ() / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 		}
 		
 		if(i != GameConfig.ROOM_ROW-1)
 		{
 			if(map[i+1][j] != null)
 			{
-				if(GameConfig.players.get(id).collide(map[i+1][j]));
+				if(GameConfig.player.collide(map[i+1][j]));
 				{
+					System.out.print("collide with "+ map[i+1][j].type+"  in "+map[i+1][j].getPosition()+"  of "+ map[i+1][j].getSize());
 					if(GameConfig.ON)
 					{
+						System.out.println("ON");
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.BACK)
 					{
+						System.out.println("BACK");
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.RIGHT)
 					{
+						System.out.println("RIGHT");
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.LEFT)
 					{
+						System.out.println("LEFT");
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					
+					System.out.println();
+					System.out.println(GameConfig.player.getPosition() + "    "+GameConfig.player.getSize());
 					if(GameConfig.HIT)
 					{
 						GameConfig.HIT = false;
@@ -107,31 +114,31 @@ public class World
 		{
 			if(map[i-1][j] != null)
 			{
-				if(GameConfig.players.get(id).collide(map[i-1][j]))
+				if(GameConfig.player.collide(map[i-1][j]))
 				{
 					if(GameConfig.ON)
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					if(GameConfig.HIT)
 					{
@@ -145,31 +152,31 @@ public class World
 		{
 			if(map[i][j-1] != null)
 			{
-				if(GameConfig.players.get(id).collide(map[i][j-1]))
+				if(GameConfig.player.collide(map[i][j-1]))
 				{
 					if(GameConfig.ON)
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					if(GameConfig.HIT)
 					{
@@ -183,31 +190,31 @@ public class World
 		{
 			if(map[i][j+1] != null)
 			{
-				if(GameConfig.players.get(id).collide(map[i][j+1]))
+				if(GameConfig.player.collide(map[i][j+1]))
 				{
 					if(GameConfig.ON)
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.players.get(id).move();
+						GameConfig.player.move();
 					}
 					if(GameConfig.HIT)
 					{
@@ -222,7 +229,7 @@ public class World
 	private void hit(int i, int j,float delta)
 	{
 		// decrease tool's life
-		map[i][j].decreaseHealth(GameConfig.players.get(id).getWeapon().getDamage()*delta);
+		map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
 		
 		System.out.println(map[i][j].getHealth());
 		if(map[i][j].getHealth() == 0)

@@ -19,7 +19,6 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 import GameGui.Screen.GameScreen;
 import entity.Destroyable;
-import entity.Player;
 import entity.Wall;
 import videogame.GameConfig;
 
@@ -107,13 +106,8 @@ public class AssetHandler
 	// load player and floor
 	public void loadPlayer()	
 	{
-		for (Player _player : GameConfig.players)
-		{
-			ModelInstance mod = new ModelInstance(manager.get(player, Model.class));
-			mod.transform.setToTranslation(_player.getPosition());
-		
-			GameScreen.playersInstance.add(mod);
-		}
+			GameScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
+			GameScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
 	}
 
 	// load model instances

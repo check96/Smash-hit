@@ -39,7 +39,7 @@ public class GameConfig
 	public static boolean BACK  = false;
 	public static boolean HIT	= false;
 	
-	public static ArrayList<Player> players = new ArrayList<Player>(); 
+	public static Player player; 
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
@@ -67,7 +67,6 @@ public class GameConfig
 		HIT	= false;
 		
 		Countdown.reset();
-		players = new ArrayList<Player>();
 		tools.clear();
 		tools = new ArrayList<Destroyable[][]>();
 		newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];

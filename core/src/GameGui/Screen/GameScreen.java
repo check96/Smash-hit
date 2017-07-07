@@ -29,7 +29,7 @@ public class GameScreen implements Screen
 	private GameManager game;
 	private Camera cam;
 	private ModelBatch batch;
-	public static ArrayList<ModelInstance> playersInstance;
+	public static ModelInstance playerInstance;
 	private ArrayList<ModelInstance> hints;
 	private Environment environment;
 	private World world;
@@ -37,7 +37,6 @@ public class GameScreen implements Screen
 	private Hud hud;
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
-	private int id = 0;
 	
 	public GameScreen(GameManager _game)
 	{
@@ -46,8 +45,7 @@ public class GameScreen implements Screen
 		GameConfig.gameSoundtrack.play();
 		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
 		
-		playersInstance = new ArrayList<ModelInstance>();
-		world = new World(id);
+		world = new World();
 		batch = new ModelBatch();
 
 		game.mapGenerator.assets.loadPlayer();
@@ -62,14 +60,14 @@ public class GameScreen implements Screen
 	private void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
-		playerController = new AnimationController(playersInstance.get(0));
+		playerController = new AnimationController(playerInstance);
 		playerController.setAnimation("Armature|ArmatureAction",-1);
 	}
 
 	private void initCamera() 
 	{
 		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		cam.position.set(GameConfig.players.get(id).getPosition());
+		cam.position.set(GameConfig.player.getPosition());
 		cam.lookAt(GameConfig.DIRECTION);
 		cam.near = 1f;
 		cam.far = 1500f;
@@ -130,11 +128,11 @@ public class GameScreen implements Screen
 		world.update(delta);
 
 		// move player instance
-		playersInstance.get(id).transform.setToTranslation(GameConfig.players.get(id).getPosition());
-		playersInstance.get(id).transform.rotate(0,1,0,degrees);
+		playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+		playerInstance.transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		Vector3 pos = new Vector3(GameConfig.players.get(id).getPosition().x-15,GameConfig.players.get(id).getPosition().y+13.5f, GameConfig.players.get(id).getPosition().z);
+		Vector3 pos = new Vector3(GameConfig.player.getPosition().x,GameConfig.player.getPosition().y+6.5f, GameConfig.player.getPosition().z);
 		cam.position.set(pos);
 		
 		cam.update();
@@ -142,9 +140,8 @@ public class GameScreen implements Screen
 
 		batch.begin(cam);
 
-		// render player instances
-		for(final ModelInstance playerInstance : playersInstance)			
-			batch.render(playerInstance, environment);
+		// render player instance
+		batch.render(playerInstance, environment);
 		
 		// render hints
 		for(final ModelInstance mod : hints)

@@ -24,14 +24,18 @@ public abstract class AbstractGameObject implements ICollidable
 	
 	public boolean collide(ICollidable c)
 	{		
-
 		AbstractGameObject a =(AbstractGameObject) c;
 		
-		if (getX()- getSize().x/2 <= a.getX() + a.getSize().x/2 && a.getX() - a.getSize().x/2 <= getX() + getSize().x/2 &&
-			getY()- getSize().y/2 <= a.getY() + a.getSize().y/2 && a.getY() - a.getSize().y/2 <= getY() + getSize().y/2 &&
-			getZ()- getSize().z/2 <= a.getZ() + a.getSize().z/2 && a.getZ() - a.getSize().z/2 <= getZ() + getSize().z/2)
-				return true;
+//		  if((rect1.x > rect2.x + rect2.w || rect1.x + rect1.w < rect2.x) || (rect1.y > rect2.y + rect2.w || rect1.y + rect1.w < rect2.y)){
+	         
+//		return (x <= a.x+a.width && a.x <= x+width  && y <= a.y+a.height && a.y <= y+height);
+        //      x <= a.x + a.width &&  x+width > a.x
 		
-		return false;
+		if (getX() + getSize().x/2 > a.getX() + a.getSize().x/2 || getX() + getSize().x/2 < a.getX() + a.getSize().x/2 ||
+//			getY() - getSize().y/2 <= a.getY() + a.getSize().y/2 && a.getY() - a.getSize().y/2 <= getY() + getSize().y/2 &&
+			getZ() - getSize().z/2 > a.getZ() + a.getSize().z/2 || getZ() + getSize().z/2 < a.getZ() - a.getSize().z/2)
+				return false;
+		
+		return true;
 	}
 }

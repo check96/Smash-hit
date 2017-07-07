@@ -84,16 +84,12 @@ public class Dijkstra
     {
     	float position = GameConfig.ROOM_ROW *GameConfig.CELL_HEIGHT* (GameConfig.actualLevel-1);
     		
-    	synchronized (GameConfig.players)
-		{   
-    		if(GameConfig.players.get(0).getX() < 0)
-    			endX = 0;
-    		else
-    			endX = (int) (GameConfig.players.get(0).getX() / GameConfig.CELL_HEIGHT) +1; //% GameConfig.ROOM_ROW;
-			
-    		endY = (int) (GameConfig.players.get(0).getZ() / GameConfig.CELL_WIDTH);// % GameConfig.ROOM_COLUMN;
-    	}
-
+		if(GameConfig.player.getX() < 0)
+			endX = 0;
+		else
+			endX = (int) ((GameConfig.player.getX() / GameConfig.CELL_HEIGHT) +1 )% GameConfig.ROOM_ROW;
+		
+		endY = (int) (GameConfig.player.getZ() / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
         // mark all the vertices
 		float[][] map = new float[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
