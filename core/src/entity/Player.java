@@ -17,32 +17,31 @@ public class Player extends AbstractGameObject
 	
 	public final Weapon getWeapon() {return weapon;}
 	
-	public void move()
+	public void move(float delta)
 	{			
-//		Vector3 speed = GameConfig.SPEED;
-		float speed = 6;
+		Vector3 speed = new Vector3(GameConfig.SPEED.x*GameConfig.DIRECTION.x,GameConfig.SPEED.y*GameConfig.DIRECTION.y,GameConfig.SPEED.z*GameConfig.DIRECTION.z);
 		
 		if(GameConfig.RIGHT)
 		{
-			Position.x -= GameConfig.DIRECTION.z/speed;	
-			Position.z += GameConfig.DIRECTION.x/speed;
+			Position.x -= speed.z * delta;	
+			Position.z += speed.x * delta;
 		}
 		if(GameConfig.LEFT)	
 		{
-			Position.x += GameConfig.DIRECTION.z/speed;
-			Position.z -= GameConfig.DIRECTION.x/speed; 
+			Position.x += speed.z * delta;
+			Position.z -= speed.x * delta; 
 		}
 		
 		if(GameConfig.ON)	
 		{
-			Position.x += GameConfig.DIRECTION.x/speed;
-			Position.z += GameConfig.DIRECTION.z/speed;
+			Position.x += speed.x * delta;
+			Position.z += speed.z * delta;
 		}
 		
 		if(GameConfig.BACK)	
 		{
-			Position.x -= GameConfig.DIRECTION.x/speed;	
-			Position.z -= GameConfig.DIRECTION.z/speed;
+			Position.x -= speed.x * delta;	
+			Position.z -= speed.z * delta;
 		}
 		
 		weapon.move(this);

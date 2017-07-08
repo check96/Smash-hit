@@ -29,7 +29,7 @@ public class World
 			map = GameConfig.tools.get(GameConfig.actualLevel-1);
 		}
 		
-		GameConfig.player.move();
+		GameConfig.player.move(delta);
 //		checkCollsion(delta);
 		
 		GameConfig.ON =false;
@@ -76,28 +76,28 @@ public class World
 						System.out.println("ON");
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.BACK)
 					{
 						System.out.println("BACK");
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.RIGHT)
 					{
 						System.out.println("RIGHT");
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.LEFT)
 					{
 						System.out.println("LEFT");
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					
 					System.out.println();
@@ -120,25 +120,25 @@ public class World
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					if(GameConfig.HIT)
 					{
@@ -158,25 +158,25 @@ public class World
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					if(GameConfig.HIT)
 					{
@@ -196,25 +196,25 @@ public class World
 					{
 						GameConfig.BACK = true;
 						GameConfig.ON = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.BACK)
 					{
 						GameConfig.BACK = false;
 						GameConfig.ON = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.RIGHT)
 					{
 						GameConfig.RIGHT = false;
 						GameConfig.LEFT = true;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					else if(GameConfig.LEFT)
 					{
 						GameConfig.RIGHT = true;
 						GameConfig.LEFT = false;
-						GameConfig.player.move();
+						GameConfig.player.move(delta);
 					}
 					if(GameConfig.HIT)
 					{
