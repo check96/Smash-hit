@@ -246,8 +246,7 @@ public class World
 			synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 			{
 				ListIterator<ModelInstance> iterator = GameConfig.toolsInstance.get(GameConfig.actualLevel-1).listIterator();
-				Vector3 objPosition = new Vector3();
-				objPosition = map[i][j].getPosition();
+				Vector3 objPosition = map[i][j].getPosition();
 				map[i][j] = null;
 
 				while(	iterator.hasNext())

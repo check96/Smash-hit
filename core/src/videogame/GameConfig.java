@@ -1,7 +1,6 @@
 package videogame;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -31,6 +30,7 @@ public class GameConfig
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
 	
+	public static final Vector3 SPEED = new Vector3(1,0,1); 
 	public static boolean GAME_OVER = false;
 	public static Vector3 DIRECTION = new Vector3(90,0,90);
 	public static boolean RIGHT = false;
@@ -45,7 +45,7 @@ public class GameConfig
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
 	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
 	
-	public static Vector<ArrayList<ModelInstance>> toolsInstance  = new Vector<ArrayList<ModelInstance>>();
+	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	
@@ -72,7 +72,7 @@ public class GameConfig
 		newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
 		
 		toolsInstance.clear();
-		toolsInstance  = new Vector<ArrayList<ModelInstance>>();
+		toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 		newInstances.clear();
 		newInstances  = new ArrayList<ModelInstance>();
 		

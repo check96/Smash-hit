@@ -3,10 +3,8 @@ package entity;
 import com.badlogic.gdx.math.Vector3;
 import videogame.GameConfig;
 
-
 public class Player extends AbstractGameObject
 {	
-	private float speed = 5f;
 	private Weapon weapon;
 	
 	public Player (Vector3 _position, Vector3 _size)
@@ -20,7 +18,10 @@ public class Player extends AbstractGameObject
 	public final Weapon getWeapon() {return weapon;}
 	
 	public void move()
-	{				
+	{			
+//		Vector3 speed = GameConfig.SPEED;
+		float speed = 6;
+		
 		if(GameConfig.RIGHT)
 		{
 			Position.x -= GameConfig.DIRECTION.z/speed;	

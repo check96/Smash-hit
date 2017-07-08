@@ -15,7 +15,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.math.Vector3;
 
 import GameGui.GameManager;
 import GameGui.Hud;
@@ -132,8 +131,7 @@ public class GameScreen implements Screen
 		playerInstance.transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		Vector3 pos = new Vector3(GameConfig.player.getPosition().x,GameConfig.player.getPosition().y+6.5f, GameConfig.player.getPosition().z);
-		cam.position.set(pos);
+		cam.position.set(GameConfig.player.getPosition().cpy().add(0, 6.5f, 0));
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;

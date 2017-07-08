@@ -1,7 +1,6 @@
 package entity;
 
 import com.badlogic.gdx.math.Vector3;
-
 import videogame.GameConfig;
 
 public enum Walls
