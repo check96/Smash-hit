@@ -15,9 +15,10 @@ import videogame.GameConfig;
 @SuppressWarnings("serial")
 public class PreviewPanel extends JPanel implements MouseListener, MouseMotionListener
 {
-	private int width = 600;
+	private int width = 500;
 	private int height = 600;
-	private int dimIcon = width/GameConfig.ROOM_ROW;
+	private int dimIconX = width/GameConfig.ROOM_COLUMN;
+	private int dimIconY = height/GameConfig.ROOM_ROW;
 	public BufferedImage image = null;
 	public int id = 0;	
 	public static int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
@@ -40,17 +41,23 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0,800,600);
 		
-		for(int i = 0; i < width; i += dimIcon)
+		for(int i = 0; i < width; i += dimIconX)
 		{
 			g.setColor(Color.WHITE);
 			g.fillRect(i,0,1,height);
+		}
+
+		for(int i = 0; i < height; i += dimIconY)
+		{
+			g.setColor(Color.WHITE);
 			g.fillRect(0,i, width,1);
 		}
 
+		
 		for(int i=0; i<icons.size(); i++)
 		{
 			Icon temp = icons.get(i);
-			g.drawImage(temp.getImage(),temp.getX() * dimIcon, temp.getY() * dimIcon, dimIcon, dimIcon,null);
+			g.drawImage(temp.getImage(),temp.getX() * dimIconX, temp.getY() * dimIconY, dimIconX, dimIconY,null);
 		}
 	}
 
@@ -64,8 +71,8 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		int x = e.getX() / dimIcon;
-		int y = e.getY() / dimIcon;
+		int x = e.getX() / dimIconX;
+		int y = e.getY() / dimIconY;
 		removeDuplicate(x, y);
 		
 		Icon i = new Icon(x,y,image);

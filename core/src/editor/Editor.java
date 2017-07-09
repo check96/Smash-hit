@@ -23,7 +23,7 @@ public class Editor extends JFrame
 		this.setTitle("editor");
 		
 		Container contentPane = this.getContentPane();
-		panel.setPreferredSize(new Dimension(600,600));
+		panel.setPreferredSize(new Dimension(500,600));
 		tools.setPreferredSize(new Dimension(250,600));
 		
 		contentPane.setLayout(new BorderLayout());
