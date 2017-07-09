@@ -51,6 +51,136 @@ public class World
 		}
 	}
 	
+	private void checkWallCollision(int i, int j,float delta)
+	{
+		if(i == 0 && GameConfig.player.getX() < GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+		{
+			if(GameConfig.ON)
+			{
+				System.out.println("ON");
+				GameConfig.BACK = true;
+				GameConfig.ON = false;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.BACK)
+			{
+				System.out.println("BACK");
+				GameConfig.BACK = false;
+				GameConfig.ON = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.RIGHT)
+			{
+				System.out.println("RIGHT");
+				GameConfig.RIGHT = false;
+				GameConfig.LEFT = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.LEFT)
+			{
+				System.out.println("LEFT");
+				GameConfig.RIGHT = true;
+				GameConfig.LEFT = false;
+				GameConfig.player.move(delta);
+			}
+		}
+		if(i == GameConfig.ROOM_ROW-1 && GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+		{
+			if(GameConfig.ON)
+			{
+				System.out.println("ON");
+				GameConfig.BACK = true;
+				GameConfig.ON = false;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.BACK)
+			{
+				System.out.println("BACK");
+				GameConfig.BACK = false;
+				GameConfig.ON = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.RIGHT)
+			{
+				System.out.println("RIGHT");
+				GameConfig.RIGHT = false;
+				GameConfig.LEFT = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.LEFT)
+			{
+				System.out.println("LEFT");
+				GameConfig.RIGHT = true;
+				GameConfig.LEFT = false;
+				GameConfig.player.move(delta);
+			}
+		}
+		if(j == 0 && GameConfig.player.getZ() < 0)
+		{
+			if(GameConfig.ON)
+			{
+				System.out.println("ON");
+				GameConfig.BACK = true;
+				GameConfig.ON = false;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.BACK)
+			{
+				System.out.println("BACK");
+				GameConfig.BACK = false;
+				GameConfig.ON = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.RIGHT)
+			{
+				System.out.println("RIGHT");
+				GameConfig.RIGHT = false;
+				GameConfig.LEFT = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.LEFT)
+			{
+				System.out.println("LEFT");
+				GameConfig.RIGHT = true;
+				GameConfig.LEFT = false;
+				GameConfig.player.move(delta);
+			}
+		}
+		if(j == GameConfig.ROOM_ROW-1 && GameConfig.player.getZ() > GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH)
+		{
+			if(GameConfig.ON)
+			{
+				System.out.println("ON");
+				GameConfig.BACK = true;
+				GameConfig.ON = false;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.BACK)
+			{
+				System.out.println("BACK");
+				GameConfig.BACK = false;
+				GameConfig.ON = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.RIGHT)
+			{
+				System.out.println("RIGHT");
+				GameConfig.RIGHT = false;
+				GameConfig.LEFT = true;
+				GameConfig.player.move(delta);
+			}
+			else if(GameConfig.LEFT)
+			{
+				System.out.println("LEFT");
+				GameConfig.RIGHT = true;
+				GameConfig.LEFT = false;
+				GameConfig.player.move(delta);
+			}
+		}
+		
+		
+	}
+
 	private void checkCollsion(float delta)
 	{
 		int i = 0, j = 0;
@@ -64,7 +194,9 @@ public class World
     		j = (int) (GameConfig.player.getZ() / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 		}
 		
-		if(i != GameConfig.ROOM_ROW-1)
+		if(i == GameConfig.ROOM_ROW-1)
+			checkWallCollision(GameConfig.ROOM_ROW-1,j,delta);
+		else
 		{
 			if(map[i+1][j] != null)
 			{
@@ -110,7 +242,9 @@ public class World
 				}
 			}
 		}
-		if(i != 0)
+		if(i == 0)
+			checkWallCollision(0,j,delta);
+		else
 		{
 			if(map[i-1][j] != null)
 			{
@@ -148,7 +282,9 @@ public class World
 				}
 			}
 		}
-		if(j!=0)
+		if(j==0)
+			checkWallCollision(i,0,delta);
+		else
 		{
 			if(map[i][j-1] != null)
 			{
@@ -186,7 +322,9 @@ public class World
 				}
 			}
 		}
-		if(j!=GameConfig.ROOM_COLUMN-1)
+		if(j == GameConfig.ROOM_COLUMN-1)
+			checkWallCollision(i,GameConfig.ROOM_COLUMN-1,delta);
+		else
 		{
 			if(map[i][j+1] != null)
 			{
