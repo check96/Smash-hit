@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector3;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Player;
+import entity.Wall;
+import entity.Walls;
 import entity.Weapon;
 import entity.Weapons;
 
@@ -57,131 +59,16 @@ public class World
 		}
 	}
 	
-	private void checkWallCollision(int i, int j,float delta)
+	private void checkWallCollision(float delta)
 	{
-		if(i == 0 && GameConfig.player.getX() < GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+		for (Wall wall : GameConfig.walls)
 		{
-			if(GameConfig.ON)
-			{
-				System.out.println("ON");
-				GameConfig.BACK = true;
-				GameConfig.ON = false;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.BACK)
-			{
-				System.out.println("BACK");
-				GameConfig.BACK = false;
-				GameConfig.ON = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.RIGHT)
-			{
-				System.out.println("RIGHT");
-				GameConfig.RIGHT = false;
-				GameConfig.LEFT = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.LEFT)
-			{
-				System.out.println("LEFT");
-				GameConfig.RIGHT = true;
-				GameConfig.LEFT = false;
-				GameConfig.player.move(delta);
-			}
-		}
-		if(i == GameConfig.ROOM_ROW-1 && GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
-		{
-			if(GameConfig.ON)
-			{
-				System.out.println("ON");
-				GameConfig.BACK = true;
-				GameConfig.ON = false;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.BACK)
-			{
-				System.out.println("BACK");
-				GameConfig.BACK = false;
-				GameConfig.ON = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.RIGHT)
-			{
-				System.out.println("RIGHT");
-				GameConfig.RIGHT = false;
-				GameConfig.LEFT = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.LEFT)
-			{
-				System.out.println("LEFT");
-				GameConfig.RIGHT = true;
-				GameConfig.LEFT = false;
-				GameConfig.player.move(delta);
-			}
-		}
-		if(j == 0 && GameConfig.player.getZ() < 0)
-		{
-			if(GameConfig.ON)
-			{
-				System.out.println("ON");
-				GameConfig.BACK = true;
-				GameConfig.ON = false;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.BACK)
-			{
-				System.out.println("BACK");
-				GameConfig.BACK = false;
-				GameConfig.ON = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.RIGHT)
-			{
-				System.out.println("RIGHT");
-				GameConfig.RIGHT = false;
-				GameConfig.LEFT = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.LEFT)
-			{
-				System.out.println("LEFT");
-				GameConfig.RIGHT = true;
-				GameConfig.LEFT = false;
-				GameConfig.player.move(delta);
-			}
-		}
-		if(j == GameConfig.ROOM_ROW-1 && GameConfig.player.getZ() > GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH)
-		{
-			if(GameConfig.ON)
-			{
-				System.out.println("ON");
-				GameConfig.BACK = true;
-				GameConfig.ON = false;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.BACK)
-			{
-				System.out.println("BACK");
-				GameConfig.BACK = false;
-				GameConfig.ON = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.RIGHT)
-			{
-				System.out.println("RIGHT");
-				GameConfig.RIGHT = false;
-				GameConfig.LEFT = true;
-				GameConfig.player.move(delta);
-			}
-			else if(GameConfig.LEFT)
-			{
-				System.out.println("LEFT");
-				GameConfig.RIGHT = true;
-				GameConfig.LEFT = false;
-				GameConfig.player.move(delta);
-			}
+			if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
+				if(GameConfig.player.collide(wall))
+				{
+					System.out.println(wall.type);
+					reaction(delta);
+				}
 		}
 	}
 
@@ -191,54 +78,57 @@ public class World
 		synchronized (GameConfig.player)
 		{
     		i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
-    		j = (int) ((GameConfig.player.getZ()+3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+    		j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 		}
 		
-		System.out.println("i "+i+"   j "+j);
-		
-		if(map[i][j] != null)
-		{
+//		if( i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
+//			checkWallCollision(delta);
+			
+		if(map[i][j] instanceof Destroyable)
 			if(GameConfig.player.collide(map[i][j]));
 			{
-				System.out.print("collide with "+ map[i][j].type+"  in "+map[i][j].getPosition()+"  of "+ map[i][j].getSize());
+				System.out.println("collide with "+ map[i][j].type);
 				reaction(delta);
 			}
-		}
 	}
 		
 	private void reaction(float delta)
 	{
 		if(GameConfig.ON)
 		{
-			System.out.println("ON");
 			GameConfig.ON = false;
 			GameConfig.BACK = true;
 			GameConfig.player.move(delta);
 			GameConfig.BACK = false;
+//			GameConfig.ON = true;
+//			GameConfig.BACK = false;
 		}
 		else if(GameConfig.BACK)
 		{
-			System.out.println("BACK");
 			GameConfig.BACK = false;
 			GameConfig.ON = true;
 			GameConfig.player.move(delta);
 			GameConfig.ON = false;
+//			GameConfig.BACK = true;
+//			GameConfig.ON = false;
 		}
-		if(GameConfig.LEFT)
+		else if(GameConfig.LEFT)
 		{
-			System.out.println("LEFT");
 			GameConfig.LEFT = false;
 			GameConfig.RIGHT = true;
 			GameConfig.player.move(delta);
 			GameConfig.RIGHT = false;
+//			GameConfig.LEFT = true;
+//			GameConfig.RIGHT = false;
 		}
 		else if(GameConfig.RIGHT)
 		{
-			System.out.println("RIGHT");
 			GameConfig.RIGHT = false;
 			GameConfig.LEFT = true;
 			GameConfig.player.move(delta);
 			GameConfig.LEFT = false;
+//			GameConfig.RIGHT = true;
+//			GameConfig.LEFT = false;
 		}
 		
 		

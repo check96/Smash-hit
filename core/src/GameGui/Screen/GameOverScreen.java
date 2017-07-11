@@ -36,9 +36,9 @@ public class GameOverScreen implements Screen
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 		
-        int coins = game.options.getInteger("coins");
-		game.options.putInteger("coins", coins+GameConfig.COINS);
-		game.options.flush();
+//        int coins = game.options.getInteger("coins");
+//		game.options.putInteger("coins", coins+GameConfig.COINS);
+//		game.options.flush();
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
@@ -117,9 +117,9 @@ public class GameOverScreen implements Screen
 	{
 		stage.getViewport().update(width, height, true);
 		
-		game.options.putInteger("screen_width", width);
-		game.options.putInteger("screen_height", height);
-		game.options.flush();
+//		game.options.putInteger("screen_width", width);
+//		game.options.putInteger("screen_height", height);
+//		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;

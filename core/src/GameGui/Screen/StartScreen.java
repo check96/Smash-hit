@@ -40,7 +40,7 @@ public class StartScreen implements Screen
         
         GameConfig.menuSoundtrack.play();
         spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
+        background = new Texture(Gdx.files.internal("texture/menu_background.jpg"));
 
         game.mapGenerator.assets.load();
 		game.mapGenerator.start();
@@ -158,9 +158,9 @@ public class StartScreen implements Screen
 	{
 		stage.getViewport().update(width, height, true);
 		
-		game.options.putInteger("screen_width", width);
-		game.options.putInteger("screen_height", height);
-		game.options.flush();
+//		game.options.putInteger("screen_width", width);
+//		game.options.putInteger("screen_height", height);
+//		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;
