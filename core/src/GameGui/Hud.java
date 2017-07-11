@@ -88,7 +88,7 @@ public class Hud implements Disposable
         
         //add our table to the stage
         stage.addActor(labelTable);
-        stage.addActor(table);
+//        stage.addActor(table);
     }
 
     public synchronized void update(float dt)

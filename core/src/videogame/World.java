@@ -17,7 +17,7 @@ public class World
 	
 	public World()
 	{ 
-		GameConfig.player = new Player(new Vector3(0,-4.8f,45),new Vector3(5,5,5));
+		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40), Weapons.MACE);
 		GameConfig.player.setWeapon(weapon);
 	}
@@ -30,7 +30,13 @@ public class World
 		}
 		
 		GameConfig.player.move(delta);
-//		checkCollsion(delta);
+		checkCollsion(delta);
+		
+//		if(GameConfig.HIT)
+//		{
+//			hit(i,j+1,delta);
+//		}
+		
 		
 		GameConfig.ON =false;
 		GameConfig.LEFT = false;
@@ -177,8 +183,6 @@ public class World
 				GameConfig.player.move(delta);
 			}
 		}
-		
-		
 	}
 
 	private void checkCollsion(float delta)
@@ -186,184 +190,60 @@ public class World
 		int i = 0, j = 0;
 		synchronized (GameConfig.player)
 		{
-			if(GameConfig.player.getX() < 0)
-    			i = 0;
-    		else
-    			i = (int) ((GameConfig.player.getX() / GameConfig.CELL_HEIGHT) +1 )% GameConfig.ROOM_ROW;
-			
-    		j = (int) (GameConfig.player.getZ() / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+    		i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
+    		j = (int) ((GameConfig.player.getZ()+3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 		}
 		
-		if(i == GameConfig.ROOM_ROW-1)
-			checkWallCollision(GameConfig.ROOM_ROW-1,j,delta);
-		else
+		System.out.println("i "+i+"   j "+j);
+		
+		if(map[i][j] != null)
 		{
-			if(map[i+1][j] != null)
+			if(GameConfig.player.collide(map[i][j]));
 			{
-				if(GameConfig.player.collide(map[i+1][j]));
-				{
-					System.out.print("collide with "+ map[i+1][j].type+"  in "+map[i+1][j].getPosition()+"  of "+ map[i+1][j].getSize());
-					if(GameConfig.ON)
-					{
-						System.out.println("ON");
-						GameConfig.BACK = true;
-						GameConfig.ON = false;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.BACK)
-					{
-						System.out.println("BACK");
-						GameConfig.BACK = false;
-						GameConfig.ON = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.RIGHT)
-					{
-						System.out.println("RIGHT");
-						GameConfig.RIGHT = false;
-						GameConfig.LEFT = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.LEFT)
-					{
-						System.out.println("LEFT");
-						GameConfig.RIGHT = true;
-						GameConfig.LEFT = false;
-						GameConfig.player.move(delta);
-					}
-					
-					System.out.println();
-					System.out.println(GameConfig.player.getPosition() + "    "+GameConfig.player.getSize());
-					if(GameConfig.HIT)
-					{
-						GameConfig.HIT = false;
-						hit(i+1,j,delta);
-					}
-				}
-			}
-		}
-		if(i == 0)
-			checkWallCollision(0,j,delta);
-		else
-		{
-			if(map[i-1][j] != null)
-			{
-				if(GameConfig.player.collide(map[i-1][j]))
-				{
-					if(GameConfig.ON)
-					{
-						GameConfig.BACK = true;
-						GameConfig.ON = false;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.BACK)
-					{
-						GameConfig.BACK = false;
-						GameConfig.ON = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.RIGHT)
-					{
-						GameConfig.RIGHT = false;
-						GameConfig.LEFT = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.LEFT)
-					{
-						GameConfig.RIGHT = true;
-						GameConfig.LEFT = false;
-						GameConfig.player.move(delta);
-					}
-					if(GameConfig.HIT)
-					{
-						GameConfig.HIT = false;
-						hit(i-1,j,delta);
-					}
-				}
-			}
-		}
-		if(j==0)
-			checkWallCollision(i,0,delta);
-		else
-		{
-			if(map[i][j-1] != null)
-			{
-				if(GameConfig.player.collide(map[i][j-1]))
-				{
-					if(GameConfig.ON)
-					{
-						GameConfig.BACK = true;
-						GameConfig.ON = false;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.BACK)
-					{
-						GameConfig.BACK = false;
-						GameConfig.ON = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.RIGHT)
-					{
-						GameConfig.RIGHT = false;
-						GameConfig.LEFT = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.LEFT)
-					{
-						GameConfig.RIGHT = true;
-						GameConfig.LEFT = false;
-						GameConfig.player.move(delta);
-					}
-					if(GameConfig.HIT)
-					{
-						GameConfig.HIT = false;
-						hit(i,j-1,delta);
-					}
-				}
-			}
-		}
-		if(j == GameConfig.ROOM_COLUMN-1)
-			checkWallCollision(i,GameConfig.ROOM_COLUMN-1,delta);
-		else
-		{
-			if(map[i][j+1] != null)
-			{
-				if(GameConfig.player.collide(map[i][j+1]))
-				{
-					if(GameConfig.ON)
-					{
-						GameConfig.BACK = true;
-						GameConfig.ON = false;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.BACK)
-					{
-						GameConfig.BACK = false;
-						GameConfig.ON = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.RIGHT)
-					{
-						GameConfig.RIGHT = false;
-						GameConfig.LEFT = true;
-						GameConfig.player.move(delta);
-					}
-					else if(GameConfig.LEFT)
-					{
-						GameConfig.RIGHT = true;
-						GameConfig.LEFT = false;
-						GameConfig.player.move(delta);
-					}
-					if(GameConfig.HIT)
-					{
-						GameConfig.HIT = false;
-						hit(i,j+1,delta);
-					}
-				}
+				System.out.print("collide with "+ map[i][j].type+"  in "+map[i][j].getPosition()+"  of "+ map[i][j].getSize());
+				reaction(delta);
 			}
 		}
 	}
 		
+	private void reaction(float delta)
+	{
+		if(GameConfig.ON)
+		{
+			System.out.println("ON");
+			GameConfig.ON = false;
+			GameConfig.BACK = true;
+			GameConfig.player.move(delta);
+			GameConfig.BACK = false;
+		}
+		else if(GameConfig.BACK)
+		{
+			System.out.println("BACK");
+			GameConfig.BACK = false;
+			GameConfig.ON = true;
+			GameConfig.player.move(delta);
+			GameConfig.ON = false;
+		}
+		if(GameConfig.LEFT)
+		{
+			System.out.println("LEFT");
+			GameConfig.LEFT = false;
+			GameConfig.RIGHT = true;
+			GameConfig.player.move(delta);
+			GameConfig.RIGHT = false;
+		}
+		else if(GameConfig.RIGHT)
+		{
+			System.out.println("RIGHT");
+			GameConfig.RIGHT = false;
+			GameConfig.LEFT = true;
+			GameConfig.player.move(delta);
+			GameConfig.LEFT = false;
+		}
+		
+		
+	}
+
 	private void hit(int i, int j,float delta)
 	{
 		// decrease tool's life

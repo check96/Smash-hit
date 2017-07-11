@@ -144,7 +144,7 @@ public class MapGenerator extends Thread
 				switch (map[i][j])
 				{
 					case 1:		float deskMoney = Math.abs(rand.nextInt()%4);
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), deskMoney, Objects.DESK);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z+2), deskMoney, Objects.DESK);
 								break;
 
 					case 2: 	float printerMoney = Math.abs((rand.nextInt()%7)) +1;
@@ -160,7 +160,7 @@ public class MapGenerator extends Thread
 								break;
 					
 					case 5:		float chairMoney = Math.abs(rand.nextInt()%2) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z), chairMoney, Objects.CHAIR);
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2, -5, z), chairMoney, Objects.CHAIR);
 								break; 
 					
 					default:	break;
@@ -190,10 +190,10 @@ public class MapGenerator extends Thread
 				if( i >= 2 && i < GameConfig.newTools.length-2 && j >= 1 && j < GameConfig.newTools.length-2 && rand.nextBoolean())
 				{
 					float deskMoney = Math.abs(rand.nextInt()%4);
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), deskMoney, Objects.DESK);
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z+2), deskMoney, Objects.DESK);
 					
 					float chairMoney = Math.abs(rand.nextInt()%2);
-					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-1+(i+1)*GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1), -5, z), chairMoney, Objects.CHAIR);
+					GameConfig.newTools[i+1][j] = new Destroyable(new Vector3(-2+(i+1)*GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1), -5, z), chairMoney, Objects.CHAIR);
 				}
 			
 				// create printer, plant and locker on the sides
@@ -239,7 +239,7 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
 		
 		// 	create door
-		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
 				-5, 2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 		// load tools model

@@ -90,7 +90,7 @@ public class GameScreen implements Screen
 			GameConfig.LEFT = true;
 		else if (Gdx.input.isKeyPressed(Input.Keys.D))
 			GameConfig.RIGHT = true;
-		if (Gdx.input.isKeyPressed(Input.Keys.W))
+		else  if (Gdx.input.isKeyPressed(Input.Keys.W))
 			GameConfig.ON = true;
 		else if (Gdx.input.isKeyPressed(Input.Keys.S))
 			GameConfig.BACK = true;		
@@ -119,7 +119,7 @@ public class GameScreen implements Screen
 		
 	public void render(float delta) 
 	{
-		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		handleInput();
@@ -148,6 +148,10 @@ public class GameScreen implements Screen
 		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
 		model.transform.setToTranslation(40,-4.8f,41.5f);
 		batch.render(model, environment);
+		
+		ModelInstance model2 = new ModelInstance(game.mapGenerator.assets.grid);
+		model2.transform.setToTranslation(131,-4.8f,41.5f);
+		batch.render(model2, environment);
 		
 		// render walls
 		synchronized (GameConfig.wallsInstance)
@@ -205,12 +209,13 @@ public class GameScreen implements Screen
 			playerController.setAnimation("Armature|ArmatureAction",-1);
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
+
 		if(GameConfig.HIT)
 		{
 			playerController.setAnimation("Armature|hit",-1);
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
-
+		
 		for(final ModelInstance instance : GameConfig.destroyed)
 			destroyedController.add(new AnimationController(instance));
 		

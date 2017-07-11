@@ -7,10 +7,11 @@ public class Player extends AbstractGameObject
 {	
 	private Weapon weapon;
 	
-	public Player (Vector3 _position, Vector3 _size)
+	public Player (Vector3 _position, float radius)
 	{
-		super(_position, _size);
+		super(_position, radius);
 	}
+	
 	public void setWeapon(Weapon weapon) {this.weapon = weapon;}
 	public void setX(float _x)  {Position.x = _x;}	
 	public void setZ(float _z)  {Position.z = _z;}
