@@ -40,7 +40,7 @@ public class StartScreen implements Screen
         
         GameConfig.menuSoundtrack.play();
         spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/menu_background.jpg"));
+        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
         game.mapGenerator.assets.load();
 		game.mapGenerator.start();

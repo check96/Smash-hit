@@ -32,7 +32,7 @@ public class LoadingScreen implements Screen
 		game = _game;
 		
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
+        background = new Texture(Gdx.files.internal("texture/background.png"));
         
 		camera = new OrthographicCamera();
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),camera));

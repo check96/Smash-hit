@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -39,7 +41,8 @@ public class PauseScreen implements Screen
 	private CheckBox on_off;
 	private Label musicLabel;
 	private Label fullscreen;
-	
+	private SpriteBatch spriteBatch;
+	private Texture background;
 
 	public PauseScreen(GameManager _game, GameScreen _screen)
 	{
@@ -47,6 +50,9 @@ public class PauseScreen implements Screen
 		this.screen = _screen;		
 
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+		spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("texture/pause_background.png"));
+		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
@@ -162,7 +168,11 @@ public class PauseScreen implements Screen
 		
 		on_off.setChecked(FULLSCREEN);
 
-		stage.act();
+	    spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
+		
+        stage.act();
 		stage.draw();
 	}
 

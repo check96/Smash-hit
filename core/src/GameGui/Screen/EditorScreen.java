@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -39,12 +41,18 @@ public class EditorScreen implements Screen
 	public static boolean CREATED = false;
 	private boolean EDITOR = false;
 	
+    private SpriteBatch spriteBatch;
+	private Texture background;
+	
 	public EditorScreen(GameManager _game) 
 	{
 		this.game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));		
 
-		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
+ 	    spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("texture/editor_background.png"));
+		
+        Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
@@ -140,6 +148,10 @@ public class EditorScreen implements Screen
 			game.setScreen(new LoadingScreen(game));
 		}
 		
+		spriteBatch.begin();
+        spriteBatch.draw(background, 0, 0);
+        spriteBatch.end();
+        
 		stage.act();
 		stage.draw();
 	}

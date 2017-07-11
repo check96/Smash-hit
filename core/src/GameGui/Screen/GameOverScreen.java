@@ -34,7 +34,7 @@ public class GameOverScreen implements Screen
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
+//        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 		
 //        int coins = game.options.getInteger("coins");
 //		game.options.putInteger("coins", coins+GameConfig.COINS);
@@ -105,7 +105,7 @@ public class GameOverScreen implements Screen
         }
        
         spriteBatch.begin();
-        spriteBatch.draw(background, 0, 0);
+//        spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
         
 		stage.act();

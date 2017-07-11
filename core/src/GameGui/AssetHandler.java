@@ -29,7 +29,7 @@ public class AssetHandler
 	private String desk = "desk/table.g3db";
 	private String chair = "chair/chair.g3db";
 	private String plant = "plant/plant.g3db";
-	private String printer = "printer/printer.g3db";
+	private String printer = "printer/untitled.g3db";
 	private String locker = "drawer/drawer.g3db";
 	private String clock = "clock/clock.g3db";
 

@@ -85,11 +85,13 @@ public class World
 //			checkWallCollision(delta);
 			
 		if(map[i][j] instanceof Destroyable)
+		{
 			if(GameConfig.player.collide(map[i][j]));
 			{
 				System.out.println("collide with "+ map[i][j].type);
 				reaction(delta);
 			}
+		}
 	}
 		
 	private void reaction(float delta)

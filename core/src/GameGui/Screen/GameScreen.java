@@ -146,7 +146,7 @@ public class GameScreen implements Screen
 			batch.render(mod, environment);
 		
 		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(40,-4.8f,41.5f);
+		model.transform.setToTranslation(41f,-4.8f,41.5f);
 		batch.render(model, environment);
 		
 		ModelInstance model2 = new ModelInstance(game.mapGenerator.assets.grid);
