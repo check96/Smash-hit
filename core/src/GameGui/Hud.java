@@ -2,12 +2,17 @@ package GameGui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -19,15 +24,18 @@ public class Hud implements Disposable
     public Stage stage;
    
     //Scene2D widgets
-    private Label countdownLabel;
+    
+    private Label roomLabel;
     private Label scoreLabel;
     private Label timeLabel;
     private Label moneyLabel;
     
-    private Label roomLabel;
-    private Label pointsLabel;
     private Label levelLabel;
+    private Label pointsLabel;
+    private Label countdownLabel;
     private Label coinsLabel;
+
+    private Button bonus;
     
     public Hud()
     {
@@ -41,9 +49,9 @@ public class Hud implements Disposable
     	
         //define a table used to organize our hud's label
     	
-    	Table table = new Table();
-        table.top();
-        table.setFillParent(true);
+    	Table labelTable = new Table();
+    	labelTable.top();
+    	labelTable.setFillParent(true);
         
         Color color = Color.BLACK;
         		
@@ -59,20 +67,28 @@ public class Hud implements Disposable
         coinsLabel = new Label("0", new Label.LabelStyle(font, color));
         
         //add our labels to our table, padding the top, and giving them all equal width with expandX
-        table.add(roomLabel).expandX().padTop(10);
-        table.add(scoreLabel).expandX().padTop(10);
-        table.add(timeLabel).expandX().padTop(10);
-        table.add(moneyLabel).expandX().padTop(10);
+        labelTable.add(roomLabel).expandX().padTop(10);
+        labelTable.add(scoreLabel).expandX().padTop(10);
+        labelTable.add(timeLabel).expandX().padTop(10);
+        labelTable.add(moneyLabel).expandX().padTop(10);
        
         //add a second row to our table
-        table.row();
-        table.add(levelLabel).expandX();
-        table.add(pointsLabel).expandX();
-        table.add(countdownLabel).expandX();
-        table.add(coinsLabel).expandX();
+        labelTable.row();
+        labelTable.add(levelLabel).expandX();
+        labelTable.add(pointsLabel).expandX();
+        labelTable.add(countdownLabel).expandX();
+        labelTable.add(coinsLabel).expandX();
+        
+        Table table = new Table();
+        table.bottom();
+        
+        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("weaponsImage/mace.jpg")))));
+        
+        table.add(bonus).expandX();
         
         //add our table to the stage
-        stage.addActor(table);        
+        stage.addActor(labelTable);
+        stage.addActor(table);
     }
 
     public synchronized void update(float dt)
