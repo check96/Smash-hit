@@ -57,6 +57,7 @@ public class StartScreen implements Screen
       
         // single player
         Button singlePlayer = new TextButton("Single Player",mySkin);
+//        singlePlayer.setColor(Color.GRAY);
         singlePlayer.addListener(new InputListener(){
         	          @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -156,6 +157,13 @@ public class StartScreen implements Screen
 	public void resize(int width, int height)
 	{
 		stage.getViewport().update(width, height, true);
+		
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
 	}
 
 	@Override

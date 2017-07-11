@@ -131,7 +131,6 @@ public class EditorScreen implements Screen
 		{
 			CREATED = false;
 			editor.setVisible(false);
-//			Gdx.graphics.setWindowedMode(1280,640);
 		}
 
 		if(PLAY)
@@ -149,6 +148,13 @@ public class EditorScreen implements Screen
 	public void resize(int width, int height)
 	{	
 		stage.getViewport().update(width, height, true);
+		
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
 	}
 	
 	@Override

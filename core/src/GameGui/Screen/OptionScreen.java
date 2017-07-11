@@ -63,7 +63,8 @@ public class OptionScreen implements Screen
 		volume.addListener(new ChangeListener() {
 
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void changed(ChangeEvent event, Actor actor)
+			{
 				GameConfig.volume = volume.getValue();
 				
             	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
@@ -146,6 +147,13 @@ public class OptionScreen implements Screen
 	public void resize(int width, int height)
 	{
 		stage.getViewport().update(width, height, true);
+		
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
 	}
 
 	@Override

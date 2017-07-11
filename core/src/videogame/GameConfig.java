@@ -13,7 +13,8 @@ import entity.Wall;
 
 public class GameConfig
 {
-	public static long timing = 0;
+	public static int Screen_Width = 1280;
+	public static int Screen_Height = 640;
 	public static final int ROOM_ROW = 15;
 	public static final int ROOM_COLUMN = 10;
 	public static final int CELL_HEIGHT = 6;

@@ -25,7 +25,12 @@ public class GameManager extends Game
 		scores = Gdx.app.getPreferences("Scores");
 		editorLevels = Gdx.app.getPreferences("levels");
 		
+		GameConfig.Screen_Width = options.getInteger("screen_width");
+		GameConfig.Screen_Height = options.getInteger("screen_height");
 		GameConfig.volume = options.getFloat("volume");
+		
+		Gdx.graphics.setWindowedMode(GameConfig.Screen_Width, GameConfig.Screen_Height);
+		
 		GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
 		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
 		

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import videogame.GameConfig;
 
 public class LoadingScreen implements Screen
 {
@@ -32,7 +33,7 @@ public class LoadingScreen implements Screen
 		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/menu_background.png"));
-
+        
 		camera = new OrthographicCamera();
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),camera));
        
@@ -70,7 +71,7 @@ public class LoadingScreen implements Screen
         progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
         spriteBatch.begin();
-        spriteBatch.draw(background, 0, 0);
+        spriteBatch.draw(background,0,0);
         spriteBatch.end();
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
@@ -83,6 +84,13 @@ public class LoadingScreen implements Screen
     public void resize(int width, int height)
     {
     	stage.getViewport().update(width, height, true);
+    	
+    	game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
     }
 
     @Override

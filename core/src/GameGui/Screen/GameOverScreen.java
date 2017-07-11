@@ -113,7 +113,17 @@ public class GameOverScreen implements Screen
 	}
 
 	@Override
-	public void resize(int width, int height) { }
+	public void resize(int width, int height)
+	{
+		stage.getViewport().update(width, height, true);
+		
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
+	}
 
 	@Override
 	public void pause() { }
