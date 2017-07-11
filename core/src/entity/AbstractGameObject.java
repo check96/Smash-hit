@@ -28,6 +28,7 @@ public abstract class AbstractGameObject implements ICollidable
 	
 	public void setPosition(Vector3 pos)	{Position = pos;}
 	public void setSize(Vector3 size) 	{Size = size;}
+	public void setRadius(float radius)	{this.radius = radius;}
 	
 	public final Vector3 getPosition()	{return this.Position;}
 	public final Vector3 getSize()		{return this.Size;}

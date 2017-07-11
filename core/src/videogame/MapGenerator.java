@@ -41,7 +41,7 @@ public class MapGenerator extends Thread
 			{
 				try 
 				{
-					this.wait(10000);
+					this.wait(5000);
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();

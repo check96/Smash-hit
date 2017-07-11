@@ -2,7 +2,7 @@ package entity;
 
 public enum Weapons
 {
-	MACE(40,0), SWORD(60,200);
+	MACE(70,0), SWORD(60,200);
 	
 	public float damage;
 	public float price;

@@ -31,7 +31,7 @@ public class GameConfig
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
 	
-	public static final Vector3 SPEED = new Vector3(10,10,10); 
+	public static final Vector3 SPEED = new Vector3(20,20,20); 
 	public static boolean GAME_OVER = false;
 	public static Vector3 DIRECTION = new Vector3(90,0,90);
 	public static boolean RIGHT = false;
