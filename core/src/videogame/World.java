@@ -68,11 +68,13 @@ public class World
 		for (Wall wall : GameConfig.walls)
 		{
 			if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
+			{
 				if(GameConfig.player.collide(wall))
 				{
-//					System.out.println(wall.type);
+					System.out.println(wall.type+"   "+wall.getSize());
 					reaction(delta);
 				}
+			}
 		}
 	}
 
@@ -83,8 +85,8 @@ public class World
 		
 //    	System.out.println(i+"    "+j);
     	
-//		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
-//			checkWallCollision(delta);
+		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
+			checkWallCollision(delta);
 
 		if(map[i][j] instanceof Destroyable)
 		{

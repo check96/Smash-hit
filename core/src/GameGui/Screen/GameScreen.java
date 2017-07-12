@@ -36,6 +36,7 @@ public class GameScreen implements Screen
 	private Hud hud;
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
+	private boolean tornado = false;
 	
 	public GameScreen(GameManager _game)
 	{
@@ -110,11 +111,13 @@ public class GameScreen implements Screen
 		{
 			GameConfig.HIT = true;
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 		{
 			game.countdown.pause = true;
 			game.setScreen(new PauseScreen(game, this));
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
+			tornado = !tornado;
 	}
 		
 	public void render(float delta) 
@@ -132,7 +135,7 @@ public class GameScreen implements Screen
 		playerInstance.transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		cam.position.set(GameConfig.player.getPosition().cpy().add(0, 6.5f, 0));
+		cam.position.set(GameConfig.player.getPosition().cpy().add(-10, 6.5f, 0));
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;
@@ -217,10 +220,18 @@ public class GameScreen implements Screen
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if(!GameConfig.HIT && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		if((GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
-			playerController.animate("Armature|ArmatureAction",-1);
-			playerController.update(Gdx.graphics.getDeltaTime());
+			if(tornado)
+			{
+				playerController.setAnimation("Armature|bonus",-1);
+				playerController.update(Gdx.graphics.getDeltaTime());
+			}
+			else if(!GameConfig.HIT)
+			{
+				playerController.setAnimation("Armature|ArmatureAction",-1);
+				playerController.update(Gdx.graphics.getDeltaTime());
+			}
 		}
 
 		if(GameConfig.HIT)

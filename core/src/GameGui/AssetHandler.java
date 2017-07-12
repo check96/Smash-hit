@@ -24,8 +24,8 @@ import videogame.GameConfig;
 
 public class AssetHandler
 {
-	private String player = "player/player.g3db";		// scalato di 0.0015
-	private String door = "door/door.g3db";			// scalato di 0.005
+	private String player = "player/player.g3db";		// scalato di 0.02
+	private String door = "door/door.g3db";				// scalato di 0.005
 	private String desk = "desk/desk.g3db";				// scalato di 0.05       
 	private String chair = "chair/chair.g3db";			// scalato di 0.055
 	private String plant = "plant/plant.g3db";			// scalato di 0.01
