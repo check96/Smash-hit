@@ -205,7 +205,7 @@ public class GameScreen implements Screen
 		for(int i = destroyedController.size(); i < GameConfig.destroyed.size(); i++)
 		{
 			destroyedController.add(new AnimationController(GameConfig.destroyed.get(i)));
-			destroyedController.get(i).setAnimation("Armature|Armature|Armature|ArmatureAction|Armature|ArmatureAction");
+			destroyedController.get(i).setAnimation("Armature|ArmatureAction");
 		}
 	}
 
