@@ -26,8 +26,8 @@ public class AssetHandler
 {
 	private String player = "player/player.g3db";		// su blender scalato di 0.0015
 	private String door = "door/untitled.g3db";
-	private String desk = "desk/table.g3db";
-	private String chair = "chair/chair.g3db";
+	private String desk = "desk/table.g3db";			// scalato di 0.0025
+	private String chair = "chair/chair.g3db";		// scalato di 0.1
 	private String plant = "plant/plant.g3db";
 	private String printer = "printer/untitled.g3db";
 	private String locker = "drawer/drawer.g3db";

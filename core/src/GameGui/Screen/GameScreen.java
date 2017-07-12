@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
+import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
 
 import GameGui.GameManager;
 import GameGui.Hud;
@@ -65,14 +67,14 @@ public class GameScreen implements Screen
 
 	private void initCamera() 
 	{
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new PerspectiveCamera(67, GameConfig.Screen_Width, GameConfig.Screen_Height);
 		cam.position.set(GameConfig.player.getPosition());
 		cam.lookAt(GameConfig.DIRECTION);
 		cam.near = 1f;
 		cam.far = 1500f;
 		cam.direction.x += 0.4f;
 		cam.direction.y -= 0.5f;
-		cam.direction.z -= 0.6f;
+		cam.direction.z -= 0.9f;
 		cam.update();
 	}
 
@@ -123,6 +125,7 @@ public class GameScreen implements Screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		handleInput();
+		addAnimation();
 		handleAnimation();
 		world.update(delta);
 
@@ -197,6 +200,15 @@ public class GameScreen implements Screen
 		}
 	}
 
+	private void addAnimation()
+	{
+		for(int i = destroyedController.size(); i < GameConfig.destroyed.size(); i++)
+		{
+			destroyedController.add(new AnimationController(GameConfig.destroyed.get(i)));
+			destroyedController.get(i).setAnimation("Armature|Armature|Armature|ArmatureAction|Armature|ArmatureAction");
+		}
+	}
+
 	private void handleAnimation()
 	{
 		synchronized(GameConfig.toolsInstance)
@@ -206,7 +218,7 @@ public class GameScreen implements Screen
 		}
 		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)
 		{
-			playerController.setAnimation("Armature|ArmatureAction",-1);
+			playerController.animate("Armature|ArmatureAction",-1);
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 
@@ -216,20 +228,15 @@ public class GameScreen implements Screen
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		for(final ModelInstance instance : GameConfig.destroyed)
-			destroyedController.add(new AnimationController(instance));
-		
 		for (AnimationController controller : destroyedController)
-		{
-//			controller.setAnimation("Armature|ArmatureAction",-1);
 			controller.update(Gdx.graphics.getDeltaTime());
-		}
-
-		for(AnimationController controller : destroyedController)
-			if(!controller.inAction)
-				GameConfig.destroyed.remove(destroyedController.indexOf(controller));
-				
-		destroyedController.clear();
+	  
+//		for(AnimationController controller : destroyedController)
+//			if(!controller.inAction)
+//			{
+//				GameConfig.destroyed.remove(destroyedController.indexOf(controller));
+//				destroyedController.remove(controller); 
+//			}
 	}
 
 	public void dispose()
