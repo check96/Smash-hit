@@ -147,9 +147,9 @@ public class MapGenerator extends Thread
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z+1), deskMoney, Objects.DESK);
 								break;
 
-					case 2: 	float trashMoney = Math.abs((rand.nextInt()%7)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
-								break;
+//					case 2: 	float trashMoney = Math.abs((rand.nextInt()%7)) +1;
+//								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
+//								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), plantMoney, Objects.PLANT);
@@ -201,12 +201,12 @@ public class MapGenerator extends Thread
 				if(i==0 || i == GameConfig.newTools.length-1 || j == GameConfig.newTools.length-1)
 					r = Math.abs(rand.nextInt())%8;
 				
-				if(r == 1 || r == 2)
+				/*if(r == 1 || r == 2)
 				{
 					float trashMoney = Math.abs((rand.nextInt()%7)) +1;
 					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
 				}
-				else if(r == 3 || r == 4)
+				else*/ if(r == 3 || r == 4)
 				{
 					float plantMoney = Math.abs((rand.nextInt()%5)) +1;
 					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), plantMoney, Objects.PLANT);
@@ -239,8 +239,9 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
 		
 		// 	create door
-		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
-				-5, 2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
+		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
+				-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,
+				2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();

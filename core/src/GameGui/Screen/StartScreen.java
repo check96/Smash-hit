@@ -38,7 +38,6 @@ public class StartScreen implements Screen
     	game = _game;
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
-        GameConfig.menuSoundtrack.play();
         spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
@@ -109,6 +108,8 @@ public class StartScreen implements Screen
         table.row();
         table.add(options).expandX().padTop(10);
         stage.addActor(table);
+        
+        GameConfig.menuSoundtrack.play();
     }
  
     public void render(float delta)

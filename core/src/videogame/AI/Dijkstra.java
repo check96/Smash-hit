@@ -53,7 +53,6 @@ public class Dijkstra
     	List<Vertex> path = new ArrayList<Vertex>();
 
     	computePaths(start);
-    	
     	if(clock != null)
         {
     	
@@ -67,8 +66,8 @@ public class Dijkstra
 	        double player_clock = Math.sqrt(Math.pow((clock.x-end.x),2)+Math.pow((clock.y-end.y),2));
 	        double door_player = Math.sqrt(Math.pow((end.x-start.x),2)+Math.pow((end.y-start.y),2));
 	        
-	        if(door_clock + player_clock > door_player*1.5) 
-	        	path.clear();
+//	        if(door_clock + player_clock > door_player*3.5) 
+//	        	path.clear();
         }
     	
         for (Vertex vertex = end; vertex != null; vertex = vertex.previous)
@@ -104,7 +103,9 @@ public class Dijkstra
 						map[i][j] = 1 / GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getMoneyReward();
 					
 					if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].type == Objects.CLOCK)
-						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_HEIGHT);
+						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_HEIGHT)+1;
+						clockY = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getZ()-position)/GameConfig.CELL_WIDTH)+1;
+					
 				}
 			}
 	
@@ -139,7 +140,9 @@ public class Dijkstra
 			else if(v.x == endX && v.y == endY)
 				end = v;
 			else if(v.x == clockX && v.y == clockY)
-				clock = v;	
+				clock = v;
+			
+			System.out.println(clockX+"   "+clockY);
 		}
     }
     

@@ -169,8 +169,10 @@ public class GameScreen implements Screen
 	
 			// render next room's model instances
 			if(GameConfig.level > GameConfig.actualLevel+1 )
+			{
 				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
 					batch.render(mod, environment);
+			}
 		}
 		
 		for (final ModelInstance instance : GameConfig.destroyed)
@@ -209,7 +211,7 @@ public class GameScreen implements Screen
 
 	private void handleAnimation()
 	{
-		synchronized(GameConfig.toolsInstance)		//??????????
+		synchronized (game.mapGenerator.assets.clockAnimation)
 		{
 			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
 				clock.update(Gdx.graphics.getDeltaTime());

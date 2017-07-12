@@ -46,17 +46,21 @@ public class World
 		
 		GameConfig.HIT = false;
 		
-		synchronized (GameConfig.player)
-		{
-			if(GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
-				GameConfig.actualLevel++;
-		}		
 		checkGameOver();
 		
 		synchronized (GameConfig.tools)
 		{
 			GameConfig.tools.set(GameConfig.actualLevel-1,map);
 		}
+		
+		synchronized (GameConfig.tools)
+		{
+			if(GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+			{
+				GameConfig.tools.set(GameConfig.actualLevel-1, null); 
+				GameConfig.actualLevel++;
+			}
+		}		
 	}
 	
 	private void checkWallCollision(float delta)
@@ -77,8 +81,10 @@ public class World
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 		
-		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
-			checkWallCollision(delta);
+//    	System.out.println(i+"    "+j);
+    	
+//		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
+//			checkWallCollision(delta);
 
 		if(map[i][j] instanceof Destroyable)
 		{
@@ -156,7 +162,6 @@ public class World
 		
 			if(map[i][j].getHealth() == 0)
 			{
-				System.out.println(map[i][j].type);
 				if(map[i][j].type == Objects.CLOCK)
 					Countdown.increment(5);
 				
@@ -179,8 +184,7 @@ public class World
 					while(iterator.hasNext())
 					{
 						ModelInstance instance = iterator.next();
-						Vector3 position = new Vector3();
-						if(instance.transform.getTranslation(position).equals(objPosition))
+						if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
 						{
 							if(!clock)
 								GameConfig.destroyed.add(instance);

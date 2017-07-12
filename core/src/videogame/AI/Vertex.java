@@ -23,6 +23,7 @@ public class Vertex implements Comparable<Vertex>
     	this.x = x;
     	this.y = y;
     }
+    
     public String toString() { return ("(" + x + "," + y +") "); }
     
     public int compareTo(Vertex other)
