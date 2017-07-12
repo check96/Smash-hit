@@ -26,11 +26,11 @@ public class AssetHandler
 {
 	private String player = "player/player.g3db";		// su blender scalato di 0.0015
 	private String door = "door/untitled.g3db";
-	private String desk = "desk/desk.g3db";			// scalato di 0.05       
-	private String chair = "chair/chair.g3db";		// scalato di 0.055
-	private String plant = "plant/plant.g3db";
-	private String printer = "printer/untitled.g3db";	// scalato di 0.0025
-	private String locker = "drawer/drawer.g3db";
+	private String desk = "desk/desk.g3db";				// scalato di 0.05       
+	private String chair = "chair/chair.g3db";			// scalato di 0.055
+	private String plant = "plant/plant.g3db";			// scalato 0.01
+	private String printer = "trash/untitled.g3db";	// scalato di 0.0025
+	private String locker = "drawer/drawer.g3db";		// scalato di 0.055
 	private String clock = "clock/clock.g3db";
 
 	private Model ceiling;

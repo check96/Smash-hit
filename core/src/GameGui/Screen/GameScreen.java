@@ -209,13 +209,13 @@ public class GameScreen implements Screen
 
 	private void handleAnimation()
 	{
-		synchronized(GameConfig.toolsInstance)
+		synchronized(GameConfig.toolsInstance)		//??????????
 		{
 			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)
+		if(!GameConfig.HIT && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			playerController.animate("Armature|ArmatureAction",-1);
 			playerController.update(Gdx.graphics.getDeltaTime());
