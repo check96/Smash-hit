@@ -15,8 +15,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
 
 import GameGui.GameManager;
 import GameGui.Hud;
@@ -74,7 +72,7 @@ public class GameScreen implements Screen
 		cam.far = 1500f;
 		cam.direction.x += 0.4f;
 		cam.direction.y -= 0.5f;
-		cam.direction.z -= 0.9f;
+		cam.direction.z -= 0.4f;
 		cam.update();
 	}
 
@@ -121,7 +119,7 @@ public class GameScreen implements Screen
 		
 	public void render(float delta) 
 	{
-//		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
 		handleInput();
@@ -216,6 +214,7 @@ public class GameScreen implements Screen
 			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
+		
 		if(GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT)
 		{
 			playerController.animate("Armature|ArmatureAction",-1);
@@ -230,13 +229,6 @@ public class GameScreen implements Screen
 		
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
-	  
-//		for(AnimationController controller : destroyedController)
-//			if(!controller.inAction)
-//			{
-//				GameConfig.destroyed.remove(destroyedController.indexOf(controller));
-//				destroyedController.remove(controller); 
-//			}
 	}
 
 	public void dispose()

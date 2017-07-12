@@ -169,6 +169,11 @@ public class World
 				{
 					ListIterator<ModelInstance> iterator = GameConfig.toolsInstance.get(GameConfig.actualLevel-1).listIterator();
 					Vector3 objPosition = map[i][j].getPosition();
+					
+					boolean clock = false;
+					if(map[i][j].type == Objects.CLOCK)
+						clock = true;
+					
 					map[i][j] = null;
 	
 					while(iterator.hasNext())
@@ -177,7 +182,9 @@ public class World
 						Vector3 position = new Vector3();
 						if(instance.transform.getTranslation(position).equals(objPosition))
 						{
-							GameConfig.destroyed.add(instance);
+							if(!clock)
+								GameConfig.destroyed.add(instance);
+							
 							iterator.remove();
 							break;
 						}
@@ -185,7 +192,6 @@ public class World
 				}
 			}
     	}
-		
 	}
 	
 	private void checkGameOver()
