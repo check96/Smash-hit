@@ -49,7 +49,7 @@ public class toolsPanel extends JPanel implements ActionListener
 		image.add(loader.loadImage("/Icons/desk.png"));
 				
 		buttons.add(new JButton());
-		image.add(loader.loadImage("/Icons/printer.png"));
+		image.add(loader.loadImage("/Icons/trash.png"));
 		
 		buttons.add(new JButton());
 		image.add(loader.loadImage("/Icons/plant.png"));

@@ -29,8 +29,9 @@ public class LoadingScreen implements Screen
 	
 	public LoadingScreen(GameManager _game)
 	{
+		GameConfig.menuSoundtrack.stop();
+
 		game = _game;
-		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/background.png"));
         

@@ -121,7 +121,6 @@ public class StartScreen implements Screen
     	if(SINGLE_PLAYER)
     	{
     		SINGLE_PLAYER = false;
-    		GameConfig.menuSoundtrack.stop();
     		game.setScreen(new LoadingScreen(game));
     	}
     	else if(MULTIPLAYER)

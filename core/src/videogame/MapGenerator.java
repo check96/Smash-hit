@@ -147,8 +147,8 @@ public class MapGenerator extends Thread
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z+1), deskMoney, Objects.DESK);
 								break;
 
-					case 2: 	float printerMoney = Math.abs((rand.nextInt()%7)) +1;
-								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), printerMoney, Objects.PRINTER);
+					case 2: 	float trashMoney = Math.abs((rand.nextInt()%7)) +1;
+								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
 								break;
 					
 					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
@@ -203,8 +203,8 @@ public class MapGenerator extends Thread
 				
 				if(r == 1 || r == 2)
 				{
-					float printerMoney = Math.abs((rand.nextInt()%7)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), printerMoney, Objects.PRINTER);
+					float trashMoney = Math.abs((rand.nextInt()%7)) +1;
+					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
 				}
 				else if(r == 3 || r == 4)
 				{

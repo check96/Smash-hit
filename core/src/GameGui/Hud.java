@@ -82,9 +82,9 @@ public class Hud implements Disposable
         Table table = new Table();
         table.bottom();
         
-        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("weaponsImage/mace.jpg")))));
+//        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("weaponsImage/mace.jpg")))));
         
-        table.add(bonus).expandX();
+//        table.add(bonus).expandX();
         
         //add our table to the stage
         stage.addActor(labelTable);

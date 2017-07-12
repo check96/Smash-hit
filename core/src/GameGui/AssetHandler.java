@@ -29,7 +29,7 @@ public class AssetHandler
 	private String desk = "desk/desk.g3db";				// scalato di 0.05       
 	private String chair = "chair/chair.g3db";			// scalato di 0.055
 	private String plant = "plant/plant.g3db";			// scalato 0.01
-	private String printer = "trash/untitled.g3db";	// scalato di 0.0025
+	private String trash = "trash/untitled.g3db";	// scalato di 0.0025
 	private String locker = "drawer/drawer.g3db";		// scalato di 0.055
 	private String clock = "clock/clock.g3db";
 
@@ -86,7 +86,7 @@ public class AssetHandler
 		manager.load(desk, Model.class);
 		manager.load(plant, Model.class);
 		manager.load(locker, Model.class);
-		manager.load(printer, Model.class);
+		manager.load(trash, Model.class);
 		manager.finishLoading();
 	}
 	
@@ -138,7 +138,7 @@ public class AssetHandler
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;
 										
-						case PRINTER:	modInst = new ModelInstance(manager.get(printer, Model.class));
+						case TRASH:	modInst = new ModelInstance(manager.get(trash, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;
 										
