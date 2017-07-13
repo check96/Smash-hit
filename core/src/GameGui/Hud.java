@@ -35,7 +35,7 @@ public class Hud implements Disposable
     private Label countdownLabel;
     private Label coinsLabel;
 
-    private Button bonus;
+    private ImageButton bonus;
     
     public Hud()
     {
@@ -82,13 +82,13 @@ public class Hud implements Disposable
         Table table = new Table();
         table.bottom();
         
-//        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("weaponsImage/mace.jpg")))));
+        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/hit.png")))));
         
-//        table.add(bonus).expandX();
+        table.add(bonus).expandX();
         
         //add our table to the stage
         stage.addActor(labelTable);
-//        stage.addActor(table);
+        stage.addActor(table);
     }
 
     public synchronized void update(float dt)
@@ -98,6 +98,9 @@ public class Hud implements Disposable
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));
     	coinsLabel.setText((String.format("%01d", GameConfig.COINS)));
+    	
+    	// update bonus box
+   		bonus.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"))));
     }
 
     @Override

@@ -23,6 +23,7 @@ public class GameConfig
 	public static Music gameSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Atlas_rise.ogg"));
 	public static Music menuSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Given_up.ogg"));
 	// sound massimo un mega
+	
 	public static int SCORE = 0;
 	public static int COINS = 0;
 	public static int actualLevel = 1;
@@ -30,10 +31,12 @@ public class GameConfig
 
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
-	
-	public static final Vector3 SPEED = new Vector3(20,20,20); 
-	public static boolean GAME_OVER = false;
+
+	public static final float GRAVITY = 9.81f;
 	public static Vector3 DIRECTION = new Vector3(90,0,90);
+	public static String STATE = "hit";
+	
+	public static boolean GAME_OVER = false;
 	public static boolean RIGHT = false;
 	public static boolean LEFT  = false;
 	public static boolean ON    = false;
@@ -45,6 +48,7 @@ public class GameConfig
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
 	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
+	public static ArrayList<ModelInstance> coins = new ArrayList<ModelInstance>();
 	
 	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();

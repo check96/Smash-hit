@@ -6,6 +6,7 @@ import videogame.GameConfig;
 public class Player extends AbstractGameObject
 {	
 	private Weapon weapon;
+	private Vector3 velocity = new Vector3(20,20,20);
 	
 	public Player (Vector3 _position, float radius)
 	{
@@ -20,7 +21,7 @@ public class Player extends AbstractGameObject
 	
 	public void move(float delta)
 	{			
-		Vector3 speed = new Vector3(GameConfig.SPEED.x*GameConfig.DIRECTION.x,GameConfig.SPEED.y*GameConfig.DIRECTION.y,GameConfig.SPEED.z*GameConfig.DIRECTION.z);
+		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
 		
 		if(GameConfig.RIGHT)
 		{

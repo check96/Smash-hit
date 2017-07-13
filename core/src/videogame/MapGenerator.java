@@ -147,19 +147,15 @@ public class MapGenerator extends Thread
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-1, -5, z+1), deskMoney, Objects.DESK);
 								break;
 
-//					case 2: 	float trashMoney = Math.abs((rand.nextInt()%7)) +1;
-//								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
-//								break;
-					
-					case 3:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
+					case 2:		float plantMoney = Math.abs((rand.nextInt()%5)) +1;
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), plantMoney, Objects.PLANT);
 								break;
 					
-					case 4:		float lockerMoney = Math.abs((rand.nextInt()%6)) +1;
+					case 3:		float lockerMoney = Math.abs((rand.nextInt()%6)) +1;
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), lockerMoney, Objects.LOCKER);
 								break;
 					
-					case 5:		float chairMoney = Math.abs(rand.nextInt()%2) +1;
+					case 4:		float chairMoney = Math.abs(rand.nextInt()%2) +1;
 								GameConfig.newTools[i][j] = new Destroyable(new Vector3(x-2, -5, z), chairMoney, Objects.CHAIR);
 								break; 
 					
@@ -199,19 +195,13 @@ public class MapGenerator extends Thread
 				// create printer, plant and locker on the sides
 				int r = 0;
 				if(i==0 || i == GameConfig.newTools.length-1 || j == GameConfig.newTools.length-1)
-					r = Math.abs(rand.nextInt())%8;
-				
-				/*if(r == 1 || r == 2)
-				{
-					float trashMoney = Math.abs((rand.nextInt()%7)) +1;
-					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x , -5, z+2), trashMoney, Objects.TRASH);
-				}
-				else*/ if(r == 3 || r == 4)
+					r = Math.abs(rand.nextInt())%6;
+				if(r == 1 || r == 2)
 				{
 					float plantMoney = Math.abs((rand.nextInt()%5)) +1;
 					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), plantMoney, Objects.PLANT);
 				}
-				else if (r == 5 || r ==6)	
+				else if (r == 3 || r == 4)	
 				{
 					float lockerMoney = Math.abs((rand.nextInt()%6)) +1;
 					GameConfig.newTools[i][j] = new Destroyable(new Vector3(x, -5, z), lockerMoney, Objects.LOCKER);			

@@ -5,6 +5,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
+import GameGui.Deleter;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Player;
@@ -12,10 +13,12 @@ import entity.Wall;
 import entity.Walls;
 import entity.Weapon;
 import entity.Weapons;
+import videogame.bonus.Bomb;
 
 public class World 
 {
 	private Destroyable[][] map;
+	private Bomb bomb;
 	
 	public World()
 	{ 
@@ -24,6 +27,8 @@ public class World
 		GameConfig.player.setWeapon(weapon);
 	}
 
+	public final Bomb getBomb()	{return bomb;}
+	
 	public void update(float delta)
 	{		
 		synchronized (GameConfig.tools)
@@ -39,13 +44,39 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		if(GameConfig.HIT)
+		if(GameConfig.STATE == "bomb")
 		{
-			hit(delta);
+			if(!(bomb instanceof Bomb))
+				bomb = new Bomb();
+		}
+		
+		if(GameConfig.HIT) 
+		{
+			if( GameConfig.STATE == "hit")
+				 hit(delta);
+			else if(GameConfig.STATE == "bomb" && !bomb.inAction())
+				bomb.shoot();
+		}
+		
+		if(bomb instanceof Bomb)
+		{
+			bomb.manageBomb(delta);
+			
+			if(!bomb.inAction() && bomb.shooted())
+			{
+				int	x = (int) ((bomb.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
+		    	int	y = (int) ((bomb.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+		    	for(int i = x-1; i <= x+1; i++)
+		    		for(int j = y-1; j <= y+1; j++)
+		    		{
+		    			if(map[i][j] != null)
+		    				delete(i,j);		
+		    		}
+				bomb = null;
+			}
 		}
 		
 		GameConfig.HIT = false;
-		
 		checkGameOver();
 		
 		synchronized (GameConfig.tools)
@@ -71,7 +102,7 @@ public class World
 			{
 				if(GameConfig.player.collide(wall))
 				{
-					System.out.println(wall.type+"   "+wall.getSize());
+//					System.out.println(wall.type+"   "+wall.getSize());
 					reaction(delta);
 				}
 			}
@@ -136,6 +167,16 @@ public class World
 		}
 	}
 
+	private void delete(int i, int j)
+	{
+			boolean clock = false;
+			if(map[i][j].type == Objects.CLOCK)
+				clock = true;
+			
+			Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
+			map[i][j] = null;
+	}
+	
 	private void hit(float delta)
 	{
 		GameConfig.ON = true;
@@ -172,30 +213,7 @@ public class World
 				GameConfig.COINS += map[i][j].getMoneyReward();
 				
 				//remove tools and toolsInstance
-				synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
-				{
-					ListIterator<ModelInstance> iterator = GameConfig.toolsInstance.get(GameConfig.actualLevel-1).listIterator();
-					Vector3 objPosition = map[i][j].getPosition();
-					
-					boolean clock = false;
-					if(map[i][j].type == Objects.CLOCK)
-						clock = true;
-					
-					map[i][j] = null;
-	
-					while(iterator.hasNext())
-					{
-						ModelInstance instance = iterator.next();
-						if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
-						{
-							if(!clock)
-								GameConfig.destroyed.add(instance);
-							
-							iterator.remove();
-							break;
-						}
-					}
-				}
+				delete(i,j);
 			}
     	}
 	}

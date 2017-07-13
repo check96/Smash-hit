@@ -19,8 +19,10 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import GameGui.GameManager;
 import GameGui.Hud;
 import videogame.AI.Dijkstra;
+import videogame.Countdown;
 import videogame.GameConfig;
 import videogame.AI.Vertex;
+import videogame.bonus.Bomb;
 import videogame.World;
 
 public class GameScreen implements Screen 
@@ -29,6 +31,7 @@ public class GameScreen implements Screen
 	private Camera cam;
 	private ModelBatch batch;
 	public static ModelInstance playerInstance;
+	public ModelInstance bombInstance;
 	private ArrayList<ModelInstance> hints;
 	private Environment environment;
 	private World world;
@@ -36,11 +39,17 @@ public class GameScreen implements Screen
 	private Hud hud;
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
-	private boolean tornado = false;
+	private ArrayList<AnimationController> coinController;
+	private int stateIndex = 0;
+	private String[] state = new String[3];
 	
 	public GameScreen(GameManager _game)
 	{
 		game = _game;
+		
+		state[0] = "hit";
+		state[1] = "bomb";
+		state[2] = "tornado";
 		
 		GameConfig.gameSoundtrack.play();
 		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
@@ -53,6 +62,8 @@ public class GameScreen implements Screen
 		initEnvironment();
 		initAnimation();
 		
+		bombInstance = new ModelInstance(game.mapGenerator.assets.bomb);
+		
 		game.countdown.pause = false;
 		hud = new Hud();
 	}
@@ -60,6 +71,8 @@ public class GameScreen implements Screen
 	private void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
+		coinController = new ArrayList<AnimationController>();
+		
 		playerController = new AnimationController(playerInstance);
 		playerController.setAnimation("Armature|ArmatureAction",-1);
 	}
@@ -116,8 +129,13 @@ public class GameScreen implements Screen
 			game.countdown.pause = true;
 			game.setScreen(new PauseScreen(game, this));
 		}
-		if(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT))
-			tornado = !tornado;
+		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT))
+		{
+			stateIndex++;
+			stateIndex %= 3;
+			
+			GameConfig.STATE = state[stateIndex];
+		}
 	}
 		
 	public void render(float delta) 
@@ -135,7 +153,7 @@ public class GameScreen implements Screen
 		playerInstance.transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		cam.position.set(GameConfig.player.getPosition().cpy().add(-10, 6.5f, 0));
+		cam.position.set(GameConfig.player.getPosition().cpy().add(0,6.5f,0));
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;
@@ -164,6 +182,13 @@ public class GameScreen implements Screen
 				batch.render(wall, environment);
 		}
 		
+		if(world.getBomb() instanceof Bomb)
+		{
+			System.out.println("bomb");
+			bombInstance.transform.setToTranslation(world.getBomb().getPosition());
+			batch.render(bombInstance, environment);
+		}
+		
 		// render tools instance
 		synchronized (GameConfig.toolsInstance)
 		{
@@ -171,14 +196,19 @@ public class GameScreen implements Screen
 				batch.render(mod, environment);
 	
 			// render next room's model instances
-			if(GameConfig.level > GameConfig.actualLevel+1 )
-			{
-				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
-					batch.render(mod, environment);
-			}
+//			if(GameConfig.level > GameConfig.actualLevel+1 )
+//			{
+//				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
+//					batch.render(mod, environment);
+//			}
 		}
 		
+		// render destroyed tools
 		for (final ModelInstance instance : GameConfig.destroyed)
+			batch.render(instance, environment);
+		
+		// render coins
+		for (final ModelInstance instance : GameConfig.coins)
 			batch.render(instance, environment);
 		
 		batch.end();
@@ -187,7 +217,7 @@ public class GameScreen implements Screen
 		hud.update(delta);
 		hud.stage.act();
 		hud.stage.draw();
-		
+	
 		if(GameConfig.GAME_OVER)
 		{
 			synchronized (game.countdown)
@@ -210,6 +240,12 @@ public class GameScreen implements Screen
 			destroyedController.add(new AnimationController(GameConfig.destroyed.get(i)));
 			destroyedController.get(i).setAnimation("Armature|ArmatureAction");
 		}
+		
+		for(int i = coinController.size(); i < GameConfig.coins.size(); i++)
+		{
+			coinController.add(new AnimationController(GameConfig.coins.get(i)));
+			coinController.get(i).setAnimation("Armature|ArmatureAction");
+		}
 	}
 
 	private void handleAnimation()
@@ -220,14 +256,16 @@ public class GameScreen implements Screen
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
+		if(state[stateIndex] == "tornado")
+		{
+			playerController.setAnimation("Armature|bonus",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
+		}
+		
 		if((GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
-			if(tornado)
-			{
-				playerController.setAnimation("Armature|bonus",-1);
-				playerController.update(Gdx.graphics.getDeltaTime());
-			}
-			else if(!GameConfig.HIT)
+			
+			if(state[stateIndex] != "tornado")
 			{
 				playerController.setAnimation("Armature|ArmatureAction",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
@@ -236,12 +274,28 @@ public class GameScreen implements Screen
 
 		if(GameConfig.HIT)
 		{
-			playerController.setAnimation("Armature|hit",-1);
-			playerController.update(Gdx.graphics.getDeltaTime());
+			if(state[stateIndex] != "tornado")
+			{
+				playerController.setAnimation("Armature|"+state[stateIndex],-1);
+				playerController.update(Gdx.graphics.getDeltaTime());
+			}
 		}
 		
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
+		
+		for (AnimationController Controller : coinController)
+			Controller.update(Gdx.graphics.getDeltaTime());
+		
+		if(Countdown.getTime() %5 == 0)
+		{
+			destroyedController.clear();
+			GameConfig.destroyed.clear();
+			
+			coinController.clear();
+			GameConfig.coins.clear();
+		}
+		
 	}
 
 	public void dispose()

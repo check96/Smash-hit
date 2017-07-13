@@ -24,24 +24,26 @@ import videogame.GameConfig;
 
 public class AssetHandler
 {
-	private String player = "player/player.g3db";		// scalato di 0.02
+	private String player = "player/player.g3db";		// scalato di 0.0095
 	private String door = "door/door.g3db";				// scalato di 0.005
 	private String desk = "desk/desk.g3db";				// scalato di 0.05       
 	private String chair = "chair/chair.g3db";			// scalato di 0.055
 	private String plant = "plant/plant.g3db";			// scalato di 0.01
-//	private String trash = "trash/untitled.g3db";		// scalato di 0.0025
 	private String locker = "drawer/drawer.g3db";		// scalato di 0.055
 	private String clock = "clock/clock.g3db";
-
+	private String coin = "coin/coin.g3db"; 
+			
 	private Model ceiling;
 	private Model wallModel;
-
-	public Model grid;
-	public  Model help;
-	private  Model floorModel;
+	private Model floorModel;
 	private Material wall;
-	public ArrayList<AnimationController> clockAnimation;
 	
+	public static Model coinModel;
+	public Model bomb;
+	public Model grid;
+	public Model help;
+
+	public ArrayList<AnimationController> clockAnimation;
 	public AssetManager manager;
 	private ModelBuilder modelBuilder;
 	
@@ -66,19 +68,23 @@ public class AssetHandler
 		Material floor = new Material();
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
 
-		floorModel = createPlaneModel(GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT +10, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);                        
+		floorModel = createPlaneModel(GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT +10, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);
 	}
 	
 	// load models
-	public void load()
+	public void loadModels()
 	{	
 		loadWalls();
+
 		help = modelBuilder.createCylinder(GameConfig.CELL_HEIGHT*0.9f, 0.1f, GameConfig.CELL_WIDTH*0.9f, 10, new Material(ColorAttribute.createDiffuse(Color.GREEN)),
 				Usage.Position | Usage.Normal);
 		
-		grid = modelBuilder.createLineGrid(GameConfig.ROOM_ROW,GameConfig.ROOM_COLUMN, GameConfig.CELL_HEIGHT, GameConfig.CELL_WIDTH, new Material(ColorAttribute.createDiffuse(Color.WHITE)),
-				Usage.Position | Usage.Normal);
+		grid = modelBuilder.createLineGrid(GameConfig.ROOM_ROW,GameConfig.ROOM_COLUMN, GameConfig.CELL_HEIGHT, GameConfig.CELL_WIDTH,
+				new Material(ColorAttribute.createDiffuse(Color.WHITE)), Usage.Position | Usage.Normal);
 
+		bomb = modelBuilder.createSphere(0.6f,0.6f,0.6f,100,100, new Material(ColorAttribute.createDiffuse(Color.BLACK)),
+				Usage.Position | Usage.Normal);
+		
 		manager.load(player, Model.class);
 		manager.load(chair, Model.class);
 		manager.load(clock, Model.class);
@@ -86,8 +92,10 @@ public class AssetHandler
 		manager.load(desk, Model.class);
 		manager.load(plant, Model.class);
 		manager.load(locker, Model.class);
-//		manager.load(trash, Model.class);
-		manager.finishLoading();
+		manager.load(coin, Model.class);
+		manager.finishLoading();		
+		
+		coinModel = manager.get(coin, Model.class);
 	}
 	
 	private Model createPlaneModel(final float width, final float height, final Material material, final float u1,
@@ -135,11 +143,7 @@ public class AssetHandler
 						case PLANT:		modInst = new ModelInstance(manager.get(plant, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;
-										
-//						case TRASH:		modInst = new ModelInstance(manager.get(trash, Model.class));
-//										modInst.transform.setToTranslation(obj.getPosition());
-//										break;
-										
+
 						case LOCKER:	modInst = new ModelInstance(manager.get(locker, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;
