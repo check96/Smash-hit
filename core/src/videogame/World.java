@@ -1,8 +1,5 @@
 package videogame;
 
-import java.util.ListIterator;
-
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 import GameGui.Deleter;
@@ -14,6 +11,7 @@ import entity.Walls;
 import entity.Weapon;
 import entity.Weapons;
 import videogame.bonus.Bomb;
+import videogame.bonus.Tornado;
 
 public class World 
 {
@@ -50,6 +48,12 @@ public class World
 				bomb = new Bomb();
 		}
 		
+		if(GameConfig.STATE == "tornado")
+		{
+			Tornado.check();
+			hit(delta);
+		}
+		
 		if(GameConfig.HIT) 
 		{
 			if( GameConfig.STATE == "hit")
@@ -66,11 +70,15 @@ public class World
 			{
 				int	x = (int) ((bomb.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
 		    	int	y = (int) ((bomb.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+		    	
 		    	for(int i = x-1; i <= x+1; i++)
 		    		for(int j = y-1; j <= y+1; j++)
 		    		{
-		    			if(map[i][j] != null)
-		    				delete(i,j);		
+		    			if(i >= 0 && j >= 0 && j<GameConfig.ROOM_COLUMN && i<GameConfig.ROOM_ROW)
+		    			{
+		    				if(map[i][j] != null)
+		    					delete(i,j);		
+		    			}
 		    		}
 				bomb = null;
 			}
@@ -96,14 +104,17 @@ public class World
 	
 	private void checkWallCollision(float delta)
 	{
-		for (Wall wall : GameConfig.walls)
+		synchronized (GameConfig.walls)
 		{
-			if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
+			for (Wall wall : GameConfig.walls)
 			{
-				if(GameConfig.player.collide(wall))
+				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
 				{
+					if(GameConfig.player.collide(wall))
+					{
 //					System.out.println(wall.type+"   "+wall.getSize());
-					reaction(delta);
+						reaction(delta);
+					}
 				}
 			}
 		}
@@ -169,12 +180,16 @@ public class World
 
 	private void delete(int i, int j)
 	{
-			boolean clock = false;
-			if(map[i][j].type == Objects.CLOCK)
-				clock = true;
-			
-			Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
-			map[i][j] = null;
+		// add score and coins
+		GameConfig.SCORE += map[i][j].type.score;
+		GameConfig.COINS += map[i][j].getMoneyReward();
+		
+		boolean clock = false;
+		if(map[i][j].type == Objects.CLOCK)
+			clock = true;
+		
+		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
+		map[i][j] = null;
 	}
 	
 	private void hit(float delta)
@@ -207,10 +222,6 @@ public class World
 			{
 				if(map[i][j].type == Objects.CLOCK)
 					Countdown.increment(5);
-				
-				// add score and coins
-				GameConfig.SCORE += map[i][j].type.score;
-				GameConfig.COINS += map[i][j].getMoneyReward();
 				
 				//remove tools and toolsInstance
 				delete(i,j);

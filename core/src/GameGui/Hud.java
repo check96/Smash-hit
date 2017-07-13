@@ -97,7 +97,7 @@ public class Hud implements Disposable
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));
-    	coinsLabel.setText((String.format("%01d", GameConfig.COINS)));
+    	coinsLabel.setText(String.format("%01d", GameConfig.COINS));
     	
     	// update bonus box
    		bonus.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"))));

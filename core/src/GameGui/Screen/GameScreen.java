@@ -40,7 +40,6 @@ public class GameScreen implements Screen
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
 	private ArrayList<AnimationController> coinController;
-	private int stateIndex = 0;
 	private String[] state = new String[3];
 	
 	public GameScreen(GameManager _game)
@@ -131,10 +130,10 @@ public class GameScreen implements Screen
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT))
 		{
-			stateIndex++;
-			stateIndex %= 3;
+			GameConfig.stateIndex++;
+			GameConfig.stateIndex %= 3;
 			
-			GameConfig.STATE = state[stateIndex];
+			GameConfig.STATE = state[GameConfig.stateIndex];
 		}
 	}
 		
@@ -182,11 +181,13 @@ public class GameScreen implements Screen
 				batch.render(wall, environment);
 		}
 		
-		if(world.getBomb() instanceof Bomb)
+		if(world.getBomb() instanceof Bomb )
 		{
-			System.out.println("bomb");
-			bombInstance.transform.setToTranslation(world.getBomb().getPosition());
-			batch.render(bombInstance, environment);
+			if(world.getBomb().shooted())
+			{
+				bombInstance.transform.setToTranslation(world.getBomb().getPosition());
+				batch.render(bombInstance, environment);
+			}
 		}
 		
 		// render tools instance
@@ -256,7 +257,7 @@ public class GameScreen implements Screen
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if(state[stateIndex] == "tornado")
+		if(state[GameConfig.stateIndex] == "tornado")
 		{
 			playerController.setAnimation("Armature|bonus",-1);
 			playerController.update(Gdx.graphics.getDeltaTime());
@@ -264,8 +265,7 @@ public class GameScreen implements Screen
 		
 		if((GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
-			
-			if(state[stateIndex] != "tornado")
+			if(state[GameConfig.stateIndex] != "tornado")
 			{
 				playerController.setAnimation("Armature|ArmatureAction",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
@@ -274,9 +274,9 @@ public class GameScreen implements Screen
 
 		if(GameConfig.HIT)
 		{
-			if(state[stateIndex] != "tornado")
+			if(state[GameConfig.stateIndex] != "tornado")
 			{
-				playerController.setAnimation("Armature|"+state[stateIndex],-1);
+				playerController.setAnimation("Armature|"+state[GameConfig.stateIndex],-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 		}
@@ -287,7 +287,7 @@ public class GameScreen implements Screen
 		for (AnimationController Controller : coinController)
 			Controller.update(Gdx.graphics.getDeltaTime());
 		
-		if(Countdown.getTime() %5 == 0)
+		if(Countdown.getTime() %10 == 0)
 		{
 			destroyedController.clear();
 			GameConfig.destroyed.clear();

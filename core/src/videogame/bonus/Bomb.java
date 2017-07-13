@@ -8,7 +8,7 @@ import videogame.GameConfig;
 
 public class Bomb extends AbstractGameObject 
 {	
-	private Vector3 velocity = new Vector3(20,1, 5);
+	private Vector3 velocity = new Vector3(20,1,20);
 	private Vector3 speed;
 	private Vector3 direction;
 	private boolean active = false;
@@ -52,10 +52,9 @@ public class Bomb extends AbstractGameObject
 	{
 		Position.x += speed.x * delta;
 		Position.y += speed.y * delta  - (GameConfig.GRAVITY*delta*delta);
-			
+		Position.z += speed.z * delta;
+				
 		speed.y -= GameConfig.GRAVITY * delta;
-		
-		System.out.println("x: "+Position.x+ "   y: "+Position.y); 
 	}
 
 	public void shoot()

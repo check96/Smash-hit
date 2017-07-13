@@ -14,7 +14,7 @@ public class Weapon extends AbstractGameObject
 		this.damage = type.damage;
 	}
 	
-	public final double getDamage() {return damage;}
+	public final float getDamage() {return damage;}
 	public void setDamage(float _damage)	{ this.damage = _damage;}
 		
 	public void move(Player player)

@@ -35,6 +35,7 @@ public class GameConfig
 	public static final float GRAVITY = 9.81f;
 	public static Vector3 DIRECTION = new Vector3(90,0,90);
 	public static String STATE = "hit";
+	public static int stateIndex = 0;
 	
 	public static boolean GAME_OVER = false;
 	public static boolean RIGHT = false;
