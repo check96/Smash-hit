@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -34,7 +33,8 @@ public class Hud implements Disposable
     private Label pointsLabel;
     private Label countdownLabel;
     private Label coinsLabel;
-
+    private Label bombLabel;
+    
     private ImageButton bonus;
     
     public Hud()
@@ -80,24 +80,32 @@ public class Hud implements Disposable
         labelTable.add(coinsLabel).expandX();
         
         Table table = new Table();
-        table.bottom();
+        table.center();
+        
+        parameter.size = 25;
+    	BitmapFont font2 = generator.generateFont(parameter);
         
         bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/hit.png")))));
+        bombLabel = new Label(String.format("x"+"%01d", GameConfig.numBomb), new Label.LabelStyle(font2, color));
         
         table.add(bonus).expandX();
+        table.add(bombLabel);
         
-        //add our table to the stage
+        //add tables to the stage
         stage.addActor(labelTable);
         stage.addActor(table);
     }
 
-    public synchronized void update(float dt)
+    public synchronized void update()
     {
     	// update labels
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));
     	coinsLabel.setText(String.format("%01d", GameConfig.COINS));
+    	
+    	if(GameConfig.STATE == "bomb")
+    		bombLabel.setText(String.format("%01d", GameConfig.numBomb));
     	
     	// update bonus box
    		bonus.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"))));

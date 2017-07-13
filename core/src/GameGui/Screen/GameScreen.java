@@ -215,7 +215,7 @@ public class GameScreen implements Screen
 		batch.end();
 
 		// update and render hud
-		hud.update(delta);
+		hud.update();
 		hud.stage.act();
 		hud.stage.draw();
 	
