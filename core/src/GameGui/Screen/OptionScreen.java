@@ -109,7 +109,7 @@ public class OptionScreen implements Screen
 	            return true;
             }
         });
-		back.setSize(300,100);
+		back.setSize(200,80);
         back.setPosition(Gdx.graphics.getWidth()/3.5f, 100);
         
 		table.add(musicLabel).expandX();

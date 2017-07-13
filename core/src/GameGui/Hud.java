@@ -23,7 +23,6 @@ public class Hud implements Disposable
     public Stage stage;
    
     //Scene2D widgets
-    
     private Label roomLabel;
     private Label scoreLabel;
     private Label timeLabel;
@@ -35,12 +34,15 @@ public class Hud implements Disposable
     private Label coinsLabel;
     private Label bombLabel;
     
-    private ImageButton bonus;
+    private SpriteBatch spriteBatch;
+    private Texture bonus;
+    private Texture coin;
     
     public Hud()
     {
     	stage = new Stage(new FitViewport(800, 600), new SpriteBatch());
-
+    	spriteBatch = new SpriteBatch();
+    	
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
@@ -48,10 +50,9 @@ public class Hud implements Disposable
     	BitmapFont font = generator.generateFont(parameter);
     	
         //define a table used to organize our hud's label
-    	
-    	Table labelTable = new Table();
-    	labelTable.top();
-    	labelTable.setFillParent(true);
+    	Table table = new Table();
+    	table.top();
+    	table.setFillParent(true);
         
         Color color = Color.BLACK;
         		
@@ -66,34 +67,34 @@ public class Hud implements Disposable
         levelLabel = new Label("1", new Label.LabelStyle(font, color));
         coinsLabel = new Label("0", new Label.LabelStyle(font, color));
         
+        coin = new Texture(Gdx.files.internal("Icons/coin.png"));
+
         //add our labels to our table, padding the top, and giving them all equal width with expandX
-        labelTable.add(roomLabel).expandX().padTop(10);
-        labelTable.add(scoreLabel).expandX().padTop(10);
-        labelTable.add(timeLabel).expandX().padTop(10);
-        labelTable.add(moneyLabel).expandX().padTop(10);
+        table.add(roomLabel).expandX().padTop(10);
+        table.add(scoreLabel).expandX().padTop(10);
+        table.add(timeLabel).expandX().padTop(10);
+        table.add(moneyLabel).expandX().padTop(10);
        
         //add a second row to our table
-        labelTable.row();
-        labelTable.add(levelLabel).expandX();
-        labelTable.add(pointsLabel).expandX();
-        labelTable.add(countdownLabel).expandX();
-        labelTable.add(coinsLabel).expandX();
-        
-        Table table = new Table();
-        table.center();
+        table.row();
+        table.add(levelLabel).expandX();
+        table.add(pointsLabel).expandX();
+        table.add(countdownLabel).expandX();
+        table.add(coinsLabel).expandX();
         
         parameter.size = 25;
     	BitmapFont font2 = generator.generateFont(parameter);
         
-        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/hit.png")))));
-        bombLabel = new Label(String.format("x"+"%01d", GameConfig.numBomb), new Label.LabelStyle(font2, color));
-        
-        table.add(bonus).expandX();
-        table.add(bombLabel);
+//        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/hit.png")))));
+      
+    	bombLabel = new Label(String.format("%01d", GameConfig.numBomb), new Label.LabelStyle(font2, Color.WHITE));
+        bombLabel.setSize(2,2);
+        bombLabel.setPosition(45,25);
+        bombLabel.setVisible(false);
         
         //add tables to the stage
-        stage.addActor(labelTable);
         stage.addActor(table);
+    	stage.addActor(bombLabel);
     }
 
     public synchronized void update()
@@ -105,10 +106,20 @@ public class Hud implements Disposable
     	coinsLabel.setText(String.format("%01d", GameConfig.COINS));
     	
     	if(GameConfig.STATE == "bomb")
+    	{
     		bombLabel.setText(String.format("%01d", GameConfig.numBomb));
+    		bombLabel.setVisible(true);
+    	}
+    	else
+    		bombLabel.setVisible(false);
     	
     	// update bonus box
-   		bonus.getStyle().imageUp = new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"))));
+   		bonus = new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"));
+   		
+    	spriteBatch.begin();
+        spriteBatch.draw(bonus, 5,5);
+        spriteBatch.draw(coin, GameConfig.Screen_Width*0.9f, GameConfig.Screen_Height*0.874f);
+        spriteBatch.end();
     }
 
     @Override

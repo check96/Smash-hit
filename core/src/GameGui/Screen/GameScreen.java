@@ -152,7 +152,7 @@ public class GameScreen implements Screen
 		playerInstance.transform.rotate(0,1,0,degrees);
 		
 		// camera update
-		cam.position.set(GameConfig.player.getPosition().cpy().add(0,6.5f,0));
+		cam.position.set(GameConfig.player.getPosition().cpy().add(0,7,0));
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;
@@ -263,7 +263,7 @@ public class GameScreen implements Screen
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if((GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		if(!GameConfig.HIT && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			if(state[GameConfig.stateIndex] != "tornado")
 			{

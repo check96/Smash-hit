@@ -44,7 +44,7 @@ public class World
 		
 		if(GameConfig.STATE == "bomb")
 		{
-			if(!(bomb instanceof Bomb))
+			if(!(bomb instanceof Bomb) && GameConfig.numBomb > 0)
 				bomb = new Bomb();
 		}
 		
@@ -58,10 +58,13 @@ public class World
 		{
 			if( GameConfig.STATE == "hit")
 				 hit(delta);
-			else if(GameConfig.STATE == "bomb" && !bomb.inAction())
+			else if(GameConfig.STATE == "bomb" && GameConfig.numBomb > 0)
 			{
-				bomb.shoot();
-				GameConfig.numBomb--;
+				if(!bomb.inAction())
+				{
+					bomb.shoot();
+					GameConfig.numBomb--;
+				}
 			}
 		}
 		
