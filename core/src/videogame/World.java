@@ -42,6 +42,28 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
+		bombManager(delta);
+				
+		GameConfig.HIT = false;
+		checkGameOver();
+		
+		synchronized (GameConfig.tools)
+		{
+			GameConfig.tools.set(GameConfig.actualLevel-1,map);
+		}
+		
+		synchronized (GameConfig.tools)
+		{
+			if(GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
+			{
+				GameConfig.tools.set(GameConfig.actualLevel-1, null); 
+				GameConfig.actualLevel++;
+			}
+		}		
+	}
+	
+	private void bombManager(float delta)
+	{
 		if(GameConfig.STATE == "bomb1")
 		{
 			if(!(bomb instanceof Bomb) && GameConfig.numBomb1 > 0)
@@ -91,8 +113,8 @@ public class World
 
 		    	if(GameConfig.STATE == "bomb1")
 		    	{
-    					if(map[x][y] != null)
-    						delete(x,y);		
+					if(map[x][y] != null)
+						delete(x,y);		
 		    	}
 		    	else if(GameConfig.STATE == "bomb2")
 		    	{
@@ -109,25 +131,10 @@ public class World
 				bomb = null;
 			}
 		}
+
 		
-		GameConfig.HIT = false;
-		checkGameOver();
-		
-		synchronized (GameConfig.tools)
-		{
-			GameConfig.tools.set(GameConfig.actualLevel-1,map);
-		}
-		
-		synchronized (GameConfig.tools)
-		{
-			if(GameConfig.player.getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
-			{
-				GameConfig.tools.set(GameConfig.actualLevel-1, null); 
-				GameConfig.actualLevel++;
-			}
-		}		
 	}
-	
+
 	private void checkWallCollision(float delta)
 	{
 		synchronized (GameConfig.walls)
@@ -137,10 +144,7 @@ public class World
 				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
 				{
 					if(GameConfig.player.collide(wall))
-					{
-//					System.out.println(wall.type+"   "+wall.getSize());
 						reaction(delta);
-					}
 				}
 			}
 		}
@@ -150,8 +154,6 @@ public class World
 	{
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
-		
-//    	System.out.println(i+"    "+j);
     	
 		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
 			checkWallCollision(delta);

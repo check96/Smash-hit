@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector3;
 
 import entity.AbstractGameObject;
 import entity.Destroyable;
+import entity.Wall;
+import entity.Walls;
 import videogame.GameConfig;
 
 public class Bomb extends AbstractGameObject 
@@ -45,6 +47,8 @@ public class Bomb extends AbstractGameObject
 	    	
 	    	if(getY() < -5)
 	    		active = false;
+	    	else if(checkWallCollision())
+	    		active = false;
 		}
 	}
 	
@@ -64,5 +68,21 @@ public class Bomb extends AbstractGameObject
 		
 		direction = GameConfig.DIRECTION;
 		speed = new Vector3(velocity.x*direction.x, velocity.y*direction.y, velocity.z*direction.z);
+	}
+	
+	private boolean checkWallCollision()
+	{
+		synchronized (GameConfig.walls)
+		{
+			for (Wall wall : GameConfig.walls)
+			{
+				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
+				{
+					if(collide(wall))
+						return true;
+				}
+			}
+		}
+		return false;
 	}
 }

@@ -25,7 +25,7 @@ public class LoadingScreen implements Screen
 
 		game = _game;
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/background.png"));
+        background = new Texture(Gdx.files.internal("texture/loading_background.png"));
         
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
 		

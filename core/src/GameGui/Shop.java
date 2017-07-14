@@ -21,9 +21,6 @@ public class Shop implements Screen
 	
 	private SpriteBatch spriteBatch;
 	private Texture background;
-	private Texture coin;
-	private Texture bomb1;
-	private Texture bomb2;
 	
 	public Shop(GameManager game)
 	{
@@ -32,13 +29,9 @@ public class Shop implements Screen
 		
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/background.png"));
-        coin = new Texture(Gdx.files.internal("Icons/coin.png"));
-        bomb1 = new Texture(Gdx.files.internal("Icons/bomb.png"));
-        
-//        Table bombTable = new Table(skin);
+        background = new Texture(Gdx.files.internal("texture/shop_background.png"));
 	}
-
+	
 	@Override
 	public void show() { }
 
@@ -48,8 +41,6 @@ public class Shop implements Screen
 		spriteBatch.begin();
         spriteBatch.draw(background, 0, 0);
 
-        spriteBatch.draw(bomb1, 200,200);
-        
         spriteBatch.end();
         
 		stage.act();
