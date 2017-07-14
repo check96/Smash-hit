@@ -43,7 +43,7 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		bombManagement(delta);
+		bonusManagement(delta);
 				
 		GameConfig.HIT = false;
 		checkGameOver();
@@ -63,7 +63,7 @@ public class World
 		}		
 	}
 	
-	private void bombManagement(float delta)
+	private void bonusManagement(float delta)
 	{
 		if(GameConfig.STATE == "bomb1")
 		{
@@ -78,7 +78,15 @@ public class World
 		if(GameConfig.STATE == "tornado")
 		{
 			Tornado.check();
-			hit(delta);
+			
+			System.out.println(Tornado.collide);
+			
+			if(Tornado.collide)
+			{
+				Tornado.collide = false;
+				delete(Tornado.x, Tornado.y);
+			}
+			
 		}
 		
 		if(GameConfig.HIT) 
@@ -233,6 +241,7 @@ public class World
 						 
 			case PLANT:	 GameConfig.destroyedPlants++;
 						 break;
+						 
 			default: 	 break;
 		}
 		
@@ -249,14 +258,17 @@ public class World
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
-    	GameConfig.ON = false;
-		GameConfig.BACK = true;
+   		GameConfig.ON = false;
+    	GameConfig.BACK = true;
+
+    	GameConfig.player.move(delta);
 		GameConfig.player.move(delta);
-		GameConfig.player.move(delta);
+
 		GameConfig.BACK = false;
 		
 		// decrease tool's life
-    	if(map[i][j] instanceof Destroyable)
+		
+		if(map[i][j] instanceof Destroyable)
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
@@ -266,8 +278,7 @@ public class World
     				map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
     		}
 
-//    		System.out.println(map[i][j].type + "  "+map[i][j].getHealth());
-		
+    		// add time to countdown
 			if(map[i][j].getHealth() == 0)
 			{
 				if(map[i][j].type == Objects.CLOCK)

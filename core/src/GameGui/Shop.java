@@ -16,8 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
@@ -33,6 +34,9 @@ public class Shop implements Screen
 	private boolean START = false;
 	private boolean BACK = false;
 	
+	private int numBomb1 = 0;
+	private int numBomb2 = 0;
+	
 	private Label bomb1Price;
 	private Label bomb2Price;
 	private Label doubleCoinsPrice;
@@ -40,11 +44,15 @@ public class Shop implements Screen
 	private Label tornadoUpgradePrice;
 	private Label clockUpgradePrice;
 	private Label coins;
+	private Label bomb1;
+	private Label bomb2;
 	
 	private Button start;
 	private Button back;
-	private ImageButton plus;
-	private ImageButton minus;
+	private ImageButton plusBomb1;
+	private ImageButton minusBomb1;
+	private ImageButton plusBomb2;
+	private ImageButton minusBomb2;
 	
 	private SpriteBatch spriteBatch;
 	private Texture background;
@@ -59,7 +67,7 @@ public class Shop implements Screen
         
         skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 
-        createButtons();
+		createButtons();
         createLabels(); 
 	}
 	
@@ -74,67 +82,105 @@ public class Shop implements Screen
 
     	float dim = 5;
     	
+    	bomb1 = new Label("0", new Label.LabelStyle(font, color));
+        bomb1.setPosition(500, 340);
+ 		bomb1.setSize(40, 80);
+ 		
+ 		bomb2 = new Label("0", new Label.LabelStyle(font, color));
+     	bomb2.setPosition(750, 340);
+ 		bomb2.setSize(40, 80);
+ 		
+ 		stage.addActor(bomb1);
+        stage.addActor(bomb2);
+    	
     	coins = new Label("0", new Label.LabelStyle(font, color));
     	coins.setText(String.format("%01d", GameConfig.COINS));
     	coins.setSize(dim, dim);
     	coins.setPosition(410, 540);
-//		coins.setPosition(350, 500); 
+//		coins.setPosition(350, 500);  per soldi spesi
 
 		doubleCoinsPrice = new Label("200", new Label.LabelStyle(font, color));
 		doubleCoinsPrice.setSize(dim, dim);
-		doubleCoinsPrice.setPosition(120, 305);
-		createTable(doubleCoinsPrice);		
-		
+		doubleCoinsPrice.setPosition(120, 310);
+		stage.addActor(doubleCoinsPrice);		
 		
 		bomb1Price = new Label("30", new Label.LabelStyle(font, color));
 		bomb1Price.setSize(dim, dim);
-		bomb1Price.setPosition(405, 300);
-		createTable(bomb1Price);		
+		bomb1Price.setPosition(405, 310);
+		stage.addActor(bomb1Price);		
 		
 		bomb2Price = new Label("60", new Label.LabelStyle(font, color));
 		bomb2Price.setSize(dim, dim);
-		bomb2Price.setPosition(665, 305);
-		createTable(bomb2Price);
+		bomb2Price.setPosition(665, 310);
+		stage.addActor(bomb2Price);
 		
-
 		maceUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
 		maceUpgradePrice.setSize(dim,dim);
 		maceUpgradePrice.setPosition(120, 45);
-		createTable(maceUpgradePrice);
+		stage.addActor(maceUpgradePrice);
 		
 		tornadoUpgradePrice = new Label("150", new Label.LabelStyle(font, color));
 		tornadoUpgradePrice.setSize(dim,dim);
 		tornadoUpgradePrice.setPosition(390, 45);
-		createTable(tornadoUpgradePrice);
+		stage.addActor(tornadoUpgradePrice);
 		
 		clockUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
 		clockUpgradePrice.setSize(dim, dim);
 		clockUpgradePrice.setPosition(645, 45);
-		createTable(clockUpgradePrice);
+		stage.addActor(clockUpgradePrice);
 		
 		stage.addActor(coins);
 	}
 
-	private void createTable(Label label)
-	{
-		float x = label.getX();
-		float y = label.getY();
-		
-		stage.addActor(label);
-		
-		plus.setPosition(x-100, y);
-		minus.setPosition(x-100, y);
-		
-		stage.addActor(plus);
-		stage.addActor(minus);
-	}
-
 	private void createButtons()
 	{
-		plus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
-		minus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
+		float dim = 50;
 		
+		plusBomb1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
+		plusBomb1.setSize(dim,dim);
+		plusBomb1.setPosition(490, 390);
+		plusBomb1.addListener(new ClickListener() {              
+            public void clicked(InputEvent event, float x, float y)
+            {
+            	numBomb1++;
+            }
+        });
+		
+		minusBomb1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
+		minusBomb1.setSize(dim,dim);
+		minusBomb1.setPosition(490, 320);
+		minusBomb1.addListener(new ClickListener() {              
+            public void clicked(InputEvent event, float x, float y)
+            {
+            	if(numBomb1 > 0)
+            		numBomb1--;
+            }
+        });
+		
+		plusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
+		plusBomb2.setSize(dim,dim);
+		plusBomb2.setPosition(740, 390);
+        plusBomb2.addListener(new ClickListener() {              
+            public void clicked(InputEvent event, float x, float y)
+            {
+                numBomb2++;
+            }
+        });
+        
+		minusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
+		minusBomb2.setSize(dim,dim);
+		minusBomb2.setPosition(740, 320);
+        minusBomb2.addListener(new ClickListener() {              
+            public void clicked(InputEvent event, float x, float y)
+            {
+            	if(numBomb2 > 0)
+            		numBomb2--;
+            }
+        });
+        
 		back = new TextButton("BACK",skin);
+		back.setSize(150,60);
+        back.setPosition(680, 500);
 		back.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
@@ -142,22 +188,24 @@ public class Shop implements Screen
 	            return true;
             }
         });
-		back.setSize(150,60);
-        back.setPosition(680, 500);
-    
+		
     	start = new TextButton("START",skin);
-		start.addListener(new InputListener(){
+    	start.setSize(150,60);
+        start.setPosition(850, 500);
+    	start.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
 	            START = true;
 	            return true;
             }
         });
-		start.setSize(150,60);
-        start.setPosition(850, 500);
         
         stage.addActor(back);
         stage.addActor(start);
+        stage.addActor(plusBomb1);
+        stage.addActor(minusBomb1);
+        stage.addActor(plusBomb2);
+        stage.addActor(minusBomb2);
 	}
 
 	@Override
@@ -172,13 +220,11 @@ public class Shop implements Screen
         if(START)
         {
         	START = false;
-//        	this.dispose();
         	game.setScreen(new LoadingScreen(game));
         }
         if(BACK)
         {
         	BACK = false;
-//        	this.dispose();
         	game.setScreen(game.startScreen);
         }
         
@@ -186,8 +232,11 @@ public class Shop implements Screen
         spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
 
-		stage.act();
-		stage.draw();
+        stage.act();
+        bomb1.setText(String.format("%01d", numBomb1));
+        bomb2.setText(String.format("%01d", numBomb2));
+		
+        stage.draw();
 	}
 
 	@Override
@@ -211,4 +260,3 @@ public class Shop implements Screen
 		stage.dispose();
 	}
 }
-
