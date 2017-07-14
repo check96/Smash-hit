@@ -12,6 +12,7 @@ public class Menu extends JMenuBar implements ActionListener
 {	
 	private PreviewPanel panel;
 	private FileChooser fileChooser;
+	private Editor frame;
 	
 	private JMenu file = new JMenu("File");
 	private JMenu edit = new JMenu("Edit");
@@ -22,10 +23,12 @@ public class Menu extends JMenuBar implements ActionListener
 	
 	private JMenuItem clear = new JMenuItem("Clear");
 	
-	public Menu(PreviewPanel _panel)
+	public Menu(PreviewPanel _panel, Editor editor)
 	{
 		super();
 		this.panel = _panel;
+		this.frame = editor;
+		
 		fileChooser = new FileChooser(panel);
 		
 		load.addActionListener(this);
@@ -52,9 +55,7 @@ public class Menu extends JMenuBar implements ActionListener
 		else if(e.getSource() == save)
 			fileChooser.saveFile();//PreviewPanel.points);
 		else if(e.getSource() == exit)	
-		{
-			System.out.println("exit");
-		}
+			frame.setVisible(false);
 		else if(e.getSource() == clear)
 		{
 			PreviewPanel.icons.clear();

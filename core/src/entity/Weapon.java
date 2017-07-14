@@ -4,14 +4,12 @@ import com.badlogic.gdx.math.Vector3;
 
 public class Weapon extends AbstractGameObject 
 {
-	public Weapons type;
 	private float damage;
 	
-	public Weapon(Vector3 _position, Weapons type)
+	public Weapon(Vector3 _position)
 	{
 		super(_position,new Vector3(4.3f,2f,0.6f));
-		this.type = type;
-		this.damage = type.damage;
+		this.damage = 15;
 	}
 	
 	public final float getDamage() {return damage;}

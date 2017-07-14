@@ -9,7 +9,6 @@ import entity.Player;
 import entity.Wall;
 import entity.Walls;
 import entity.Weapon;
-import entity.Weapons;
 import videogame.bonus.Bomb;
 import videogame.bonus.Tornado;
 
@@ -20,8 +19,10 @@ public class World
 	
 	public World()
 	{ 
+		GameConfig.LOCAL_COINS = 0;
+		
 		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40), Weapons.MACE);
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
 		GameConfig.player.setWeapon(weapon);
 	}
 
@@ -42,7 +43,7 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		bombManager(delta);
+		bombManagement(delta);
 				
 		GameConfig.HIT = false;
 		checkGameOver();
@@ -62,7 +63,7 @@ public class World
 		}		
 	}
 	
-	private void bombManager(float delta)
+	private void bombManagement(float delta)
 	{
 		if(GameConfig.STATE == "bomb1")
 		{
@@ -155,7 +156,7 @@ public class World
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
-		if(i == 0 || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
+		if((i == 0 && j !=5)  || (i == GameConfig.ROOM_ROW-1 && j != 5) || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
 			checkWallCollision(delta);
 
 		if(map[i][j] instanceof Destroyable)
@@ -210,11 +211,30 @@ public class World
 	{
 		// add score and coins
 		GameConfig.SCORE += map[i][j].type.score;
-		GameConfig.COINS += map[i][j].getMoneyReward();
+		GameConfig.LOCAL_COINS += map[i][j].getMoneyReward();
 		
 		boolean clock = false;
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
+		
+		switch (map[i][j].type)
+		{
+			case DESK:	 GameConfig.destroyedDesks++;
+						 break;
+						
+			case CHAIR:  GameConfig.destroyedChairs++;
+						 break;
+			
+			case LOCKER: GameConfig.destroyedLockers++;
+						 break;
+			
+			case DOOR:   GameConfig.destroyedDoors++;
+						 break;
+						 
+			case PLANT:	 GameConfig.destroyedPlants++;
+						 break;
+			default: 	 break;
+		}
 		
 		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
 		map[i][j] = null;
@@ -246,7 +266,7 @@ public class World
     				map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
     		}
 
-    		System.out.println(map[i][j].type + "  "+map[i][j].getHealth());
+//    		System.out.println(map[i][j].type + "  "+map[i][j].getHealth());
 		
 			if(map[i][j].getHealth() == 0)
 			{

@@ -51,7 +51,7 @@ public class Hud implements Disposable
     	table.top();
     	table.setFillParent(true);
         
-        Color color = Color.BLACK;
+        Color color = Color.NAVY;
         		
         //define our labels using the String, and a Label style consisting of a font and color
         roomLabel = new Label("ROOM", new Label.LabelStyle(font, color));
@@ -100,7 +100,7 @@ public class Hud implements Disposable
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));
-    	coinsLabel.setText(String.format("%01d", GameConfig.COINS));
+    	coinsLabel.setText(String.format("%01d", GameConfig.LOCAL_COINS));
     	
     	if(GameConfig.STATE == "bomb1")
     	{

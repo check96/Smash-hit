@@ -169,13 +169,13 @@ public class GameScreen implements Screen
 		for(final ModelInstance mod : hints)
 			batch.render(mod, environment);
 		
-		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-		model.transform.setToTranslation(41f,-4.8f,41.5f);
-		batch.render(model, environment);
-		
-		ModelInstance model2 = new ModelInstance(game.mapGenerator.assets.grid);
-		model2.transform.setToTranslation(131,-4.8f,41.5f);
-		batch.render(model2, environment);
+//		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
+//		model.transform.setToTranslation(41f,-4.8f,41.5f);
+//		batch.render(model, environment);
+//		
+//		ModelInstance model2 = new ModelInstance(game.mapGenerator.assets.grid);
+//		model2.transform.setToTranslation(221,-4.8f,41.5f);
+//		batch.render(model2, environment);
 		
 		// render walls
 		synchronized (GameConfig.wallsInstance)
@@ -208,11 +208,11 @@ public class GameScreen implements Screen
 				batch.render(mod, environment);
 	
 			// render next room's model instances
-//			if(GameConfig.level > GameConfig.actualLevel+1 )
-//			{
-//				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
-//					batch.render(mod, environment);
-//			}
+			if(GameConfig.level > GameConfig.actualLevel+1 )
+			{
+				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
+					batch.render(mod, environment);
+			}
 		}
 		
 		// render destroyed tools

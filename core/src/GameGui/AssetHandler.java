@@ -37,6 +37,7 @@ public class AssetHandler
 	private Model wallModel;
 	private Model floorModel;
 	private Material wall;
+	private Material wallDoor;
 	
 	public static Model coinModel;
 	public Model bomb1;
@@ -181,10 +182,20 @@ public class AssetHandler
 				ModelInstance wallInst = null;
 				switch (obj.type)
 				{
-					case FOREWARD_WALL:	wallInst = new ModelInstance(wallModel);
-										wallInst.transform.setToTranslation(obj.getPosition());
-										wallInst.transform.rotate(0,1,0,-90);
-										wallInst.transform.rotate(0,0,1,90);
+					case FOREWARD_UPPER_WALL:	wallInst = new ModelInstance(wallModel);
+												wallInst.transform.setToTranslation(obj.getPosition());
+												wallInst.transform.rotate(0,1,0,-90);
+												wallInst.transform.rotate(0,0,1,90);
+											break;
+					case FOREWARD_LEFT_WALL:	wallInst = new ModelInstance(wallModel);
+												wallInst.transform.setToTranslation(obj.getPosition());
+												wallInst.transform.rotate(0,1,0,-90);
+												wallInst.transform.rotate(0,0,1,90);
+											break;
+					case FOREWARD_RIGHT_WALL:	wallInst = new ModelInstance(wallModel);
+												wallInst.transform.setToTranslation(obj.getPosition());
+												wallInst.transform.rotate(0,1,0,-90);
+												wallInst.transform.rotate(0,0,1,90);
 									break;
 					case LEFT_WALL:		wallInst = new ModelInstance(wallModel);
 										wallInst.transform.setToTranslation(obj.getPosition());

@@ -37,8 +37,9 @@ public class GameOverScreen implements Screen
 		spriteBatch = new SpriteBatch();
 //        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 		
-        int coins = game.options.getInteger("coins",0);
-		game.options.putInteger("coins", coins+GameConfig.COINS);
+		GameConfig.COINS += GameConfig.LOCAL_COINS;
+
+		game.options.putInteger("coins", GameConfig.COINS);
 		game.options.flush();
 		
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));

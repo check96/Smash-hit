@@ -57,7 +57,6 @@ public class StartScreen implements Screen
       
         // single player
         Button singlePlayer = new TextButton("Single Player",mySkin);
-//        singlePlayer.setColor(Color.GRAY);
         singlePlayer.addListener(new InputListener(){
         	          @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -123,6 +122,7 @@ public class StartScreen implements Screen
     	if(SINGLE_PLAYER)
     	{
     		SINGLE_PLAYER = false;
+//    		game.setScreen(new LoadingScreen(game));
     		game.setScreen(new Shop(game));
     	}
     	else if(MULTIPLAYER)

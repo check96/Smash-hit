@@ -30,7 +30,7 @@ public class Editor extends JFrame
 		contentPane.add(panel, BorderLayout.WEST);
 		contentPane.add(tools, BorderLayout.EAST);
 				
-		this.setJMenuBar(new Menu(panel));
+		this.setJMenuBar(new Menu(panel,this));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
 		

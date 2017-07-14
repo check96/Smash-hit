@@ -48,9 +48,6 @@ public class toolsPanel extends JPanel implements ActionListener
 		buttons.add(new JButton());
 		image.add(loader.loadImage("/Icons/desk.png"));
 				
-//		buttons.add(new JButton());
-//		image.add(loader.loadImage("/Icons/trash.png"));
-		
 		buttons.add(new JButton());
 		image.add(loader.loadImage("/Icons/plant.png"));
 
@@ -109,8 +106,6 @@ public class toolsPanel extends JPanel implements ActionListener
 		{
 			for(int j=0; j<PreviewPanel.points[i].length; j++)
 				level += Integer.toString(PreviewPanel.points[i][j]).charAt(0);
-			
-//			level += '\n';
 		}
 
 		game.editorLevels.putString("level"+numLevelsCreated, level);

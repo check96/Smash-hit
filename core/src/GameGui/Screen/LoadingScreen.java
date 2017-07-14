@@ -39,6 +39,7 @@ public class LoadingScreen implements Screen
 	@Override
 	public void show()
 	{
+		Gdx.input.setInputProcessor(null);
 	    this.progress = 0f;
 	}
 

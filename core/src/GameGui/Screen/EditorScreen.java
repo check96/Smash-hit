@@ -125,6 +125,7 @@ public class EditorScreen implements Screen
 		
 		if(BACK || (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)))
 		{
+			BACK = false;
 			game.setScreen(game.startScreen);
 		}
 		

@@ -49,6 +49,7 @@ public class FileChooser extends JFileChooser
 			File f = fileChooser.getSelectedFile();
 			write = new BufferedWriter(new FileWriter(f));
 			Converter.toFile(write);
+			System.out.println("ciaone");
 			write.flush();
 			write.close();
         }

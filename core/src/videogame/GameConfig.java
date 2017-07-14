@@ -26,12 +26,20 @@ public class GameConfig
 	
 	public static int SCORE = 0;
 	public static int COINS = 1000;
+	public static int LOCAL_COINS = 1000;
 	public static int actualLevel = 1;
 	public static int level = 1;
 
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
 
+	public static int destroyedDesks = 0;
+	public static int destroyedChairs = 0;
+	public static int destroyedDoors = 0;
+	public static int destroyedPlants = 0;
+	public static int destroyedLockers = 0;
+	public static int destroyedObjects = 0;
+	
 	public static final float GRAVITY = 9.81f;
 	public static Vector3 DIRECTION = new Vector3(90,0,90);
 	public static String STATE = "hit";

@@ -33,14 +33,10 @@ public class Shop implements Screen
 	private boolean START = false;
 	private boolean BACK = false;
 	
-	private Label macePrice;
-	private Label swordPrice;
-	private Label axePrice;
 	private Label bomb1Price;
 	private Label bomb2Price;
+	private Label doubleCoinsPrice;
 	private Label maceUpgradePrice;
-	private Label swordUpgradePrice;
-	private Label axeUpgradePrice;
 	private Label tornadoUpgradePrice;
 	private Label clockUpgradePrice;
 	private Label coins;
@@ -74,79 +70,49 @@ public class Shop implements Screen
     	
         parameter.size = 30;
     	BitmapFont font = generator.generateFont(parameter);
-    	Color color = Color.BLACK;
+    	Color color = Color.WHITE;
 
     	float dim = 5;
     	
     	coins = new Label("0", new Label.LabelStyle(font, color));
     	coins.setText(String.format("%01d", GameConfig.COINS));
     	coins.setSize(dim, dim);
-		coins.setPosition(335, 550); 
-    	
-    	macePrice = new Label("0", new Label.LabelStyle(font, color));
-    	macePrice.setSize(dim, dim);
-		macePrice.setPosition(185, 320);
-		createTable(macePrice);
-    	
-    	swordPrice = new Label("100", new Label.LabelStyle(font, color));
-    	swordPrice.setSize(dim, dim);
-		swordPrice.setPosition(335, 320);
-		createTable(swordPrice);
+    	coins.setPosition(410, 540);
+//		coins.setPosition(350, 500); 
+
+		doubleCoinsPrice = new Label("200", new Label.LabelStyle(font, color));
+		doubleCoinsPrice.setSize(dim, dim);
+		doubleCoinsPrice.setPosition(120, 305);
+		createTable(doubleCoinsPrice);		
 		
-		axePrice = new Label("200", new Label.LabelStyle(font, color));
-		axePrice.setSize(dim,dim);
-		axePrice.setPosition(485, 320);
-		createTable(axePrice);
 		
 		bomb1Price = new Label("30", new Label.LabelStyle(font, color));
 		bomb1Price.setSize(dim, dim);
-		bomb1Price.setPosition(645, 320);
+		bomb1Price.setPosition(405, 300);
 		createTable(bomb1Price);		
 		
 		bomb2Price = new Label("60", new Label.LabelStyle(font, color));
 		bomb2Price.setSize(dim, dim);
-		bomb2Price.setPosition(800, 320);
+		bomb2Price.setPosition(665, 305);
 		createTable(bomb2Price);
 		
+
 		maceUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
 		maceUpgradePrice.setSize(dim,dim);
-		maceUpgradePrice.setPosition(180, 95);
+		maceUpgradePrice.setPosition(120, 45);
 		createTable(maceUpgradePrice);
-		
-		swordUpgradePrice = new Label("300", new Label.LabelStyle(font, color));
-		swordUpgradePrice.setSize(dim,dim);
-		swordUpgradePrice.setPosition(330, 95);
-		createTable(swordUpgradePrice);
-		
-		axeUpgradePrice = new Label("500", new Label.LabelStyle(font, color));
-		axeUpgradePrice.setSize(dim, dim);
-		axeUpgradePrice.setPosition(480, 95);
-		createTable(axeUpgradePrice);
 		
 		tornadoUpgradePrice = new Label("150", new Label.LabelStyle(font, color));
 		tornadoUpgradePrice.setSize(dim,dim);
-		tornadoUpgradePrice.setPosition(635, 95);
+		tornadoUpgradePrice.setPosition(390, 45);
 		createTable(tornadoUpgradePrice);
 		
 		clockUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
 		clockUpgradePrice.setSize(dim, dim);
-		clockUpgradePrice.setPosition(795, 95);
+		clockUpgradePrice.setPosition(645, 45);
 		createTable(clockUpgradePrice);
 		
 		stage.addActor(coins);
-		
-/*		stage.addActor(macePrice);
-		stage.addActor(swordPrice);
-		stage.addActor(axePrice);
-		stage.addActor(bomb1Price);
-		stage.addActor(bomb2Price);
-
-		stage.addActor(maceUpgradePrice);
-		stage.addActor(swordUpgradePrice);
-		stage.addActor(axeUpgradePrice);
-		stage.addActor(tornadoUpgradePrice);
-		stage.addActor(clockUpgradePrice);
-*/
 	}
 
 	private void createTable(Label label)
@@ -154,17 +120,13 @@ public class Shop implements Screen
 		float x = label.getX();
 		float y = label.getY();
 		
-		Table table = new Table();
-		table.setPosition(x,y);
-		table.add(label);
+		stage.addActor(label);
 		
-		plus.setPosition(x-300, y);
-		minus.setPosition(x-300, y);
+		plus.setPosition(x-100, y);
+		minus.setPosition(x-100, y);
 		
-		table.add(plus);
-		table.add(minus);
-		
-		stage.addActor(table);
+		stage.addActor(plus);
+		stage.addActor(minus);
 	}
 
 	private void createButtons()
@@ -199,7 +161,7 @@ public class Shop implements Screen
 	}
 
 	@Override
-	public void show() { }
+	public void show() {Gdx.input.setInputProcessor(stage);}
 
 	@Override
 	public void render(float delta)

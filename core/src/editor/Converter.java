@@ -30,18 +30,13 @@ public class Converter
 	{
 		for(int i=0; i<PreviewPanel.points.length; i++)
 		{
+			String line = "";
 			for(int j=0; j<PreviewPanel.points[i].length; j++)
-			{
-				try
-				{
-					write.append(Integer.toString(PreviewPanel.points[PreviewPanel.points.length-i][j]).charAt(0));
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
-			}
+				line += Integer.toString(PreviewPanel.points[PreviewPanel.points.length-1-i][j]);
+				
 			try
 			{
+				write.append(line);
 				write.newLine();
 			} catch (IOException e)
 			{

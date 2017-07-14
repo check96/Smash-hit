@@ -65,9 +65,15 @@ public class MapGenerator extends Thread
 			//create back wall
 			GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+(GameConfig.level-2)*GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,0,-2+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
 			
-			//create front wall
-			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_WALL));
+			//create front upper wall
+			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,17.4f,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_UPPER_WALL));
 			
+			//create front left wall
+			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-52 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_LEFT_WALL));
+			
+			//create front right wall
+			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,54 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_RIGHT_WALL));
+
 			//create ceiling
 			GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
 			
@@ -115,8 +121,8 @@ public class MapGenerator extends Thread
 			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
 			
 			// 	create door
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
-					-5, 2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
+			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+					-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 			// load tools model
 			assets.loadTools();
@@ -230,8 +236,7 @@ public class MapGenerator extends Thread
 		
 		// 	create door
 		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
-				-3.8f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,
-				2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
+		-4 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();
@@ -252,7 +257,7 @@ public class MapGenerator extends Thread
 			GameConfig.tools.add(array);
 			
 			if(GameConfig.actualLevel >= 3)
-				GameConfig.tools.remove(GameConfig.actualLevel-3);
+				GameConfig.tools.set(GameConfig.actualLevel-3,null);
 		}
 		
 		synchronized(GameConfig.toolsInstance)
