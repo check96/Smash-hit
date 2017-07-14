@@ -35,7 +35,6 @@ public class GameManager extends Game
 		mapGenerator = new MapGenerator(this);
 		startScreen = new StartScreen(this);
 		
-//		this.setScreen(startScreen);
-		this.setScreen(new Shop(this));		
+		this.setScreen(startScreen);
 	}
 }

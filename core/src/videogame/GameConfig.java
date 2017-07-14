@@ -25,7 +25,7 @@ public class GameConfig
 	// sound massimo un mega
 	
 	public static int SCORE = 0;
-	public static int COINS = 0;
+	public static int COINS = 1000;
 	public static int actualLevel = 1;
 	public static int level = 1;
 

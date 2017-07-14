@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.Shop;
 import network.SelectScreen;
 import videogame.GameConfig;
 
@@ -122,7 +123,7 @@ public class StartScreen implements Screen
     	if(SINGLE_PLAYER)
     	{
     		SINGLE_PLAYER = false;
-    		game.setScreen(new LoadingScreen(game));
+    		game.setScreen(new Shop(game));
     	}
     	else if(MULTIPLAYER)
     	{

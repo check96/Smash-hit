@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.Shop;
 import videogame.GameConfig;
 
 public class GameOverScreen implements Screen 
@@ -92,7 +93,7 @@ public class GameOverScreen implements Screen
         	this.dispose();
         	GameConfig.reset();
         	GameConfig.gameSoundtrack.stop();
-        	game.setScreen(new LoadingScreen(game));
+        	game.setScreen(new Shop(game));
         }
         
         if(QUIT)
