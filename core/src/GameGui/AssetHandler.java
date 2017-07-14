@@ -39,7 +39,8 @@ public class AssetHandler
 	private Material wall;
 	
 	public static Model coinModel;
-	public Model bomb;
+	public Model bomb1;
+	public Model bomb2;
 	public Model grid;
 	public Model help;
 
@@ -82,7 +83,10 @@ public class AssetHandler
 		grid = modelBuilder.createLineGrid(GameConfig.ROOM_ROW,GameConfig.ROOM_COLUMN, GameConfig.CELL_HEIGHT, GameConfig.CELL_WIDTH,
 				new Material(ColorAttribute.createDiffuse(Color.WHITE)), Usage.Position | Usage.Normal);
 
-		bomb = modelBuilder.createSphere(0.6f,0.6f,0.6f,100,100, new Material(ColorAttribute.createDiffuse(Color.BLACK)),
+		bomb1 = modelBuilder.createSphere(0.6f,0.6f,0.6f,100,100, new Material(ColorAttribute.createDiffuse(Color.BLACK)),
+				Usage.Position | Usage.Normal);
+		
+		bomb2 = modelBuilder.createSphere(0.6f,0.6f,0.6f,100,100, new Material(ColorAttribute.createDiffuse(Color.RED)),
 				Usage.Position | Usage.Normal);
 		
 		manager.load(player, Model.class);
@@ -223,4 +227,3 @@ public class AssetHandler
 		help.dispose();
 	}
 }
-

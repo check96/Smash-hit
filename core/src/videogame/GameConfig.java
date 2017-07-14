@@ -54,7 +54,8 @@ public class GameConfig
 	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
-	public static int numBomb = 12;
+	public static int numBomb1 = 20;
+	public static int numBomb2 = 18;
 	
 	public static void reset()
 	{

@@ -75,11 +75,12 @@ public class PauseScreen implements Screen
             	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
             	GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
             	
-//            	game.options.putFloat("volume", GameConfig.volume);
-//				game.options.flush();
+            	game.options.putFloat("volume", GameConfig.volume);
+				game.options.flush();
 			}
 		});
-//		FULLSCREEN = game.options.getBoolean("fullscreen");
+		
+		FULLSCREEN = game.options.getBoolean("fullscreen",false);
 		table = new Table(skin);
         table.setFillParent(true);
         
@@ -97,8 +98,8 @@ public class PauseScreen implements Screen
 				else	
 					Gdx.graphics.setWindowedMode(1280, 640);
 				
-//				game.options.putBoolean("fullscreen", FULLSCREEN);
-//				game.options.flush();
+				game.options.putBoolean("fullscreen", FULLSCREEN);
+				game.options.flush();
 				
 				return true;
 			}
@@ -181,9 +182,9 @@ public class PauseScreen implements Screen
 	{
 		stage.getViewport().update(width, height, true);
 		
-//		game.options.putInteger("screen_width", width);
-//		game.options.putInteger("screen_height", height);
-//		game.options.flush();
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;

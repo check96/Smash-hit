@@ -5,13 +5,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -87,7 +84,7 @@ public class Hud implements Disposable
         
 //        bonus = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("Icons/hit.png")))));
       
-    	bombLabel = new Label(String.format("%01d", GameConfig.numBomb), new Label.LabelStyle(font2, Color.WHITE));
+    	bombLabel = new Label(String.format("%01d", GameConfig.numBomb1), new Label.LabelStyle(font2, Color.WHITE));
         bombLabel.setSize(2,2);
         bombLabel.setPosition(45,25);
         bombLabel.setVisible(false);
@@ -105,9 +102,14 @@ public class Hud implements Disposable
     	levelLabel.setText(String.format("%02d", GameConfig.actualLevel));
     	coinsLabel.setText(String.format("%01d", GameConfig.COINS));
     	
-    	if(GameConfig.STATE == "bomb")
+    	if(GameConfig.STATE == "bomb1")
     	{
-    		bombLabel.setText(String.format("%01d", GameConfig.numBomb));
+    		bombLabel.setText(String.format("%01d", GameConfig.numBomb1));
+    		bombLabel.setVisible(true);
+    	}
+    	else if(GameConfig.STATE == "bomb2")
+    	{
+    		bombLabel.setText(String.format("%01d", GameConfig.numBomb2));
     		bombLabel.setVisible(true);
     	}
     	else
@@ -118,7 +120,7 @@ public class Hud implements Disposable
    		
     	spriteBatch.begin();
         spriteBatch.draw(bonus, 5,5);
-        spriteBatch.draw(coin, GameConfig.Screen_Width*0.9f, GameConfig.Screen_Height*0.874f);
+        spriteBatch.draw(coin, 922, 524);
         spriteBatch.end();
     }
 

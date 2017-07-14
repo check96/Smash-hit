@@ -42,12 +42,16 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		if(GameConfig.STATE == "bomb")
+		if(GameConfig.STATE == "bomb1")
 		{
-			if(!(bomb instanceof Bomb) && GameConfig.numBomb > 0)
+			if(!(bomb instanceof Bomb) && GameConfig.numBomb1 > 0)
 				bomb = new Bomb();
 		}
-		
+		else if(GameConfig.STATE == "bomb2")
+		{
+			if(!(bomb instanceof Bomb) && GameConfig.numBomb2 > 0)
+				bomb = new Bomb();
+		}
 		if(GameConfig.STATE == "tornado")
 		{
 			Tornado.check();
@@ -58,12 +62,20 @@ public class World
 		{
 			if( GameConfig.STATE == "hit")
 				 hit(delta);
-			else if(GameConfig.STATE == "bomb" && GameConfig.numBomb > 0)
+			else if(GameConfig.STATE == "bomb1" && GameConfig.numBomb1 > 0)
 			{
 				if(!bomb.inAction())
 				{
 					bomb.shoot();
-					GameConfig.numBomb--;
+					GameConfig.numBomb1--;
+				}
+			}
+			else if(GameConfig.STATE == "bomb2" && GameConfig.numBomb2 > 0)
+			{
+				if(!bomb.inAction())
+				{
+					bomb.shoot();
+					GameConfig.numBomb2--;
 				}
 			}
 		}
@@ -76,16 +88,24 @@ public class World
 			{
 				int	x = (int) ((bomb.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
 		    	int	y = (int) ((bomb.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
-		    	
-		    	for(int i = x-1; i <= x+1; i++)
-		    		for(int j = y-1; j <= y+1; j++)
-		    		{
-		    			if(i >= 0 && j >= 0 && j<GameConfig.ROOM_COLUMN && i<GameConfig.ROOM_ROW)
+
+		    	if(GameConfig.STATE == "bomb1")
+		    	{
+    					if(map[x][y] != null)
+    						delete(x,y);		
+		    	}
+		    	else if(GameConfig.STATE == "bomb2")
+		    	{
+		    		for(int i = x-1; i <= x+1; i++)
+		    			for(int j = y-1; j <= y+1; j++)
 		    			{
-		    				if(map[i][j] != null)
-		    					delete(i,j);		
+		    				if(i >= 0 && j >= 0 && j<GameConfig.ROOM_COLUMN && i<GameConfig.ROOM_ROW)
+		    				{
+		    					if(map[i][j] != null)
+		    						delete(i,j);		
+		    				}
 		    			}
-		    		}
+		    	}
 				bomb = null;
 			}
 		}
@@ -202,12 +222,14 @@ public class World
 	{
 		GameConfig.ON = true;
 		GameConfig.player.move(delta);
+		GameConfig.player.move(delta);
 		
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
     	GameConfig.ON = false;
 		GameConfig.BACK = true;
+		GameConfig.player.move(delta);
 		GameConfig.player.move(delta);
 		GameConfig.BACK = false;
 		

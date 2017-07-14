@@ -7,9 +7,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import entity.Weapon;
+import videogame.GameConfig;
 
 public class Shop implements Screen
 {
@@ -20,6 +22,8 @@ public class Shop implements Screen
 	private SpriteBatch spriteBatch;
 	private Texture background;
 	private Texture coin;
+	private Texture bomb1;
+	private Texture bomb2;
 	
 	public Shop(GameManager game)
 	{
@@ -28,8 +32,11 @@ public class Shop implements Screen
 		
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/options_background.png"));
+        background = new Texture(Gdx.files.internal("texture/background.png"));
         coin = new Texture(Gdx.files.internal("Icons/coin.png"));
+        bomb1 = new Texture(Gdx.files.internal("Icons/bomb.png"));
+        
+//        Table bombTable = new Table(skin);
 	}
 
 	@Override
@@ -40,6 +47,9 @@ public class Shop implements Screen
 	{
 		spriteBatch.begin();
         spriteBatch.draw(background, 0, 0);
+
+        spriteBatch.draw(bomb1, 200,200);
+        
         spriteBatch.end();
         
 		stage.act();
@@ -67,3 +77,4 @@ public class Shop implements Screen
 		stage.dispose();
 	}
 }
+

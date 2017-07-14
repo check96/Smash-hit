@@ -31,7 +31,8 @@ public class GameScreen implements Screen
 	private Camera cam;
 	private ModelBatch batch;
 	public static ModelInstance playerInstance;
-	public ModelInstance bombInstance;
+	public ModelInstance bomb1Instance;
+	public ModelInstance bomb2Instance;
 	private ArrayList<ModelInstance> hints;
 	private Environment environment;
 	private World world;
@@ -40,15 +41,16 @@ public class GameScreen implements Screen
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
 	private ArrayList<AnimationController> coinController;
-	private String[] state = new String[3];
+	private String[] state = new String[4];
 	
 	public GameScreen(GameManager _game)
 	{
 		game = _game;
 		
 		state[0] = "hit";
-		state[1] = "bomb";
-		state[2] = "tornado";
+		state[1] = "bomb1";
+		state[2] = "bomb2";
+		state[3] = "tornado";
 		
 		GameConfig.gameSoundtrack.play();
 		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
@@ -61,7 +63,8 @@ public class GameScreen implements Screen
 		initEnvironment();
 		initAnimation();
 		
-		bombInstance = new ModelInstance(game.mapGenerator.assets.bomb);
+		bomb1Instance = new ModelInstance(game.mapGenerator.assets.bomb1);
+		bomb2Instance = new ModelInstance(game.mapGenerator.assets.bomb2);
 		
 		game.countdown.pause = false;
 		hud = new Hud();
@@ -131,7 +134,7 @@ public class GameScreen implements Screen
 		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT))
 		{
 			GameConfig.stateIndex++;
-			GameConfig.stateIndex %= 3;
+			GameConfig.stateIndex %= 4;
 			
 			GameConfig.STATE = state[GameConfig.stateIndex];
 		}
@@ -185,8 +188,16 @@ public class GameScreen implements Screen
 		{
 			if(world.getBomb().shooted())
 			{
-				bombInstance.transform.setToTranslation(world.getBomb().getPosition());
-				batch.render(bombInstance, environment);
+				if(GameConfig.STATE == "bomb1")
+				{
+					bomb1Instance.transform.setToTranslation(world.getBomb().getPosition());
+					batch.render(bomb1Instance, environment);
+				}
+				if(GameConfig.STATE == "bomb2")
+				{
+					bomb2Instance.transform.setToTranslation(world.getBomb().getPosition());
+					batch.render(bomb2Instance, environment);
+				}
 			}
 		}
 		
@@ -274,9 +285,14 @@ public class GameScreen implements Screen
 
 		if(GameConfig.HIT)
 		{
-			if(state[GameConfig.stateIndex] != "tornado")
+			if(state[GameConfig.stateIndex] == "hit")
 			{
-				playerController.setAnimation("Armature|"+state[GameConfig.stateIndex],-1);
+				playerController.setAnimation("Armature|hit",-1);
+				playerController.update(Gdx.graphics.getDeltaTime());
+			}
+			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
+			{
+				playerController.setAnimation("Armature|bomb",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 		}
@@ -330,14 +346,12 @@ public class GameScreen implements Screen
 	@Override
 	public void resize(int width, int height)
 	{
-//		game.options.putInteger("screen_width", width);
-//		game.options.putInteger("screen_height", height);
-//		game.options.flush();
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;
-		
-//		System.out.println("width "+GameConfig.Screen_Width + "   height "+GameConfig.Screen_Height);
 	}
 
 	@Override

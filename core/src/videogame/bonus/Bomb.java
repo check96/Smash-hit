@@ -8,11 +8,11 @@ import videogame.GameConfig;
 
 public class Bomb extends AbstractGameObject 
 {	
-	private Vector3 velocity = new Vector3(20,1,20);
-	private Vector3 speed;
-	private Vector3 direction;
-	private boolean active = false;
-	private boolean shooted = false;
+	protected Vector3 velocity = new Vector3(20,1,20);
+	protected Vector3 speed;
+	protected Vector3 direction;
+	protected boolean active = false;
+	protected boolean shooted = false;
 	
 	public Bomb()
 	{
@@ -51,7 +51,7 @@ public class Bomb extends AbstractGameObject
 	public void update(float delta)
 	{
 		Position.x += speed.x * delta;
-		Position.y += speed.y * delta  - (GameConfig.GRAVITY*delta*delta);
+		Position.y += speed.y * delta  - (0.5f*GameConfig.GRAVITY*delta*delta);
 		Position.z += speed.z * delta;
 				
 		speed.y -= GameConfig.GRAVITY * delta;

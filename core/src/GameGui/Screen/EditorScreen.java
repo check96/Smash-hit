@@ -161,9 +161,9 @@ public class EditorScreen implements Screen
 	{	
 		stage.getViewport().update(width, height, true);
 		
-//		game.options.putInteger("screen_width", width);
-//		game.options.putInteger("screen_height", height);
-//		game.options.flush();
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;

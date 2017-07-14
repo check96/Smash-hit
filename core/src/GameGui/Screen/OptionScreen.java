@@ -45,7 +45,7 @@ public class OptionScreen implements Screen
 		this.game = _game;
 		this.stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
-//		FULLSCREEN = game.options.getBoolean("fullscreen");
+		FULLSCREEN = game.options.getBoolean("fullscreen",false);
 		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/options_background.png"));
@@ -70,8 +70,8 @@ public class OptionScreen implements Screen
             	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
             	GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
             	
-//            	game.options.putFloat("volume", GameConfig.volume);
-//				game.options.flush();
+            	game.options.putFloat("volume", GameConfig.volume);
+				game.options.flush();
 			}
 		});
 		
@@ -92,8 +92,8 @@ public class OptionScreen implements Screen
 				else	
 					Gdx.graphics.setWindowedMode(1280, 640);
 				
-//				game.options.putBoolean("fullscreen", FULLSCREEN);
-//				game.options.flush();
+				game.options.putBoolean("fullscreen", FULLSCREEN);
+				game.options.flush();
 				
 				return true;
 			}
@@ -110,7 +110,7 @@ public class OptionScreen implements Screen
             }
         });
 		back.setSize(200,80);
-        back.setPosition(Gdx.graphics.getWidth()/3.5f, 100);
+        back.setPosition(GameConfig.Screen_Width/3.5f, 100);
         
 		table.add(musicLabel).expandX();
 		table.add(volume).expandX();
@@ -148,9 +148,9 @@ public class OptionScreen implements Screen
 	{
 		stage.getViewport().update(width, height, true);
 		
-//		game.options.putInteger("screen_width", width);
-//		game.options.putInteger("screen_height", height);
-//		game.options.flush();
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
 		
 		GameConfig.Screen_Height = height;
 		GameConfig.Screen_Width = width;
