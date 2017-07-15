@@ -86,7 +86,7 @@ public class Hud implements Disposable
       
     	bombLabel = new Label(String.format("%01d", GameConfig.numBomb1), new Label.LabelStyle(font2, Color.WHITE));
         bombLabel.setSize(2,2);
-        bombLabel.setPosition(45,25);
+        bombLabel.setPosition(GameConfig.Screen_Width*45/GameConfig.width, GameConfig.Screen_Height*25/GameConfig.height);
         bombLabel.setVisible(false);
         
         //add tables to the stage
@@ -119,11 +119,18 @@ public class Hud implements Disposable
    		bonus = new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"));
    		
     	spriteBatch.begin();
-        spriteBatch.draw(bonus, 5,5);
+        spriteBatch.draw(bonus,5,5);
         spriteBatch.draw(coin, 922, 524);
         spriteBatch.end();
     }
 
     @Override
     public void dispose() { stage.dispose(); }
+
+    public void resize(int width, int height)
+	{
+    	stage.getViewport().update(width, height, true);
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
+	}
 }

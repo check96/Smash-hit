@@ -13,6 +13,8 @@ import videogame.GameConfig;
 public class LoadingScreen implements Screen
 {
 	private GameManager game;
+	private GameScreen gameScreen;
+	
 	private SpriteBatch spriteBatch;
 	private Texture background;
 	private Texture loadingBar; 
@@ -24,6 +26,7 @@ public class LoadingScreen implements Screen
 		GameConfig.menuSoundtrack.stop();
 
 		game = _game;
+		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/loading_background.png"));
         
@@ -34,6 +37,7 @@ public class LoadingScreen implements Screen
         	game.mapGenerator.pause = false;
         	game.mapGenerator.notify();
 		}
+        gameScreen = new GameScreen(game);
 	}
 
 	@Override
@@ -51,18 +55,16 @@ public class LoadingScreen implements Screen
 
         progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
-//        System.out.println((int)(progress*10));
+        if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
+        {
+        	game.setScreen(gameScreen);
+        }
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         
         spriteBatch.begin();
         spriteBatch.draw(background,0,0);
-        spriteBatch.draw(loadingBar, 250, 0);
+        spriteBatch.draw(loadingBar, GameConfig.Screen_Width*250/GameConfig.width, 0);
         spriteBatch.end();
-        
-        if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
-        {
-        	game.setScreen(new GameScreen(game));
-        }
     }
 
     @Override

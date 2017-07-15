@@ -37,7 +37,6 @@ public class EditorScreen implements Screen
 	private Table table;
 	private Table levelsTable;
 	private boolean BACK = false;
-	private boolean PLAY = false;
 	public static boolean CREATED = false;
 	private boolean EDITOR = false;
 	
@@ -93,7 +92,7 @@ public class EditorScreen implements Screen
 	    });
 		
 		create = new TextButton("CREATE LEVELS", skin);
-		create.setPosition(stage.getViewport().getWorldWidth()/2, 200);
+		create.setPosition(GameConfig.Screen_Width*300/GameConfig.width, GameConfig.Screen_Height*200/GameConfig.height);
 		create.addListener(new InputListener(){
 	  		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	        {

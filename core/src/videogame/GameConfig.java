@@ -15,6 +15,8 @@ public class GameConfig
 {
 	public static int Screen_Width = 1024;
 	public static int Screen_Height = 600;
+	public static final int width = 1024;
+	public static final int height = 600;
 	public static final int ROOM_ROW = 15;
 	public static final int ROOM_COLUMN = 10;
 	public static final int CELL_HEIGHT = 6;

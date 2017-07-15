@@ -95,7 +95,7 @@ public class PauseScreen implements Screen
 				if(FULLSCREEN)
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); 
 				else	
-					Gdx.graphics.setWindowedMode(1280, 640);
+					Gdx.graphics.setWindowedMode(GameConfig.width, GameConfig.height);
 				
 				game.options.putBoolean("fullscreen", FULLSCREEN);
 				game.options.flush();

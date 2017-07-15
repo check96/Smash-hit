@@ -115,7 +115,7 @@ public class StartScreen implements Screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
         spriteBatch.begin();
-        spriteBatch.draw(background, 0, 0);
+        spriteBatch.draw(background,0,0);
         spriteBatch.end();
         
         stage.act();

@@ -352,6 +352,7 @@ public class GameScreen implements Screen
 	@Override
 	public void resize(int width, int height)
 	{
+		hud.resize(width,height);
 		game.options.putInteger("screen_width", width);
 		game.options.putInteger("screen_height", height);
 		game.options.flush();

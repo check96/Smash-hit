@@ -89,7 +89,7 @@ public class OptionScreen implements Screen
 				if(FULLSCREEN)
 					Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode()); 
 				else	
-					Gdx.graphics.setWindowedMode(1280, 640);
+					Gdx.graphics.setWindowedMode(GameConfig.width, GameConfig.height);
 				
 				game.options.putBoolean("fullscreen", FULLSCREEN);
 				game.options.flush();
@@ -109,7 +109,7 @@ public class OptionScreen implements Screen
             }
         });
 		back.setSize(200,80);
-        back.setPosition(GameConfig.Screen_Width/3.5f, 100);
+        back.setPosition(GameConfig.Screen_Width*450/GameConfig.width, GameConfig.Screen_Height*100/GameConfig.height);
         
 		table.add(musicLabel).expandX();
 		table.add(volume).expandX();

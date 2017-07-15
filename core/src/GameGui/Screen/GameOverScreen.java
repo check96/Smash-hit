@@ -44,7 +44,7 @@ public class GameOverScreen implements Screen
 		
 		quit = new TextButton("QUIT", skin);
 		quit.setSize(200, 80);
-		quit.setPosition(350, 150);
+		quit.setPosition(GameConfig.Screen_Width*350/GameConfig.width, GameConfig.Screen_Height*150/GameConfig.height);
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
@@ -57,7 +57,7 @@ public class GameOverScreen implements Screen
 		
 		retry = new TextButton("RETRY", skin);
 		retry.setSize(200, 80);
-		retry.setPosition(100, 150);
+		retry.setPosition(GameConfig.Screen_Width*100/GameConfig.width, GameConfig.Screen_Height*150/GameConfig.height);
 		retry.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {

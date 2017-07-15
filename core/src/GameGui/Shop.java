@@ -95,12 +95,12 @@ public class Shop implements Screen
     	float dim = 5;
     	
     	bomb1 = new Label("0", new Label.LabelStyle(font, color));
-        bomb1.setPosition(500, 340);
- 		bomb1.setSize(40, 80);
+    	bomb1.setSize(40, 80);
+        bomb1.setPosition(GameConfig.Screen_Width*500/GameConfig.width, GameConfig.Screen_Height*340/GameConfig.height);
  		
  		bomb2 = new Label("0", new Label.LabelStyle(font, color));
-     	bomb2.setPosition(750, 340);
  		bomb2.setSize(40, 80);
+     	bomb2.setPosition(GameConfig.Screen_Width*750/GameConfig.width, GameConfig.Screen_Height*340/GameConfig.height);
  		
  		stage.addActor(bomb1);
         stage.addActor(bomb2);
@@ -108,40 +108,40 @@ public class Shop implements Screen
     	coins = new Label("0", new Label.LabelStyle(font, color));
     	coins.setText(String.format("%01d", GameConfig.COINS));
     	coins.setSize(dim, dim);
-    	coins.setPosition(410, 530);
+    	coins.setPosition(GameConfig.Screen_Width*410/GameConfig.width, GameConfig.Screen_Height*530/GameConfig.height);
     	
     	money = new Label("0", new Label.LabelStyle(font, color));
     	money.setSize(dim, dim);
-    	money.setPosition(410, 490); 
+    	money.setPosition(GameConfig.Screen_Width*410/GameConfig.width, GameConfig.Screen_Height*490/GameConfig.height); 
 
 		doubleCoinsLabel = new Label(Integer.toString(doubleCoinsPrice), new Label.LabelStyle(font, color));
 		doubleCoinsLabel.setSize(dim, dim);
-		doubleCoinsLabel.setPosition(120, 305);
+		doubleCoinsLabel.setPosition(GameConfig.Screen_Width*105/GameConfig.width, GameConfig.Screen_Height*305/GameConfig.height);
 		stage.addActor(doubleCoinsLabel);		
 		
 		bomb1Label = new Label(Integer.toString(bomb1Price), new Label.LabelStyle(font, color));
 		bomb1Label.setSize(dim, dim);
-		bomb1Label.setPosition(390, 305);
+		bomb1Label.setPosition(GameConfig.Screen_Width*390/GameConfig.width, GameConfig.Screen_Height*305/GameConfig.height);
 		stage.addActor(bomb1Label);		
 		
 		bomb2Label = new Label(Integer.toString(bomb2Price), new Label.LabelStyle(font, color));
 		bomb2Label.setSize(dim, dim);
-		bomb2Label.setPosition(650, 305);
+		bomb2Label.setPosition(GameConfig.Screen_Width*650/GameConfig.width, GameConfig.Screen_Height*305/GameConfig.height);
 		stage.addActor(bomb2Label);
 		
 		tornadoUpgradeLabel = new Label(Integer.toString(tornadoUpgradePrice), new Label.LabelStyle(font, color));
 		tornadoUpgradeLabel.setSize(dim,dim);
-		tornadoUpgradeLabel.setPosition(100, 45);
+		tornadoUpgradeLabel.setPosition(GameConfig.Screen_Width*100/GameConfig.width, GameConfig.Screen_Height*45/GameConfig.height);
 		stage.addActor(tornadoUpgradeLabel);
 		
 		clockUpgradeLabel = new Label(Integer.toString(clockUpgradePrice), new Label.LabelStyle(font, color));
 		clockUpgradeLabel.setSize(dim, dim);
-		clockUpgradeLabel.setPosition(365, 45);
+		clockUpgradeLabel.setPosition(GameConfig.Screen_Width*365/GameConfig.width, GameConfig.Screen_Height*45/GameConfig.height);
 		stage.addActor(clockUpgradeLabel);
 		
 		maceUpgradeLabel = new Label(Integer.toString(maceUpgradePrice), new Label.LabelStyle(font, color));
 		maceUpgradeLabel.setSize(dim,dim);
-		maceUpgradeLabel.setPosition(635, 45); 
+		maceUpgradeLabel.setPosition(GameConfig.Screen_Width*635/GameConfig.width, GameConfig.Screen_Height*45/GameConfig.height); 
 		stage.addActor(maceUpgradeLabel);
 		
 		stage.addActor(money);
@@ -160,7 +160,7 @@ public class Shop implements Screen
             }
         });
 		plusBomb1.setSize(dim,dim);
-		plusBomb1.setPosition(470, 375);
+		plusBomb1.setPosition(GameConfig.Screen_Width*470/GameConfig.width, GameConfig.Screen_Height*375/GameConfig.height);
 		stage.addActor(plusBomb1);
 		
 		minusBomb1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
@@ -172,13 +172,13 @@ public class Shop implements Screen
             }
         });
 		minusBomb1.setSize(dim,dim);
-		minusBomb1.setPosition(470, 305);
+		minusBomb1.setPosition(GameConfig.Screen_Width*470/GameConfig.width, GameConfig.Screen_Height*305/GameConfig.height);
 		
 		stage.addActor(minusBomb1);
 		
 		plusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
 		plusBomb2.setSize(dim,dim);
-		plusBomb2.setPosition(730, 375);
+		plusBomb2.setPosition(GameConfig.Screen_Width*730/GameConfig.width, GameConfig.Screen_Height*375/GameConfig.height);
         plusBomb2.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
@@ -190,7 +190,7 @@ public class Shop implements Screen
         
 		minusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
 		minusBomb2.setSize(dim,dim);
-		minusBomb2.setPosition(730, 305);
+		minusBomb2.setPosition(GameConfig.Screen_Width*730/GameConfig.width, GameConfig.Screen_Height*305/GameConfig.height);
         minusBomb2.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
@@ -202,7 +202,7 @@ public class Shop implements Screen
         
 		back = new TextButton("BACK",skin);
 		back.setSize(150,60);
-        back.setPosition(680, 500);
+        back.setPosition(GameConfig.Screen_Width*680/GameConfig.width, GameConfig.Screen_Height*500/GameConfig.height);
 		back.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
@@ -213,7 +213,7 @@ public class Shop implements Screen
 		
     	start = new TextButton("START",skin);
     	start.setSize(150,60);
-        start.setPosition(850, 500);
+        start.setPosition(GameConfig.Screen_Width*850/GameConfig.width, GameConfig.Screen_Height*500/GameConfig.height);
     	start.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
@@ -221,8 +221,6 @@ public class Shop implements Screen
 	            return true;
             }
         });
-        
-    	
     	
         stage.addActor(back);
         stage.addActor(start);
@@ -262,6 +260,13 @@ public class Shop implements Screen
 	public void resize(int width, int height)
 	{
 		stage.getViewport().update(width, height,true);
+		
+		game.options.putInteger("screen_width", width);
+		game.options.putInteger("screen_height", height);
+		game.options.flush();
+		
+		GameConfig.Screen_Height = height;
+		GameConfig.Screen_Width = width;
 	}
 
 	@Override
