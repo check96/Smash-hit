@@ -71,7 +71,8 @@ public class GameConfig
 		level = 1;
 		actualLevel = 1;
 		SCORE = 0;
-
+		LOCAL_COINS = 0;
+		
 		EDITOR = false;
 		MULTIPLAYER = false;
 		
@@ -81,6 +82,16 @@ public class GameConfig
 		ON = false;
 		BACK  = false;
 		HIT	= false;
+		
+		STATE = "hit";
+		stateIndex = 0;
+
+		destroyedDesks = 0;
+		destroyedChairs = 0;
+		destroyedDoors = 0;
+		destroyedPlants = 0;
+		destroyedLockers = 0;
+		destroyedObjects = 0;
 		
 		Countdown.reset();
 		tools.clear();

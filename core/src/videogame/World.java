@@ -43,7 +43,7 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		bonusManagement(delta);
+		bombManagement(delta);
 				
 		GameConfig.HIT = false;
 		checkGameOver();
@@ -63,7 +63,7 @@ public class World
 		}		
 	}
 	
-	private void bonusManagement(float delta)
+	private void bombManagement(float delta)
 	{
 		if(GameConfig.STATE == "bomb1")
 		{
@@ -78,15 +78,7 @@ public class World
 		if(GameConfig.STATE == "tornado")
 		{
 			Tornado.check();
-			
-			System.out.println(Tornado.collide);
-			
-			if(Tornado.collide)
-			{
-				Tornado.collide = false;
-				delete(Tornado.x, Tornado.y);
-			}
-			
+			hit(delta);
 		}
 		
 		if(GameConfig.HIT) 
@@ -171,7 +163,7 @@ public class World
 		{
 			if(GameConfig.player.collide(map[i][j]));
 			{
-				if(map[i][j].type == Objects.CLOCK)
+				if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				hit(delta);
 				else
 					reaction(delta);
@@ -222,8 +214,13 @@ public class World
 		GameConfig.LOCAL_COINS += map[i][j].getMoneyReward();
 		
 		boolean clock = false;
+		boolean vortex = false;
+		
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
+
+		else if(map[i][j].type == Objects.VORTEX)
+			vortex = true;
 		
 		switch (map[i][j].type)
 		{
@@ -241,11 +238,10 @@ public class World
 						 
 			case PLANT:	 GameConfig.destroyedPlants++;
 						 break;
-						 
 			default: 	 break;
 		}
 		
-		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
+		Deleter.remove(clock,vortex, map[i][j].getPosition(), map[i][j].getMoneyReward());
 		map[i][j] = null;
 	}
 	
@@ -258,32 +254,34 @@ public class World
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
-   		GameConfig.ON = false;
-    	GameConfig.BACK = true;
-
-    	GameConfig.player.move(delta);
+    	GameConfig.ON = false;
+		GameConfig.BACK = true;
 		GameConfig.player.move(delta);
-
+		GameConfig.player.move(delta);
 		GameConfig.BACK = false;
 		
 		// decrease tool's life
-		
-		if(map[i][j] instanceof Destroyable)
+    	if(map[i][j] instanceof Destroyable)
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
-    			if(map[i][j].type == Objects.CLOCK)
+    			if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else
     				map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
     		}
 
-    		// add time to countdown
+
 			if(map[i][j].getHealth() == 0)
 			{
 				if(map[i][j].type == Objects.CLOCK)
 					Countdown.increment(5);
-				
+				else if (map[i][j].type == Objects.VORTEX)
+				{
+					GameConfig.stateIndex = 3;
+					GameConfig.STATE = "tornado";
+				}
+									
 				//remove tools and toolsInstance
 				delete(i,j);
 			}

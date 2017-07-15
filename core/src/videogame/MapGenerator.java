@@ -108,6 +108,8 @@ public class MapGenerator extends Thread
 			GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
 			GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
 			
+				
+				
 			// create the clock
 			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
 
@@ -117,8 +119,7 @@ public class MapGenerator extends Thread
 			float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
 			float z = h * GameConfig.CELL_WIDTH;
 			
-			float clockMoney = Math.abs((rand.nextInt()%3)) +1;
-			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
+			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
 			
 			// 	create door
 			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
@@ -221,6 +222,19 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 +1] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
+		
+		//create the vortex
+		if(rand.nextBoolean())
+		{
+			int vI = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW));
+			int vJ = Math.abs(rand.nextInt()% (GameConfig.ROOM_COLUMN));
+			
+			float vX = vI * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+			float vZ = vJ * GameConfig.CELL_WIDTH;
+
+			GameConfig.newTools[vI][vJ] = new Destroyable(new Vector3(vX -1.5f, -3f, vZ), 0, Objects.VORTEX); 		
+		}
+		
 		
 		// create the clock
 		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
