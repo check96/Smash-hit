@@ -124,7 +124,7 @@ public class GameScreen implements Screen
 			cam.direction.rotate(-4,0,1,0);
 			degrees -= 4;
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
 		{
 			GameConfig.HIT = true;
 			hitAnimation = true;
@@ -297,17 +297,17 @@ public class GameScreen implements Screen
 		{
 			if(state[GameConfig.stateIndex] == "hit")
 			{
-				playerController.setAnimation("Armature|hit",1);
+				playerController.setAnimation("Armature|hit",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
 			{
-				playerController.setAnimation("Armature|bomb",1);
+				playerController.setAnimation("Armature|bomb",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 		}
 		
-		if(hitAnimation && System.currentTimeMillis()-hitTime > 500)
+		if(hitAnimation && System.currentTimeMillis()-hitTime > 583)
 		{
 			playerController.setAnimation("Armature|ArmatureAction",-1);
 			hitAnimation = false;
