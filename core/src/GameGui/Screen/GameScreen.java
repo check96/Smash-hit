@@ -37,6 +37,8 @@ public class GameScreen implements Screen
 	private Environment environment;
 	private World world;
 	private int degrees = 90;
+	private long hitTime = 0;
+	private boolean hitAnimation = false;
 	private Hud hud;
 	private AnimationController playerController;
 	private ArrayList<AnimationController> destroyedController;
@@ -122,9 +124,11 @@ public class GameScreen implements Screen
 			cam.direction.rotate(-4,0,1,0);
 			degrees -= 4;
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
 		{
 			GameConfig.HIT = true;
+			hitAnimation = true;
+			hitTime = System.currentTimeMillis();
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 		{
@@ -289,18 +293,24 @@ public class GameScreen implements Screen
 			}
 		}
 
-		if(GameConfig.HIT)
+		if(hitAnimation)
 		{
 			if(state[GameConfig.stateIndex] == "hit")
 			{
-				playerController.setAnimation("Armature|hit",-1);
+				playerController.setAnimation("Armature|hit",1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
 			{
-				playerController.setAnimation("Armature|bomb",-1);
+				playerController.setAnimation("Armature|bomb",1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
+		}
+		
+		if(hitAnimation && System.currentTimeMillis()-hitTime > 500)
+		{
+			playerController.setAnimation("Armature|ArmatureAction",-1);
+			hitAnimation = false;
 		}
 		
 		for (AnimationController controller : destroyedController)

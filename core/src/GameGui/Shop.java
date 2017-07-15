@@ -247,7 +247,6 @@ public class Shop implements Screen
         tornadoUpgradeLabel.setText(String.format("%01d", tornadoUpgradePrice * tornadoUpgradeLevel));
         clockUpgradeLabel.setText(String.format("%01d", clockUpgradePrice * clockUpgradeLevel));
         
-        
         spentMoney = 0;
         spentMoney += numBomb1 * bomb1Price + numBomb2 * bomb2Price;
        
