@@ -32,19 +32,19 @@ public class AssetHandler
 	private String locker = "drawer/drawer.g3db";		// scalato di 0.055
 	private String clock = "clock/clock.g3db";
 	private String coin = "coin/coin.g3db"; 
-			
+	private String vortex = "vortex/vortex.g3db";
 	private Model ceiling;
 	private Model wallModel;
 	private Model floorModel;
 	private Material wall;
-	private Material wallDoor;
 	
 	public static Model coinModel;
 	public Model bomb1;
 	public Model bomb2;
 	public Model grid;
 	public Model help;
-
+	
+	public ArrayList<AnimationController> vortexAnimation;
 	public ArrayList<AnimationController> clockAnimation;
 	public AssetManager manager;
 	private ModelBuilder modelBuilder;
@@ -54,6 +54,7 @@ public class AssetHandler
 		manager = new AssetManager();
 		modelBuilder = new ModelBuilder();
 		clockAnimation = new ArrayList<AnimationController>();
+		vortexAnimation = new ArrayList<AnimationController>();
 	}
 	
 	public void loadWalls()
@@ -98,6 +99,7 @@ public class AssetHandler
 		manager.load(plant, Model.class);
 		manager.load(locker, Model.class);
 		manager.load(coin, Model.class);
+		manager.load(vortex, Model.class);
 		manager.finishLoading();		
 		
 		coinModel = manager.get(coin, Model.class);
@@ -136,6 +138,15 @@ public class AssetHandler
 				{
 					switch (obj.type)
 					{
+						case VORTEX:	modInst = new ModelInstance(manager.get(vortex,Model.class));
+										synchronized(clockAnimation)
+										{
+											vortexAnimation.add(new AnimationController(modInst));
+											vortexAnimation.get(vortexAnimation.size()-1).setAnimation("Armature|ArmatureAction",-1);
+										}
+										modInst.transform.setToTranslation(obj.getPosition());
+										break;
+										
 						case DESK:		modInst = new ModelInstance(manager.get(desk, Model.class));
 										modInst.transform.setToTranslation(obj.getPosition());
 										break;

@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -31,24 +30,37 @@ public class Shop implements Screen
 	private Stage stage;
 	private Skin skin;
 	
-	private boolean START = false;
-	private boolean BACK = false;
-	
 	private int numBomb1 = 0;
 	private int numBomb2 = 0;
+	private int spentMoney = 1000;
+
+	private int maceUpgradeLevel = 2;
+	private int tornadoUpgradeLevel = 6;
+	private int clockUpgradeLevel = 10;
+
 	
-	private Label bomb1Price;
-	private Label bomb2Price;
-	private Label doubleCoinsPrice;
-	private Label maceUpgradePrice;
-	private Label tornadoUpgradePrice;
-	private Label clockUpgradePrice;
+	private int bomb1Price = 100;
+	private int bomb2Price = 300;
+	private int doubleCoinsPrice = 500;
+	private int maceUpgradePrice = 500;
+	private int tornadoUpgradePrice = 1000;
+	private int clockUpgradePrice = 500;
+	
+	private Label bomb1Label;
+	private Label bomb2Label;
+	private Label doubleCoinsLabel;
+	private Label maceUpgradeLabel;
+	private Label tornadoUpgradeLabel;
+	private Label clockUpgradeLabel;
+	
 	private Label coins;
+	private Label money;
 	private Label bomb1;
 	private Label bomb2;
 	
 	private Button start;
 	private Button back;
+	private Button buy;
 	private ImageButton plusBomb1;
 	private ImageButton minusBomb1;
 	private ImageButton plusBomb2;
@@ -96,59 +108,62 @@ public class Shop implements Screen
     	coins = new Label("0", new Label.LabelStyle(font, color));
     	coins.setText(String.format("%01d", GameConfig.COINS));
     	coins.setSize(dim, dim);
-    	coins.setPosition(410, 540);
-//		coins.setPosition(350, 500);  per soldi spesi
+    	coins.setPosition(410, 530);
+    	
+    	money = new Label("0", new Label.LabelStyle(font, color));
+    	money.setSize(dim, dim);
+    	money.setPosition(410, 490); 
 
-		doubleCoinsPrice = new Label("200", new Label.LabelStyle(font, color));
-		doubleCoinsPrice.setSize(dim, dim);
-		doubleCoinsPrice.setPosition(120, 310);
-		stage.addActor(doubleCoinsPrice);		
+		doubleCoinsLabel = new Label(Integer.toString(doubleCoinsPrice), new Label.LabelStyle(font, color));
+		doubleCoinsLabel.setSize(dim, dim);
+		doubleCoinsLabel.setPosition(120, 305);
+		stage.addActor(doubleCoinsLabel);		
 		
-		bomb1Price = new Label("30", new Label.LabelStyle(font, color));
-		bomb1Price.setSize(dim, dim);
-		bomb1Price.setPosition(405, 310);
-		stage.addActor(bomb1Price);		
+		bomb1Label = new Label(Integer.toString(bomb1Price), new Label.LabelStyle(font, color));
+		bomb1Label.setSize(dim, dim);
+		bomb1Label.setPosition(390, 305);
+		stage.addActor(bomb1Label);		
 		
-		bomb2Price = new Label("60", new Label.LabelStyle(font, color));
-		bomb2Price.setSize(dim, dim);
-		bomb2Price.setPosition(665, 310);
-		stage.addActor(bomb2Price);
+		bomb2Label = new Label(Integer.toString(bomb2Price), new Label.LabelStyle(font, color));
+		bomb2Label.setSize(dim, dim);
+		bomb2Label.setPosition(650, 305);
+		stage.addActor(bomb2Label);
 		
-		maceUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
-		maceUpgradePrice.setSize(dim,dim);
-		maceUpgradePrice.setPosition(120, 45);
-		stage.addActor(maceUpgradePrice);
+		tornadoUpgradeLabel = new Label(Integer.toString(tornadoUpgradePrice), new Label.LabelStyle(font, color));
+		tornadoUpgradeLabel.setSize(dim,dim);
+		tornadoUpgradeLabel.setPosition(100, 45);
+		stage.addActor(tornadoUpgradeLabel);
 		
-		tornadoUpgradePrice = new Label("150", new Label.LabelStyle(font, color));
-		tornadoUpgradePrice.setSize(dim,dim);
-		tornadoUpgradePrice.setPosition(390, 45);
-		stage.addActor(tornadoUpgradePrice);
+		clockUpgradeLabel = new Label(Integer.toString(clockUpgradePrice), new Label.LabelStyle(font, color));
+		clockUpgradeLabel.setSize(dim, dim);
+		clockUpgradeLabel.setPosition(365, 45);
+		stage.addActor(clockUpgradeLabel);
 		
-		clockUpgradePrice = new Label("200", new Label.LabelStyle(font, color));
-		clockUpgradePrice.setSize(dim, dim);
-		clockUpgradePrice.setPosition(645, 45);
-		stage.addActor(clockUpgradePrice);
+		maceUpgradeLabel = new Label(Integer.toString(maceUpgradePrice), new Label.LabelStyle(font, color));
+		maceUpgradeLabel.setSize(dim,dim);
+		maceUpgradeLabel.setPosition(635, 45); 
+		stage.addActor(maceUpgradeLabel);
 		
+		stage.addActor(money);
 		stage.addActor(coins);
 	}
 
 	private void createButtons()
 	{
-		float dim = 50;
+		float dim = 80;
 		
 		plusBomb1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
-		plusBomb1.setSize(dim,dim);
-		plusBomb1.setPosition(490, 390);
 		plusBomb1.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
             	numBomb1++;
             }
         });
+		plusBomb1.setSize(dim,dim);
+		plusBomb1.setPosition(470, 375);
+		stage.addActor(plusBomb1);
 		
 		minusBomb1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
-		minusBomb1.setSize(dim,dim);
-		minusBomb1.setPosition(490, 320);
 		minusBomb1.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
@@ -156,10 +171,14 @@ public class Shop implements Screen
             		numBomb1--;
             }
         });
+		minusBomb1.setSize(dim,dim);
+		minusBomb1.setPosition(470, 305);
+		
+		stage.addActor(minusBomb1);
 		
 		plusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/plus.png")))));
 		plusBomb2.setSize(dim,dim);
-		plusBomb2.setPosition(740, 390);
+		plusBomb2.setPosition(730, 375);
         plusBomb2.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
@@ -167,9 +186,11 @@ public class Shop implements Screen
             }
         });
         
+        stage.addActor(plusBomb2);
+        
 		minusBomb2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("skin/comic/raw/minus.png")))));
 		minusBomb2.setSize(dim,dim);
-		minusBomb2.setPosition(740, 320);
+		minusBomb2.setPosition(730, 305);
         minusBomb2.addListener(new ClickListener() {              
             public void clicked(InputEvent event, float x, float y)
             {
@@ -177,6 +198,7 @@ public class Shop implements Screen
             		numBomb2--;
             }
         });
+        stage.addActor(minusBomb2);
         
 		back = new TextButton("BACK",skin);
 		back.setSize(150,60);
@@ -184,7 +206,7 @@ public class Shop implements Screen
 		back.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            BACK = true;
+            	game.setScreen(game.startScreen);
 	            return true;
             }
         });
@@ -195,17 +217,15 @@ public class Shop implements Screen
     	start.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            START = true;
+            	game.setScreen(new LoadingScreen(game));
 	            return true;
             }
         });
         
+    	
+    	
         stage.addActor(back);
         stage.addActor(start);
-        stage.addActor(plusBomb1);
-        stage.addActor(minusBomb1);
-        stage.addActor(plusBomb2);
-        stage.addActor(minusBomb2);
 	}
 
 	@Override
@@ -217,17 +237,6 @@ public class Shop implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);	
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-        if(START)
-        {
-        	START = false;
-        	game.setScreen(new LoadingScreen(game));
-        }
-        if(BACK)
-        {
-        	BACK = false;
-        	game.setScreen(game.startScreen);
-        }
-        
         spriteBatch.begin();
         spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
@@ -235,7 +244,17 @@ public class Shop implements Screen
         stage.act();
         bomb1.setText(String.format("%01d", numBomb1));
         bomb2.setText(String.format("%01d", numBomb2));
-		
+        
+        maceUpgradeLabel.setText(String.format("%01d", maceUpgradePrice * maceUpgradeLevel));
+        tornadoUpgradeLabel.setText(String.format("%01d", tornadoUpgradePrice * tornadoUpgradeLevel));
+        clockUpgradeLabel.setText(String.format("%01d", clockUpgradePrice * clockUpgradeLevel));
+        
+        
+        spentMoney = 0;
+        spentMoney += numBomb1 * bomb1Price + numBomb2 * bomb2Price;
+       
+        money.setText(String.format("%01d", spentMoney));
+        
         stage.draw();
 	}
 

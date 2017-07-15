@@ -9,7 +9,7 @@ import videogame.GameConfig;
 
 public class Deleter
 {
-	public static void remove(boolean clock, Vector3 objPosition, float money)
+	public static void remove(boolean clock, boolean vortex, Vector3 objPosition, float money)
 	{
 		synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 		{
@@ -19,7 +19,7 @@ public class Deleter
 				ModelInstance instance = iterator.next();
 				if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
 				{
-					if(!clock)
+					if(!clock && !vortex)
 					{
 						GameConfig.destroyed.add(instance);
 						addCoinsAnimation(objPosition, money);

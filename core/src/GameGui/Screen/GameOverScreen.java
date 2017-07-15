@@ -23,8 +23,6 @@ public class GameOverScreen implements Screen
     private Stage stage;
     private TextButton quit;
 	private TextButton retry;
-	private boolean QUIT = false;
-	private boolean RETRY = false;
 	 
 	private SpriteBatch spriteBatch;
 	private Texture background;
@@ -35,7 +33,7 @@ public class GameOverScreen implements Screen
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 
 		spriteBatch = new SpriteBatch();
-//        background = new Texture(Gdx.files.internal("texture/menu_background.png"));
+        background = new Texture(Gdx.files.internal("texture/game_over_background.png"));
 		
 		GameConfig.COINS += GameConfig.LOCAL_COINS;
 
@@ -50,7 +48,9 @@ public class GameOverScreen implements Screen
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            QUIT = true;
+      			GameConfig.gameSoundtrack.stop();
+            	GameConfig.menuSoundtrack.play();
+            	game.setScreen(game.startScreen);
 	            return true;
             }
         });
@@ -61,7 +61,9 @@ public class GameOverScreen implements Screen
 		retry.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            RETRY  = true;
+      			GameConfig.reset();
+            	GameConfig.gameSoundtrack.stop();
+            	game.setScreen(new Shop(game));
 	            return true;
             }
         });
@@ -88,26 +90,8 @@ public class GameOverScreen implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);	
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     
-        if(RETRY)
-        {
-        	RETRY = false;
-        	this.dispose();
-        	GameConfig.reset();
-        	GameConfig.gameSoundtrack.stop();
-        	game.setScreen(new Shop(game));
-        }
-        
-        if(QUIT)
-        {
-        	QUIT = false;
-        	this.dispose();
-        	GameConfig.gameSoundtrack.stop();
-        	GameConfig.menuSoundtrack.play();
-        	game.setScreen(game.startScreen);
-        }
-       
         spriteBatch.begin();
-//        spriteBatch.draw(background, 0, 0);
+        spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
         
 		stage.act();

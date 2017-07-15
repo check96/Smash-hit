@@ -32,7 +32,6 @@ public class PauseScreen implements Screen
 	private Stage stage;
 
 	private boolean BACK = false;
-	private boolean QUIT = false;
 	private boolean FULLSCREEN = false;
 	
 	private Slider volume;
@@ -120,7 +119,7 @@ public class PauseScreen implements Screen
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            QUIT = true;
+      			game.setScreen(new GameOverScreen(game));
 	            return true;
             }
         });
@@ -159,12 +158,6 @@ public class PauseScreen implements Screen
 				game.countdown.notify();
 			}
 			game.setScreen(screen);
-		}
-		
-		if(QUIT)
-		{
-			this.dispose();
-			game.setScreen(new GameOverScreen(game));
 		}
 		
 		on_off.setChecked(FULLSCREEN);

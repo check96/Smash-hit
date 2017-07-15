@@ -114,13 +114,13 @@ public class GameScreen implements Screen
 			help();
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
-			cam.direction.rotate(2,0,1,0);
-			degrees += 2;
+			cam.direction.rotate(4,0,1,0);
+			degrees += 4;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 		{
-			cam.direction.rotate(-2,0,1,0);
-			degrees -= 2;
+			cam.direction.rotate(-4,0,1,0);
+			degrees -= 4;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
 		{
@@ -131,7 +131,7 @@ public class GameScreen implements Screen
 			game.countdown.pause = true;
 			game.setScreen(new PauseScreen(game, this));
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT))
+		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) //&& GameConfig.STATE !="tornado"
 		{
 			GameConfig.stateIndex++;
 			GameConfig.stateIndex %= 4;
@@ -268,6 +268,12 @@ public class GameScreen implements Screen
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
+		synchronized (game.mapGenerator.assets.vortexAnimation)
+		{
+			for (AnimationController vortex : game.mapGenerator.assets.vortexAnimation)
+				vortex.update(Gdx.graphics.getDeltaTime());
+		}
+
 		if(state[GameConfig.stateIndex] == "tornado")
 		{
 			playerController.setAnimation("Armature|bonus",-1);

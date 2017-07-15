@@ -27,7 +27,6 @@ import videogame.GameConfig;
 public class OptionScreen implements Screen 
 {	
 	private GameManager game;
-	private boolean BACK = false;
 	private Stage stage;
 	private Slider volume;
 	private TextButton back;
@@ -105,7 +104,7 @@ public class OptionScreen implements Screen
 		back.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	            BACK = true;
+            	game.setScreen(game.startScreen);
 	            return true;
             }
         });
@@ -128,11 +127,6 @@ public class OptionScreen implements Screen
 		Gdx.gl.glClearColor(1, 1, 1, 1);	
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		if(BACK)
-		{
-			BACK = false;
-			game.setScreen(game.startScreen);
-		}
 		on_off.setChecked(FULLSCREEN);
 		
         spriteBatch.begin();

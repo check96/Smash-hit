@@ -86,7 +86,8 @@ public class EditorScreen implements Screen
 		play.addListener(new InputListener(){
 	  		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	        {
-	            PLAY = true;
+	  			GameConfig.EDITOR = true;
+				game.setScreen(new LoadingScreen(game));
 	            return true;
 	        }
 	    });
@@ -140,13 +141,6 @@ public class EditorScreen implements Screen
 		{
 			CREATED = false;
 			editor.setVisible(false);
-		}
-
-		if(PLAY)
-		{
-			GameConfig.EDITOR = true;
-			this.dispose();
-			game.setScreen(new LoadingScreen(game));
 		}
 		
 		spriteBatch.begin();

@@ -26,11 +26,6 @@ public class StartScreen implements Screen
     public static EditorScreen editorScreen;	
 	public static OptionScreen optionScreen;
 
-    public boolean SINGLE_PLAYER = false;
-    private boolean MULTIPLAYER = false;
-    private boolean OPTIONS = false;
-    private boolean EDITOR = false;
- 
     private SpriteBatch spriteBatch;
 	private Texture background;
     
@@ -61,7 +56,8 @@ public class StartScreen implements Screen
         	          @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-            	SINGLE_PLAYER = true;
+	//        	game.setScreen(new LoadingScreen(game));
+	      		game.setScreen(new Shop(game));
             	return true;
             }
         });
@@ -73,7 +69,8 @@ public class StartScreen implements Screen
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-            	MULTIPLAYER = true;
+            	GameConfig.MULTIPLAYER = true;
+        		game.setScreen(new SelectScreen(game));
                 return true;
             }
         });
@@ -84,7 +81,7 @@ public class StartScreen implements Screen
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-            	EDITOR = true;
+            	game.setScreen(editorScreen);
                 return true;
             }
          
@@ -95,7 +92,7 @@ public class StartScreen implements Screen
         options.addListener(new InputListener(){
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-            	OPTIONS = true;
+            	game.setScreen(optionScreen);
                 return true;
             }
         });
@@ -114,29 +111,6 @@ public class StartScreen implements Screen
  
     public void render(float delta)
     {
-    	if(EDITOR)
-     	{
-     		EDITOR = false;
-     		game.setScreen(editorScreen);
-     	}
-    	if(SINGLE_PLAYER)
-    	{
-    		SINGLE_PLAYER = false;
-//    		game.setScreen(new LoadingScreen(game));
-    		game.setScreen(new Shop(game));
-    	}
-    	else if(MULTIPLAYER)
-    	{
-    		GameConfig.MULTIPLAYER = true;
-    		MULTIPLAYER = false;
-    		game.setScreen(new SelectScreen(game));
-    	}
-    	else if(OPTIONS)
-    	{
-    		OPTIONS = false;
-    		game.setScreen(optionScreen);
-    	}
-    	
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
