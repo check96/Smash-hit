@@ -35,6 +35,9 @@ public class GameConfig
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
 
+	public static int numBomb1 = 20;
+	public static int numBomb2 = 18;
+	
 	public static int destroyedDesks = 0;
 	public static int destroyedChairs = 0;
 	public static int destroyedDoors = 0;
@@ -55,17 +58,16 @@ public class GameConfig
 	public static boolean HIT	= false;
 	
 	public static Player player; 
+	public static ArrayList<Player> players = new ArrayList<Player>();
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
+	
 	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> coins = new ArrayList<ModelInstance>();
-	
 	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
-	public static int numBomb1 = 20;
-	public static int numBomb2 = 18;
 	
 	public static void reset()
 	{

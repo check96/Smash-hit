@@ -13,7 +13,6 @@ import videogame.GameConfig;
 public class LoadingScreen implements Screen
 {
 	private GameManager game;
-	private GameScreen gameScreen;
 	
 	private SpriteBatch spriteBatch;
 	private Texture background;
@@ -37,7 +36,6 @@ public class LoadingScreen implements Screen
         	game.mapGenerator.pause = false;
         	game.mapGenerator.notify();
 		}
-        gameScreen = new GameScreen(game);
 	}
 
 	@Override
@@ -57,7 +55,10 @@ public class LoadingScreen implements Screen
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
-        	game.setScreen(gameScreen);
+        	if(GameConfig.MULTIPLAYER)
+        		game.setScreen(new MultiplayerScreen(game));
+        	else
+        		game.setScreen(new GameScreen(game));
         }
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         

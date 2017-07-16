@@ -14,7 +14,7 @@ import videogame.bonus.Tornado;
 
 public class World 
 {
-	private Destroyable[][] map;
+	protected Destroyable[][] map;
 	private Bomb bomb;
 	
 	public World()
@@ -136,7 +136,7 @@ public class World
 		
 	}
 
-	private void checkWallCollision(float delta)
+	protected void checkWallCollision(float delta)
 	{
 		synchronized (GameConfig.walls)
 		{
@@ -151,7 +151,7 @@ public class World
 		}
 	}
 
-	private void checkCollsion(float delta)
+	protected void checkCollsion(float delta)
 	{
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
@@ -171,7 +171,7 @@ public class World
 		}
 	}
 		
-	private void reaction(float delta)
+	protected void reaction(float delta)
 	{
 		if(GameConfig.ON)
 		{
@@ -207,7 +207,7 @@ public class World
 		}
 	}
 
-	private void delete(int i, int j)
+	protected void delete(int i, int j)
 	{
 		// add score and coins
 		GameConfig.SCORE += map[i][j].type.score;
@@ -245,7 +245,7 @@ public class World
 		map[i][j] = null;
 	}
 	
-	private void hit(float delta)
+	protected void hit(float delta)
 	{
 		GameConfig.ON = true;
 		GameConfig.player.move(delta);
@@ -288,7 +288,7 @@ public class World
     	}
 	}
 	
-	private void checkGameOver()
+	protected void checkGameOver()
 	{
 		if(Countdown.getTime() == 0)
 			GameConfig.GAME_OVER = true;

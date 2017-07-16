@@ -1,143 +1,95 @@
 package network;
 
-import java.io.*;
-import java.net.*;
-import java.util.Vector;
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+
+import com.badlogic.gdx.math.Vector3;
+
+import GameGui.Screen.MultiplayerLobby;
+import entity.Player;
+import entity.Weapon;
+import packet.Packet;
+import packet.PacketType;
+import packet.loginPacket;
+import videogame.GameConfig;
 
 public class Server extends Thread
 {
-	private int dim = 15;
-	private int port = 12345;
-	public ServerSocket server;
-	private Socket s;
-	private BufferedReader in;
-	private PrintWriter out;
-	private Vector<int[][]> maps;
+	public DatagramSocket server;
 	private static int id = 0;
+	private int numPlayers = 1;
 	
-	public Server()
+	public Server(int port, int numPlayers)
 	{
-		maps = new Vector<int[][]>();
+		this.numPlayers = numPlayers;
 		
 		try 
 		{
-			server = new ServerSocket(port);	
+			server = new DatagramSocket(port);	
+			System.out.println("Server created");
 		}catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+		
+		this.start();
 	}
 	
 	public void run()
 	{
 		while(true)
 		{
-			System.out.println("in attesa...");
-            try
-            {
-            	s = server.accept();
-            	id++;
-            	in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-    			out = new PrintWriter(s.getOutputStream());
-            }
-            catch(IOException e)
-            {
-                System.out.println("Could not get a client.");
-            }
-            System.out.println("connected"); 
-            
-            System.out.println("ID: "+id);
-//			receive();
-//			send(create());
-//           
-            // Sleep
-            try
-            {
-                Thread.sleep(100);
-            }
-            catch(InterruptedException e)
-            {
-                System.out.println("Room has been interrupted.");
-            }
-/*
-			try
-			{
-				s = server.accept();
-				System.out.println("Connesso a: " + s.getInetAddress().getHostAddress());
-				
-//				
-				s.close();
-				
-			} catch (IOException e)
-			{
+			if(id == numPlayers-1)
+				MultiplayerLobby.ready = true;
+			
+			byte[] data = new byte[1024];
+			DatagramPacket packet = new DatagramPacket(data, data.length);
+			try {
+				server.receive(packet);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		*/	
-		}
-	}
-	
-	private void send(int[][] map)
-	{
-		for(int i=0; i < map.length; i++)
-		{
-			for(int j=0; j < map[i].length; j++)
-			{
-				out.append(Integer.toString(map[i][j]).charAt(0));
-			}
-			out.println();
-		}
-		
-		out.flush();
-	}
-	
-	private void receive()
-	{
-		int[][] map = new int[dim][dim];
-		
-		for(int i=0; i<map.length; i++)
-		{
-			String str = "";
-			try
-			{
-				str = in.readLine();
-			} catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
 			
-			for(int j=0; j<map[i].length; j++)
-			{
-					map[i][j] = str.charAt(j) - 48; 	// meno 48 perchè read() restituisce il numero in codice ASCII e 48 rappresenta lo 0
-			}
+			packetManagement(packet.getData(), packet.getAddress(), packet.getPort());
 		}
-		maps.add(map);
-	}
-	
-	
-	private int[][] create()
+    }
+	private void packetManagement(byte[] data, InetAddress address, int port)
 	{
-		int[][] map = new int[dim][dim];
-		for(int i=0; i<map.length; i++)
-			for(int j=0; j<map[i].length; j++)
-			{ 
-				int a = maps.get(0)[i][j];
-				boolean same = true;
-				for(int k=1; k<maps.size(); k++)
-				{
-					if(maps.get(k)[i][j] != a)
-					{
-						map[i][i] = 0;
-						same = false;
-						break;
-					}
-				}
-				
-				if(same)
-					map[i][j] = a;
-			}
+		String message = new String(data);
+		PacketType type = Packet.findType(message.substring(0, 1));
+		Packet packet = null;
+		switch(type)
+		{
+			case LOGIN:		packet = new loginPacket(data);
+							handleLogin((loginPacket) packet);
+							break;
+			case MOVE: 
+							break;
+			case HIT: 
+							break;
+			default:	break;
+						
+		}
 		
-		maps.clear();
-		return map;
+	}
+
+	private void handleLogin(loginPacket packet)
+	{
+		for (Player p : GameConfig.players)
+		{
+			if(p.getUsername().equals(packet.getUsername()))
+				return;
+		}
+		
+		Player player = new Player(new Vector3(0,-4.8f, 15+(20*id)), 4, packet.getUsername());
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
+		player.setWeapon(weapon);
+		
+		GameConfig.players.add(player);
+		id++;
+		
 	}
 
 	public static int getID()

@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.Shop;
-import network.SelectScreen;
+import network.NetworkScreen;
 import videogame.GameConfig;
 
 public class StartScreen implements Screen 
@@ -70,7 +70,7 @@ public class StartScreen implements Screen
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
             	GameConfig.MULTIPLAYER = true;
-        		game.setScreen(new SelectScreen(game));
+        		game.setScreen(new NetworkScreen(game));
                 return true;
             }
         });

@@ -17,7 +17,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import GameGui.GameManager;
-import GameGui.Hud;
+import GameGui.HUD.Hud;
 import videogame.AI.Dijkstra;
 import videogame.Countdown;
 import videogame.GameConfig;
@@ -28,22 +28,24 @@ import videogame.World;
 public class GameScreen implements Screen 
 {
 	private GameManager game;
-	private Camera cam;
-	private ModelBatch batch;
+	protected Camera cam;
+	protected ModelBatch batch;
 	public static ModelInstance playerInstance;
-	public ModelInstance bomb1Instance;
-	public ModelInstance bomb2Instance;
+	private ModelInstance bomb1Instance;
+	private ModelInstance bomb2Instance;
 	private ArrayList<ModelInstance> hints;
-	private Environment environment;
-	private World world;
-	private int degrees = 90;
-	private long hitTime = 0;
-	private boolean hitAnimation = false;
+	protected Environment environment;
+	protected World world;
+	protected int degrees = 90;
+	protected long hitTime = 0;
+	protected boolean hitAnimation = false;
 	private Hud hud;
-	private AnimationController playerController;
-	private ArrayList<AnimationController> destroyedController;
-	private ArrayList<AnimationController> coinController;
-	private String[] state = new String[4];
+	protected AnimationController playerController;
+	protected ArrayList<AnimationController> destroyedController;
+	protected ArrayList<AnimationController> coinController;
+	protected String[] state = new String[4];
+	
+	public GameScreen()	{ }
 	
 	public GameScreen(GameManager _game)
 	{
@@ -72,7 +74,7 @@ public class GameScreen implements Screen
 		hud = new Hud();
 	}
 
-	private void initAnimation()
+	protected void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
 		coinController = new ArrayList<AnimationController>();
@@ -81,7 +83,7 @@ public class GameScreen implements Screen
 		playerController.setAnimation("Armature|ArmatureAction",-1);
 	}
 
-	private void initCamera() 
+	protected void initCamera() 
 	{
 		cam = new PerspectiveCamera(67, GameConfig.Screen_Width, GameConfig.Screen_Height);
 		cam.position.set(GameConfig.player.getPosition());
@@ -94,7 +96,7 @@ public class GameScreen implements Screen
 		cam.update();
 	}
 
-	private void initEnvironment() 
+	protected void initEnvironment() 
 	{
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
@@ -139,7 +141,7 @@ public class GameScreen implements Screen
 		{
 			GameConfig.stateIndex++;
 			GameConfig.stateIndex %= 4;
-			
+		
 			GameConfig.STATE = state[GameConfig.stateIndex];
 		}
 	}
@@ -249,7 +251,7 @@ public class GameScreen implements Screen
 		}
 	}
 
-	private void addAnimation()
+	protected void addAnimation()
 	{
 		for(int i = destroyedController.size(); i < GameConfig.destroyed.size(); i++)
 		{
@@ -264,7 +266,7 @@ public class GameScreen implements Screen
 		}
 	}
 
-	private void handleAnimation()
+	protected void handleAnimation()
 	{
 		synchronized (game.mapGenerator.assets.clockAnimation)
 		{
@@ -284,7 +286,7 @@ public class GameScreen implements Screen
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if(!GameConfig.HIT && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			if(state[GameConfig.stateIndex] != "tornado")
 			{
@@ -327,7 +329,6 @@ public class GameScreen implements Screen
 			coinController.clear();
 			GameConfig.coins.clear();
 		}
-		
 	}
 
 	public void dispose()
