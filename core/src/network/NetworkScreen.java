@@ -49,13 +49,14 @@ public class NetworkScreen implements Screen
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/multiplayer_background.png"));
         
-		Skin mySkin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
-		
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
         parameter.size = 25;
     	BitmapFont font = generator.generateFont(parameter);
+    	
+    	Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
+    	Skin mySkin = new Skin(Gdx.files.internal("skin/holo/skin/Holo-dark-hdpi.json"));
     	
     	Color color = Color.WHITE;
     	
@@ -87,7 +88,7 @@ public class NetworkScreen implements Screen
 		numPlayers.setPosition(400, 155);
 		numPlayers.setSize(150, 60);
 		
-		join = new TextButton("LOGIN",mySkin);
+		join = new TextButton("LOGIN",skin);
 	    join.setSize(150, 80);
 	    join.setPosition(380,60);
 	    join.addListener(new InputListener(){
@@ -101,7 +102,7 @@ public class NetworkScreen implements Screen
 	           }
 	       });
 	    
-	    create = new TextButton("create server",mySkin);
+	    create = new TextButton("create server",skin);
 	    create.setSize(300, 100);
 	    create.setPosition(50,50);
 	    create.addListener(new InputListener(){

@@ -167,9 +167,10 @@ public class MultiplayerScreen extends GameScreen
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		if(hitAnimation && System.currentTimeMillis()-hitTime > 583)
+		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
 		{
 			playerController.setAnimation("Armature|ArmatureAction",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
 			hitAnimation = false;
 		}
 		
