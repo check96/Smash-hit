@@ -10,9 +10,9 @@ import com.badlogic.gdx.math.Vector3;
 import GameGui.Screen.MultiplayerLobby;
 import entity.Player;
 import entity.Weapon;
-import packet.Packet;
-import packet.PacketType;
-import packet.loginPacket;
+import network.packet.Packet;
+import network.packet.PacketType;
+import network.packet.loginPacket;
 import videogame.GameConfig;
 
 public class Server extends Thread

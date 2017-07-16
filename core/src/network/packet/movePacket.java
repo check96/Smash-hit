@@ -1,37 +1,37 @@
-package packet;
+package network.packet;
 
 import network.Client;
 import network.Server;
 
-public class loginPacket extends Packet
+public class movePacket extends Packet
 {
-	private float x,y,z;
+	private float x, y, z;
 	
-	public loginPacket(byte[] data)
+	public movePacket(byte[] data)
 	{
 		String[] info = new String(data).split(",");
 		this.username = info[0];
 		this.x = Float.parseFloat(info[1]);
 		this.y = Float.parseFloat(info[2]);
-		this.z = Float.parseFloat(info[3]);
+		this.z = Float.parseFloat(info[3]);	
 	}
-
+	
 	@Override
 	public void writeData(Client client) {
-		 
-
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void writeData(Server server) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public byte[] getData()
-	{
-		return (this.username + "," + this.x + "," + this.y + "," + this.z).getBytes();
+	public byte[] getData() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public final float getX() {return x;}

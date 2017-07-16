@@ -7,11 +7,11 @@ import java.net.InetAddress;
 
 import GameGui.GameManager;
 import GameGui.Screen.MultiplayerLobby;
-import packet.Packet;
-import packet.PacketType;
-import packet.hitPacket;
-import packet.loginPacket;
-import packet.movePacket;
+import network.packet.Packet;
+import network.packet.PacketType;
+import network.packet.hitPacket;
+import network.packet.loginPacket;
+import network.packet.movePacket;
 
 public class Client extends Thread
 {
