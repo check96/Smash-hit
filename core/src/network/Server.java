@@ -1,35 +1,27 @@
 package network;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-
-import com.badlogic.gdx.math.Vector3;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 
 import GameGui.GameManager;
-import entity.Player;
-import entity.Weapon;
-import network.packet.Packet;
-import network.packet.PacketType;
-import network.packet.loginPacket;
-import videogame.GameConfig;
 
 public class Server extends Thread
 {
-	public DatagramSocket server;
+	public ServerSocket server;
 	public static MultiplayerScreen screen;
-	private static int id = 0;
 	private int numPlayers = 1;
+	public static ArrayList<Client> clients;
 	
 	public Server(GameManager game, int port, int numPlayers)
 	{
 		this.numPlayers = numPlayers;
-		
+		clients = new ArrayList<Client>(); 
+				
 		try 
 		{
-			server = new DatagramSocket(port);	
-//			screen = new MultiplayerScreen(game);
+			server = new ServerSocket(port);	
 			System.out.println("Server created");
 		}catch (IOException e)
 		{
@@ -43,61 +35,21 @@ public class Server extends Thread
 	{
 		while(true)
 		{
-			if(id == numPlayers-1)
-				MultiplayerLobby.ready = true;
-			
-			byte[] data = new byte[1024];
-			DatagramPacket packet = new DatagramPacket(data, data.length);
-			try {
-				server.receive(packet);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if(!MultiplayerLobby.ready)
+			{
+				try
+				{
+					Socket socket = server.accept();
+					clients.add(new Client(socket));
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				
+				if(clients.size() == numPlayers)
+					MultiplayerLobby.ready = true;
 			}
-			
-			packetManagement(packet.getData(), packet.getAddress(), packet.getPort());
 		}
     }
-	private void packetManagement(byte[] data, InetAddress address, int port)
-	{
-		String message = new String(data);
-		PacketType type = Packet.findType(message.substring(0, 1));
-		Packet packet = null;
-		switch(type)
-		{
-			case LOGIN:		packet = new loginPacket(data);
-							handleLogin((loginPacket) packet);
-							break;
-			case MOVE: 
-							break;
-			case HIT: 
-							break;
-			default:	break;
-						
-		}
-		
-	}
-
-	private void handleLogin(loginPacket packet)
-	{
-		for (Player p : GameConfig.players)
-		{
-			if(p.getUsername().equals(packet.getUsername()))
-				return;
-		}
-		
-		Player player = new Player(new Vector3(0,-4.8f, 15+(20*id)), 4, packet.getUsername());
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
-		player.setWeapon(weapon);
-		
-		GameConfig.players.add(player);
-		id++;
-		
-	}
-
-	public static int getID()
-	{
-		return id;
-	}
-	
-	
 }

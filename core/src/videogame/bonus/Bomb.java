@@ -10,19 +10,22 @@ import videogame.GameConfig;
 
 public class Bomb extends AbstractGameObject 
 {	
-	protected Vector3 velocity = new Vector3(20,1,20);
-	protected Vector3 speed;
-	protected Vector3 direction;
-	protected boolean active = false;
-	protected boolean shooted = false;
+	private Vector3 velocity = new Vector3(20,1,20);
+	private Vector3 speed;
+	private Vector3 direction;
+	private boolean active = false;
+	private boolean shooted = false;
+	private boolean upgrade = false;
 	
-	public Bomb()
+	public Bomb(boolean upgrade)
 	{
 		super(GameConfig.player.getPosition(),null);
+		this.upgrade = upgrade;
 	}
 
-	public final boolean inAction() {return active;}
-	public final boolean shooted()	{return shooted;}
+	public final boolean inAction() 	{return active;}
+	public final boolean shooted()		{return shooted;}
+	public final boolean isUpgrade()	{return upgrade;}
 	
 	public void manageBomb(float delta)
 	{

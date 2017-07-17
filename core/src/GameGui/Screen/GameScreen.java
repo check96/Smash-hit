@@ -3,8 +3,11 @@ package GameGui.Screen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
@@ -38,6 +41,8 @@ public class GameScreen implements Screen
 	protected World world;
 	protected int degrees = 90;
 	protected long hitTime = 0;
+	protected long startTime = 0;
+	protected float elapsedTime = 0;
 	protected boolean hitAnimation = false;
 	private Hud hud;
 	protected AnimationController playerController;
@@ -110,11 +115,11 @@ public class GameScreen implements Screen
 			GameConfig.LEFT = true;
 		else if (Gdx.input.isKeyPressed(Input.Keys.D))
 			GameConfig.RIGHT = true;
-		else  if (Gdx.input.isKeyPressed(Input.Keys.W))
+		else if (Gdx.input.isKeyPressed(Input.Keys.W))
 			GameConfig.ON = true;
 		else if (Gdx.input.isKeyPressed(Input.Keys.S))
 			GameConfig.BACK = true;		
-		if (Gdx.input.isKeyJustPressed(Input.Keys.F))
+		if (Gdx.input.isKeyPressed(Input.Keys.F))
 			help();
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
@@ -144,10 +149,13 @@ public class GameScreen implements Screen
 		
 			GameConfig.STATE = state[GameConfig.stateIndex];
 		}
+		
+		
 	}
 		
 	public void render(float delta) 
 	{
+//		System.out.println("elapsedTime   " + elapsedTime);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
@@ -194,12 +202,12 @@ public class GameScreen implements Screen
 		{
 			if(world.getBomb().shooted())
 			{
-				if(GameConfig.STATE == "bomb1")
+				if(!world.getBomb().isUpgrade())
 				{
 					bomb1Instance.transform.setToTranslation(world.getBomb().getPosition());
 					batch.render(bomb1Instance, environment);
 				}
-				if(GameConfig.STATE == "bomb2")
+				else
 				{
 					bomb2Instance.transform.setToTranslation(world.getBomb().getPosition());
 					batch.render(bomb2Instance, environment);
@@ -212,9 +220,9 @@ public class GameScreen implements Screen
 		{
 			for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 				batch.render(mod, environment);
-	
+
 			// render next room's model instances
-			if(GameConfig.level > GameConfig.actualLevel+1 )
+			if(GameConfig.actualLevel < GameConfig.toolsInstance.size())
 			{
 				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
 					batch.render(mod, environment);

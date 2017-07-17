@@ -95,7 +95,7 @@ public class NetworkScreen implements Screen
 	           @Override
 	           public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	           {
-        		   new Client(game,ip.getText(),username.getText(), Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
+//        		   new Client(game,ip.getText(),username.getText(), Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
         		   game.setScreen(new MultiplayerLobby(game));
 	        	   return true;
 	           }

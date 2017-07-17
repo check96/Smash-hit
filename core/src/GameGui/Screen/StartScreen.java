@@ -99,7 +99,7 @@ public class StartScreen implements Screen
         
         table.add(singlePlayer).expandX().padTop(10);
         table.row();
-        table.add(multiPlayer).expandX().padTop(10);
+       // table.add(multiPlayer).expandX().padTop(10);
         table.row();
         table.add(editor).expandX().padTop(10);
         table.row();

@@ -43,7 +43,7 @@ public class World
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		
-		bombManagement(delta);
+		bonusManagement(delta);
 				
 		GameConfig.HIT = false;
 		checkGameOver();
@@ -63,19 +63,19 @@ public class World
 		}		
 	}
 	
-	private void bombManagement(float delta)
+	private void bonusManagement(float delta)
 	{
-		if(GameConfig.STATE == "bomb1")
+		if(GameConfig.STATE.equals("bomb1"))
 		{
 			if(!(bomb instanceof Bomb) && GameConfig.numBomb1 > 0)
-				bomb = new Bomb();
+				bomb = new Bomb(false);
 		}
-		else if(GameConfig.STATE == "bomb2")
+		else if(GameConfig.STATE.equals("bomb2"))
 		{
 			if(!(bomb instanceof Bomb) && GameConfig.numBomb2 > 0)
-				bomb = new Bomb();
+				bomb = new Bomb(true);
 		}
-		if(GameConfig.STATE == "tornado")
+		if(GameConfig.STATE.equals("tornado"))
 		{
 			Tornado.check();
 			hit(delta);
@@ -83,9 +83,9 @@ public class World
 		
 		if(GameConfig.HIT) 
 		{
-			if( GameConfig.STATE == "hit")
+			if( GameConfig.STATE.equals("hit"))
 				 hit(delta);
-			else if(GameConfig.STATE == "bomb1" && GameConfig.numBomb1 > 0)
+			else if(GameConfig.STATE.equals("bomb1") && GameConfig.numBomb1 > 0)
 			{
 				if(!bomb.inAction())
 				{
@@ -93,7 +93,7 @@ public class World
 					GameConfig.numBomb1--;
 				}
 			}
-			else if(GameConfig.STATE == "bomb2" && GameConfig.numBomb2 > 0)
+			else if(GameConfig.STATE.equals("bomb2") && GameConfig.numBomb2 > 0)
 			{
 				if(!bomb.inAction())
 				{
@@ -112,12 +112,12 @@ public class World
 				int	x = (int) ((bomb.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
 		    	int	y = (int) ((bomb.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
 
-		    	if(GameConfig.STATE == "bomb1")
+		    	if(!bomb.isUpgrade())
 		    	{
 					if(map[x][y] != null)
 						delete(x,y);		
 		    	}
-		    	else if(GameConfig.STATE == "bomb2")
+		    	else
 		    	{
 		    		for(int i = x-1; i <= x+1; i++)
 		    			for(int j = y-1; j <= y+1; j++)
@@ -144,7 +144,6 @@ public class World
 				{
 					if(GameConfig.player.collide(wall))
 					{
-						System.out.println(wall.type);
 						reaction(delta);
 					}
 				}
@@ -222,6 +221,7 @@ public class World
 
 		else if(map[i][j].type == Objects.VORTEX)
 			vortex = true;
+		
 		switch (map[i][j].type)
 		{
 			case DESK:	 GameConfig.destroyedDesks++;
@@ -265,10 +265,6 @@ public class World
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
-    			System.out.println(map[i][j].type);
-				if(map[i][j].type == Objects.DOOR)
-					System.out.println(map[i][j].getHealth());
-				
     			if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else
@@ -279,7 +275,7 @@ public class World
 			if(map[i][j].getHealth() == 0)
 			{
 				if(map[i][j].type == Objects.CLOCK)
-					Countdown.increment(5);
+					Countdown.increment(5 * (GameConfig.clockLevel+1));
 				else if (map[i][j].type == Objects.VORTEX)
 				{
 					GameConfig.stateIndex = 3;

@@ -1,9 +1,14 @@
 package network;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.Socket;
 
 import GameGui.GameManager;
 import network.packet.Packet;
@@ -19,77 +24,31 @@ public class Client extends Thread
 	private String ip;
 	private String username;
 	private int port; 
-	private DatagramSocket socket;
+	private Socket socket;
 	private int id;
 	private int numPlayers;
+	private BufferedReader in;
+	private PrintWriter out;
 	
-	public Client(GameManager _game, String ip, String username, int port, int numPlayers)
+	public Client(Socket _socket)
 	{
-		this.game = _game;
-		this.username = username;
-		this.port = port;
-		this.numPlayers = numPlayers;
-		
-		id = Server.getID();
-		
-		System.out.println("ID: " + id);
-		try 
+		this.socket = _socket;
+		try
 		{
-			socket = new DatagramSocket(port);
-			this.ipAddress = InetAddress.getByName(ip);
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true); 
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
+		
 		this.start();
-		game.setScreen(new MultiplayerLobby(game));
 	}
 	
 	public void run()
 	{
-		while(true) {
-			byte[] data = new byte[1024];
-			
-			DatagramPacket packet = new DatagramPacket(data, data.length);
-			try
-			{
-				socket.receive(packet);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			packetManagement(packet.getData(), packet.getAddress(), packet.getPort());
-		}
-	}
-
-	private void packetManagement(byte[] data, InetAddress address, int port)
-	{
-		String message = new String(data);
-		PacketType type = Packet.findType(message.substring(0, 1));
-		Packet packet = null;
-		switch(type)
+		while(true)
 		{
-			case LOGIN:		packet = new loginPacket(data);
-							break;
-							
-			case MOVE: 		packet = new movePacket(data);
-							break;
-							
-			case HIT: 		packet = new hitPacket(data); 
-						 	break;
-						 	
-			default:	break;
-						
 		}
 	}
-	
-	public void sendData(byte[] data)
-	{
-		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, port);
-		try {
-			socket.send(packet);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

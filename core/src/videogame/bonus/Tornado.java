@@ -14,14 +14,14 @@ public class Tornado
 		{
 			active = true;
 			startTime = System.currentTimeMillis();
-			GameConfig.player.getWeapon().setDamage(GameConfig.player.getWeapon().getDamage()*100);
+			GameConfig.player.getWeapon().setDamage(GameConfig.player.getWeapon().getDamage()*1000);
 		}
 
-		if(active && (System.currentTimeMillis() - startTime) > duration)
+		if(active && (System.currentTimeMillis() - startTime) > (duration + duration/2 * GameConfig.vortexLevel))
 		{
 			active = false;
 			startTime = 0;
-			GameConfig.player.getWeapon().setDamage(GameConfig.player.getWeapon().getDamage()/100);
+			GameConfig.player.getWeapon().setDamage(GameConfig.player.getWeapon().getDamage()/1000);
 			GameConfig.stateIndex = 0;
 			GameConfig.STATE = "hit";
 		}
