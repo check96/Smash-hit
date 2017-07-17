@@ -22,7 +22,7 @@ public class World
 		GameConfig.LOCAL_COINS = 0;
 		
 		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
+		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,20));
 		GameConfig.player.setWeapon(weapon);
 	}
 
@@ -132,8 +132,6 @@ public class World
 				bomb = null;
 			}
 		}
-
-		
 	}
 
 	protected void checkWallCollision(float delta)
@@ -145,7 +143,10 @@ public class World
 				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
 				{
 					if(GameConfig.player.collide(wall))
+					{
+						System.out.println(wall.type);
 						reaction(delta);
+					}
 				}
 			}
 		}
@@ -211,7 +212,7 @@ public class World
 	{
 		// add score and coins
 		GameConfig.SCORE += map[i][j].type.score;
-		GameConfig.LOCAL_COINS += map[i][j].getMoneyReward();
+		GameConfig.LOCAL_COINS += map[i][j].getMoneyReward() * GameConfig.coinsMultiplier;
 		
 		boolean clock = false;
 		boolean vortex = false;
@@ -221,7 +222,6 @@ public class World
 
 		else if(map[i][j].type == Objects.VORTEX)
 			vortex = true;
-		
 		switch (map[i][j].type)
 		{
 			case DESK:	 GameConfig.destroyedDesks++;
@@ -265,6 +265,10 @@ public class World
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
+    			System.out.println(map[i][j].type);
+				if(map[i][j].type == Objects.DOOR)
+					System.out.println(map[i][j].getHealth());
+				
     			if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else

@@ -52,7 +52,8 @@ public class EditorScreen implements Screen
         background = new Texture(Gdx.files.internal("texture/editor_background.png"));
 		
         Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
-
+        Skin mySkin = new Skin(Gdx.files.internal("skin/holo/skin/Holo-dark-hdpi.json"));
+        
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
         parameter.size = 30;
@@ -68,7 +69,7 @@ public class EditorScreen implements Screen
         
         levels = new Label("NUMBER OF LEVELS", new Label.LabelStyle(Font, Color.BLACK));
         
-        numLevels = new TextField("1", skin);
+        numLevels = new TextField("1", mySkin);
 		numLevels.setSize(200, 70);        
 		
 		back = new TextButton("BACK", skin);

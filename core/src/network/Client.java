@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import GameGui.GameManager;
-import GameGui.Screen.MultiplayerLobby;
 import network.packet.Packet;
 import network.packet.PacketType;
 import network.packet.hitPacket;
@@ -16,6 +15,7 @@ import network.packet.movePacket;
 public class Client extends Thread
 {
 	private GameManager game;
+	private InetAddress ipAddress;
 	private String ip;
 	private String username;
 	private int port; 
@@ -26,7 +26,6 @@ public class Client extends Thread
 	public Client(GameManager _game, String ip, String username, int port, int numPlayers)
 	{
 		this.game = _game;
-		this.ip = ip;
 		this.username = username;
 		this.port = port;
 		this.numPlayers = numPlayers;
@@ -37,6 +36,7 @@ public class Client extends Thread
 		try 
 		{
 			socket = new DatagramSocket(port);
+			this.ipAddress = InetAddress.getByName(ip);
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -51,7 +51,8 @@ public class Client extends Thread
 			byte[] data = new byte[1024];
 			
 			DatagramPacket packet = new DatagramPacket(data, data.length);
-			try {
+			try
+			{
 				socket.receive(packet);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -79,7 +80,16 @@ public class Client extends Thread
 			default:	break;
 						
 		}
-		
+	}
+	
+	public void sendData(byte[] data)
+	{
+		DatagramPacket packet = new DatagramPacket(data, data.length, ipAddress, port);
+		try {
+			socket.send(packet);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

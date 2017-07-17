@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import GameGui.GameManager;
+import network.MultiplayerScreen;
 import videogame.GameConfig;
 
 public class LoadingScreen implements Screen
@@ -18,6 +19,7 @@ public class LoadingScreen implements Screen
 	private Texture background;
 	private Texture loadingBar; 
 	
+	private String username;
 	private float progress;
 	
 	public LoadingScreen(GameManager _game)
@@ -26,6 +28,24 @@ public class LoadingScreen implements Screen
 
 		game = _game;
 		
+		spriteBatch = new SpriteBatch();
+        background = new Texture(Gdx.files.internal("texture/loading_background.png"));
+        
+        loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
+		
+        synchronized(game.mapGenerator)
+		{
+        	game.mapGenerator.pause = false;
+        	game.mapGenerator.notify();
+		}
+	}
+	
+	public LoadingScreen(GameManager _game, String username)
+	{
+		GameConfig.menuSoundtrack.stop();
+
+		this.game = _game;
+		this.username = username;
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/loading_background.png"));
         
@@ -56,7 +76,7 @@ public class LoadingScreen implements Screen
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
         	if(GameConfig.MULTIPLAYER)
-        		game.setScreen(new MultiplayerScreen(game));
+        		game.setScreen(new MultiplayerScreen(game,username));
         	else
         		game.setScreen(new GameScreen(game));
         }

@@ -1,15 +1,18 @@
-package videogame;
+package network;
 
 import com.badlogic.gdx.math.Vector3;
 
 import entity.Player;
 import entity.Weapon;
+import videogame.GameConfig;
+import videogame.World;
 
 public class MultiplayerWorld extends World 
 {
 	private int id;
+	private Player player;
 	
-	public MultiplayerWorld()
+	public MultiplayerWorld(String username)
 	{
 //		this.id = id;
 		GameConfig.LOCAL_COINS = 0;
@@ -18,11 +21,14 @@ public class MultiplayerWorld extends World
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
 		player.setWeapon(weapon);
 		
-//		GameConfig.players.set
+		for(Player pl : GameConfig.players)
+			if(pl.getUsername().equals(username))
+				player = pl;
 	}
 
 	@Override
-	public void update(float delta) {
+	public void update(float delta)
+	{
 		synchronized (GameConfig.tools)
 		{
 			map = GameConfig.tools.get(GameConfig.actualLevel-1);
@@ -57,7 +63,10 @@ public class MultiplayerWorld extends World
 
 	private void checkPlayerCollision(float delta) 
 	{
-		
+		for(Player pl : GameConfig.players)
+			if(!((pl.getUsername()).equals(player.getUsername())))
+					player.collide(pl);
+			
 	}
 	
 	

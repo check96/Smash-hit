@@ -42,6 +42,9 @@ public abstract class AbstractGameObject implements ICollidable
 	{		
 		AbstractGameObject box =(AbstractGameObject) c;
 		
+		if(box instanceof Player)
+			return playerCollide(box);
+		
 		ArrayList<Vertex> vertex = new ArrayList<Vertex>();
 		vertex.add(new Vertex(box.getX() + box.getSize().x/2, box.getZ() - box.getSize().z/2));	// 0
 		vertex.add(new Vertex(box.getX() + box.getSize().x/2, box.getZ() + box.getSize().z/2));	// 1
@@ -66,8 +69,12 @@ public abstract class AbstractGameObject implements ICollidable
 				   point.Z <= vertex.get(1).Z && point.Z >= vertex.get(0).Z)
 						return true;
 		}
-		
 		return false;
+	}
+
+	private boolean playerCollide(AbstractGameObject box)
+	{
+				return false;
 	}
 	
 	

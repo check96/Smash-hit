@@ -95,7 +95,7 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 		}
 	}
 	public void mouseMoved(MouseEvent e) {}
-	public void mouseClicked(MouseEvent e){}
+	public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}
 	public void mouseExited(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) {}

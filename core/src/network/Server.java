@@ -7,7 +7,7 @@ import java.net.InetAddress;
 
 import com.badlogic.gdx.math.Vector3;
 
-import GameGui.Screen.MultiplayerLobby;
+import GameGui.GameManager;
 import entity.Player;
 import entity.Weapon;
 import network.packet.Packet;
@@ -18,16 +18,18 @@ import videogame.GameConfig;
 public class Server extends Thread
 {
 	public DatagramSocket server;
+	public static MultiplayerScreen screen;
 	private static int id = 0;
 	private int numPlayers = 1;
 	
-	public Server(int port, int numPlayers)
+	public Server(GameManager game, int port, int numPlayers)
 	{
 		this.numPlayers = numPlayers;
 		
 		try 
 		{
 			server = new DatagramSocket(port);	
+//			screen = new MultiplayerScreen(game);
 			System.out.println("Server created");
 		}catch (IOException e)
 		{

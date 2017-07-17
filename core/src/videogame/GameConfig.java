@@ -35,6 +35,10 @@ public class GameConfig
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
 
+	public static int maceLevel = 0;
+	public static int vortexLevel = 0;
+	public static int clockLevel = 0;
+	public static int coinsMultiplier = 1;
 	public static int numBomb1 = 20;
 	public static int numBomb2 = 18;
 	

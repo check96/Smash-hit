@@ -31,7 +31,9 @@ public class GameOverScreen implements Screen
 	{
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-
+		
+		GameConfig.coinsMultiplier = 1;
+		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/game_over_background.png"));
 		

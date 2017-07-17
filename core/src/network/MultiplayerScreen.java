@@ -1,4 +1,4 @@
-package GameGui.Screen;
+package network;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -9,21 +9,23 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import GameGui.GameManager;
 import GameGui.HUD.MultiplayerHUD;
+import GameGui.Screen.GameOverScreen;
+import GameGui.Screen.GameScreen;
+import GameGui.Screen.PauseScreen;
 import videogame.Countdown;
 import videogame.GameConfig;
-import videogame.MultiplayerWorld;
 
 public class MultiplayerScreen extends GameScreen
 {
 	private GameManager game;
 	private MultiplayerHUD hud;
 	
-	public MultiplayerScreen(GameManager _game)
+	public MultiplayerScreen(GameManager _game, String username)
 	{
 		this.game = _game;
 		this.hud = new MultiplayerHUD();
 		this.batch = new ModelBatch();
-		world = new MultiplayerWorld();
+		world = new MultiplayerWorld(username);
 		
 		GameConfig.gameSoundtrack.play();
 		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);

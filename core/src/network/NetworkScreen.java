@@ -25,12 +25,12 @@ public class NetworkScreen implements Screen
 {
 	private GameManager game;
 	private Stage stage;
-	private Server server;
 	private SpriteBatch spriteBatch;
 	private Texture background;
 	
 	private Button join;
 	private Button create;
+	private Button login;
 	
 	private Label ipLabel;
 	private Label usernameLabel;
@@ -69,23 +69,23 @@ public class NetworkScreen implements Screen
 		portLabel = new Label("PORT", new Label.LabelStyle(font, color));
 		portLabel.setPosition(180, 240);
     	
-		numPlayersLabel = new Label("num players", new Label.LabelStyle(font, color));
-		numPlayersLabel.setPosition(180, 170);
+		numPlayersLabel = new Label("number of players", new Label.LabelStyle(font, color));
+		numPlayersLabel.setPosition(180, 300);
 		
     	ip = new TextField("127.0.0.1", mySkin);
-    	ip.setPosition(400, 350);
+    	ip.setPosition(400, 375);
 		ip.setSize(150, 60);
 		
-		username = new TextField("", mySkin);
-		username.setPosition(400, 285);
+		username = new TextField("dgfgd", mySkin);
+		username.setPosition(400, 305);
 		username.setSize(150, 60);
 		
-		port = new TextField("", mySkin);
-		port.setPosition(400, 220);
+		port = new TextField("12345", mySkin);
+		port.setPosition(400, 235);
 		port.setSize(150, 60);
 		
 		numPlayers = new TextField("2", mySkin);
-		numPlayers.setPosition(400, 155);
+		numPlayers.setPosition(500, 300);
 		numPlayers.setSize(150, 60);
 		
 		join = new TextButton("LOGIN",skin);
@@ -95,9 +95,21 @@ public class NetworkScreen implements Screen
 	           @Override
 	           public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	           {
-	        	   if(server instanceof Server)
-	        		   new Client(game,ip.getText(),username.getText(), Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
-	             	
+        		   new Client(game,ip.getText(),username.getText(), Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
+        		   game.setScreen(new MultiplayerLobby(game));
+	        	   return true;
+	           }
+	       });
+	    
+	    login = new TextButton("LOGIN",skin);
+	    login.setSize(170, 80);
+	    login.setPosition(400,120);
+	    login.addListener(new InputListener(){
+	           @Override
+	           public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
+	           {
+	        	   new Server(game, Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
+	        	   game.setScreen(new MultiplayerLobby(game));
 	        	   return true;
 	           }
 	       });
@@ -109,7 +121,10 @@ public class NetworkScreen implements Screen
 	           @Override
 	           public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	           {
-	        	   	server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
+	        	    stage.clear();
+	        	    stage.addActor(numPlayers);
+	    	        stage.addActor(numPlayersLabel);
+	    	        stage.addActor(login);
 	             	return true;
 	           }
 	       });
@@ -122,8 +137,6 @@ public class NetworkScreen implements Screen
 	       stage.addActor(ipLabel);
 	       stage.addActor(port);
 	       stage.addActor(portLabel);
-	       stage.addActor(numPlayers);
-	       stage.addActor(numPlayersLabel);
 	}
 
 	@Override

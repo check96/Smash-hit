@@ -1,4 +1,4 @@
-package GameGui.Screen;
+package network;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import GameGui.GameManager;
+import GameGui.Screen.LoadingScreen;
 import videogame.GameConfig;
 
 public class MultiplayerLobby implements Screen
