@@ -15,13 +15,21 @@ public class MultiplayerLobby implements Screen
 	private GameManager game;
 	private SpriteBatch spriteBatch;
 	private Texture background;
+	private MultiplayerScreen multiScreen;
+	private ServerThread client;
+	
 	public static boolean ready = false;
 	
-	public MultiplayerLobby(GameManager _game)
+	public MultiplayerLobby(GameManager _game, String username, String ip, int port)
 	{
+	
 		this.game = _game;
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/multiplayer_background.png"));
+        multiScreen = new MultiplayerScreen(game, username, ip, port);
+       
+        if(GameConfig.server != null)
+        	new ServerLaunchThread().start();
 	}
 
 	@Override

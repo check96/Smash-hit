@@ -1,6 +1,6 @@
 package network.packet;
 
-import network.Client;
+import network.ServerThread;
 import network.Server;
 
 public class movePacket extends Packet
@@ -17,7 +17,7 @@ public class movePacket extends Packet
 	}
 	
 	@Override
-	public void writeData(Client client) {
+	public void writeData(ServerThread client) {
 		// TODO Auto-generated method stub
 		
 	}

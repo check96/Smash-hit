@@ -15,16 +15,16 @@ import GameGui.GameManager;
 public class Server extends Thread
 {
 	public ServerSocket server;
+	public Socket socket;
 	public static MultiplayerScreen screen;
 	private int numPlayers = 1;
-	public static ArrayList<Client> clients;
+	public static ArrayList<ServerThread> clients = new ArrayList<ServerThread>();
 	private BufferedReader in;
 	private PrintWriter out;
 	
-	public Server(GameManager game, int port, int numPlayers)
+	public Server(int port, int numPlayers)
 	{
 		this.numPlayers = numPlayers;
-		clients = new ArrayList<Client>(); 
 				
 		try 
 		{
@@ -38,31 +38,56 @@ public class Server extends Thread
 		this.start();
 	}
 	
-	public void run()
+	public void launch()
 	{
-		while(true)
+		for(int i = 0; i<numPlayers; i++)
 		{
-			if(!MultiplayerLobby.ready)
-			{
 				try
 				{
 					Socket socket = server.accept();
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-					Client client = new Client(socket);
-					
-					out.write("login");
-					clients.add(client);
-					
+					System.out.println(socket + "has connected");
+					ServerThread c = new ServerThread(socket);
+					clients.add(c);
+					c.start();
 				}
-				catch(Exception e)
-				{
-				}
+				catch(Exception e){}
 				
-				if(clients.size() == numPlayers)
-					MultiplayerLobby.ready = true;
-			}
-			
 		}
-    }
+			
+		for(int i = 0; i<clients.size(); i++)
+		{
+				ServerThread s = clients.get(i);
+				s.out.write("ciao\n");
+				s.out.flush();
+		}
+	}
 }
+//			for(int i = 0; i < clients.size(); i++)
+//			{
+//				if(!clients.get(i).isConnected())
+//				{
+//					System.out.println("rimosso");
+//					clients.remove(i);
+//				}
+//					
+//			}
+//			
+//			try
+//			{
+//				socket = server.accept();
+//				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
+//			} catch (Exception e) {}
+//			System.out.println("client "+ socket.getPort() + "has Connected");
+//			
+//			String line;
+//			try 
+//			{
+//				line = in.readLine();
+//				System.out.println("line is: " +line);
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//    }
+

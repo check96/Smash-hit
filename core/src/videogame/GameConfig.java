@@ -10,10 +10,12 @@ import com.badlogic.gdx.math.Vector3;
 import entity.Destroyable;
 import entity.Player;
 import entity.Wall;
+import network.Server;
 import videogame.bonus.Bomb;
 
 public class GameConfig
 {
+	public static Server server;
 	public static int Screen_Width = 1024;
 	public static int Screen_Height = 600;
 	public static final int width = 1024;

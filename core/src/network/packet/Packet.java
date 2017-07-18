@@ -1,6 +1,6 @@
 package network.packet;
 
-import network.Client;
+import network.ServerThread;
 import network.Server;
 
 public abstract class Packet
@@ -19,7 +19,7 @@ public abstract class Packet
 		return PacketType.NULL;
 	}
 	
-	public abstract void writeData(Client client);
+	public abstract void writeData(ServerThread client);
 	public abstract void writeData(Server server);
 	public abstract byte[] getData();
 	

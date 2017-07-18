@@ -76,9 +76,9 @@ public class LoadingScreen implements Screen
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
-        	if(GameConfig.MULTIPLAYER)
-        		game.setScreen(new MultiplayerScreen(game,username));
-        	else
+//        	if(GameConfig.MULTIPLAYER)
+//        		game.setScreen(new MultiplayerScreen(game,username));
+//        	else
         		game.setScreen(new GameScreen(game));
         }
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));

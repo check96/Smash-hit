@@ -1,5 +1,9 @@
 package network;
 
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
@@ -20,9 +24,22 @@ public class MultiplayerScreen extends GameScreen
 {
 	private GameManager game;
 	private MultiplayerHUD hud;
+	private String username;
+	private Socket socket;
+	private ClientThread m;
 	
-	public MultiplayerScreen(GameManager _game, String username)
+	public MultiplayerScreen(GameManager _game, String username, String ip, int port)
 	{
+		try {
+			socket = new Socket(ip, port);
+			m = new ClientThread(socket);
+			m.start();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.username = username;
 		this.game = _game;
 		this.hud = new MultiplayerHUD();
 		this.batch = new ModelBatch();
