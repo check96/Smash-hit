@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
 import GameGui.HUD.MultiplayerHUD;
 import GameGui.Screen.GameOverScreen;
 import GameGui.Screen.GameScreen;
@@ -27,8 +28,8 @@ public class MultiplayerScreen extends GameScreen
 		this.batch = new ModelBatch();
 		world = new MultiplayerWorld(username);
 		
-		GameConfig.gameSoundtrack.play();
-		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+		SoundManager.gameSoundtrack.play();
+		SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
 
 		game.mapGenerator.assets.loadPlayer();
 		initCamera();

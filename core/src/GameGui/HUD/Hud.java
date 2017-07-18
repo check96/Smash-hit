@@ -7,9 +7,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import videogame.Countdown;
@@ -18,6 +20,7 @@ import videogame.GameConfig;
 public class Hud implements Disposable
 {
     public Stage stage;
+    public Stage vortexStage;
    
     //Scene2D widgets
     private Label roomLabel;
@@ -31,15 +34,25 @@ public class Hud implements Disposable
     private Label coinsLabel;
     private Label bombLabel;
     
-    private SpriteBatch spriteBatch;
+    public SpriteBatch spriteBatch;
     private Texture bonus;
     private Texture coin;
+    private Texture vortex;
+    private Image vortexImage;
+    private float x1 = 1;
+    private float x2 = GameConfig.Screen_Width;
     
     public Hud()
     {
-    	stage = new Stage(new FitViewport(800, 600), new SpriteBatch());
+    	stage = new Stage(new ExtendViewport(GameConfig.width, GameConfig.height), new SpriteBatch());
     	spriteBatch = new SpriteBatch();
     	
+    	vortexStage = new Stage(new ExtendViewport(GameConfig.width, GameConfig.height), new SpriteBatch());
+    	
+    	vortex = new Texture("Icons/Smoke_down.png");
+    	
+    	vortexImage = new Image(vortex);
+
     	FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
@@ -96,6 +109,7 @@ public class Hud implements Disposable
 
     public synchronized void update()
     {
+    	
     	// update labels
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
@@ -119,9 +133,24 @@ public class Hud implements Disposable
    		bonus = new Texture(Gdx.files.internal("Icons/"+GameConfig.STATE+".png"));
    		
     	spriteBatch.begin();
+    	spriteBatch.enableBlending();
         spriteBatch.draw(bonus,5,5);
         spriteBatch.draw(coin, 922, 524);
-        spriteBatch.end();
+        
+        if(GameConfig.STATE == "tornado")
+        {
+        	move();
+        	vortexStage.addActor(vortexImage);
+        	vortexStage.act();
+        	vortexStage.draw();
+        	vortexStage.clear();
+        }
+        spriteBatch.end(); 
+    }
+    public void move()
+    {
+    	vortexImage.setPosition(x1%GameConfig.Screen_Width, 0);
+    	x1 -= 100; 	
     }
 
     @Override

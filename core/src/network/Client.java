@@ -39,7 +39,9 @@ public class Client extends Thread
 			out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true); 
 		} catch (IOException e)
 		{
-			e.printStackTrace();
+			try { socket.close(); }
+			catch(Exception e1) { System.out.println(e1.getMessage());}
+			return;
 		}
 		
 		this.start();
@@ -49,6 +51,21 @@ public class Client extends Thread
 	{
 		while(true)
 		{
+			try
+			{
+				String line = in.readLine();
+				System.out.println(line);
+//				packetManagement(line);
+				
+			} catch (Exception e)
+			{
+			}
+			
 		}
+	}
+
+	private void packetManagement(String line)
+	{
+		
 	}
 }

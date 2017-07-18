@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 import entity.Destroyable;
 import entity.Player;
 import entity.Wall;
+import videogame.bonus.Bomb;
 
 public class GameConfig
 {
@@ -21,10 +22,8 @@ public class GameConfig
 	public static final int ROOM_COLUMN = 10;
 	public static final int CELL_HEIGHT = 6;
 	public static final int CELL_WIDTH = 9;
-	public static float volume = 1;
-	public static Music gameSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Atlas_rise.ogg"));
-	public static Music menuSoundtrack = Gdx.audio.newMusic(Gdx.files.internal("music/Given_up.ogg"));
-	// sound massimo un mega
+	public static boolean tornadoSound = false;
+	public static boolean tornadoSoundStop = false;
 	
 	public static int SCORE = 0;
 	public static int COINS = 1000;
@@ -41,6 +40,9 @@ public class GameConfig
 	public static int coinsMultiplier = 1;
 	public static int numBomb1 = 20;
 	public static int numBomb2 = 18;
+	public static boolean xplosion1 = false;
+	public static boolean xplosion2 = false;
+	
 	
 	public static int destroyedDesks = 0;
 	public static int destroyedChairs = 0;
@@ -57,9 +59,10 @@ public class GameConfig
 	public static boolean GAME_OVER = false;
 	public static boolean RIGHT = false;
 	public static boolean LEFT  = false;
-	public static boolean ON    = false;
+	public static boolean ON    =false;
 	public static boolean BACK  = false;
 	public static boolean HIT	= false;
+	public static Bomb bombXplosion;
 	
 	public static Player player; 
 	public static ArrayList<Player> players = new ArrayList<Player>();
@@ -72,6 +75,7 @@ public class GameConfig
 	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
+	public static boolean hitted = false;
 	
 	public static void reset()
 	{

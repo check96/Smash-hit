@@ -9,17 +9,32 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
+import com.badlogic.gdx.graphics.g3d.decals.Decal;
+import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
+import GameGui.TimeXplosion;
 import GameGui.HUD.Hud;
 import videogame.AI.Dijkstra;
 import videogame.Countdown;
@@ -50,19 +65,48 @@ public class GameScreen implements Screen
 	protected ArrayList<AnimationController> coinController;
 	protected String[] state = new String[4];
 	
-	public GameScreen()	{ }
+	protected Decal xplosion;
+	protected DecalBatch xplosionBatch;
+	protected TextureRegion xplosionRegion;
+	protected Texture xplosionTexture;
 	
+	protected Controller joystick;
+//	private final int A = 0;
+	private final int B = 1;
+//	private final int Y = 3;
+//	private final int X = 2;
+	private final int LB = 4;
+	private final int RB = 5;
+    private final int START = 7;
+	private boolean PAUSE = false;
+	private final int AXIS_LY = 0; //-1 is up | +1 is down
+	private final int AXIS_LX = 1; //-1 is left | +1 is right
+	private final int AXIS_RY = 2; //-1 is up | +1 is down
+	private final int AXIS_RX = 3; //-1 is left | +1 is right
+
+	public GameScreen() { }
+		
 	public GameScreen(GameManager _game)
 	{
 		game = _game;
+		for (Controller c : Controllers.getControllers()) 
+		{
+			if(c.getName().contains("XBOX") && c.getName().contains("360")) 
+				joystick = c;
+		}
 		
+		if(joystick != null)
+		{
+			System.out.println("joystick connected");
+			initJoystick();
+		}
+
 		state[0] = "hit";
 		state[1] = "bomb1";
 		state[2] = "bomb2";
 		state[3] = "tornado";
 		
-		GameConfig.gameSoundtrack.play();
-		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+		SoundManager.gameSoundtrack.play();
 		
 		world = new World();
 		batch = new ModelBatch();
@@ -71,6 +115,11 @@ public class GameScreen implements Screen
 		initCamera();
 		initEnvironment();
 		initAnimation();
+
+		xplosionTexture = new Texture("Icons/explosion1.png");
+		xplosionRegion = new TextureRegion(xplosionTexture);
+		xplosion = Decal.newDecal(xplosionRegion,true);		
+		xplosionBatch = new DecalBatch(new CameraGroupStrategy(cam));		
 		
 		bomb1Instance = new ModelInstance(game.mapGenerator.assets.bomb1);
 		bomb2Instance = new ModelInstance(game.mapGenerator.assets.bomb2);
@@ -78,6 +127,73 @@ public class GameScreen implements Screen
 		game.countdown.pause = false;
 		hud = new Hud();
 	}
+
+	private void initJoystick()
+	{
+		joystick.addListener(new ControllerAdapter()
+		{
+			@Override
+			public boolean buttonDown(Controller controller, int buttonIndex)
+			{
+				if(buttonIndex == B)		// B
+			{
+				GameConfig.HIT = true;
+				if(GameConfig.STATE.equals("hit"))
+				{
+//						SoundManager.hitSound.play(SoundManager.soundVolume);
+					hitAnimation = true;
+					hitTime = System.currentTimeMillis();
+				}
+			}
+			else if(buttonIndex == RB) //&& GameConfig.STATE !="tornado"
+			{
+				GameConfig.stateIndex++;
+				GameConfig.stateIndex %= 4;
+			
+				GameConfig.STATE = state[GameConfig.stateIndex];
+			}
+			else if(buttonIndex == LB) //&& GameConfig.STATE !="tornado"
+			{
+				GameConfig.stateIndex--;
+				
+				if(GameConfig.stateIndex < 0)
+					GameConfig.stateIndex = 3;
+				
+				GameConfig.STATE = state[GameConfig.stateIndex];
+			}
+			else if(buttonIndex == START)		// START
+				PAUSE = true;
+			return true;
+		}
+
+		@Override
+		public boolean axisMoved(Controller controller, int axisIndex, float value)
+		{
+		//			if(axisIndex == AXIS_RX)// && value == -1)
+		//				GameConfig.LEFT = true;
+		//			if(axisIndex == AXIS_RX)// && value == 1)
+		//				GameConfig.RIGHT = true;
+		//			if(axisIndex == AXIS_RY)// && value == -1)
+		//				GameConfig.ON = true;
+		//			if(axisIndex == AXIS_RY )//&& value == 1)
+		//				GameConfig.BACK = true;
+			
+			if(axisIndex == AXIS_LX && value == -1)
+			{
+				cam.direction.rotate(4,0,1,0);
+				degrees += 4;
+			}
+			if(axisIndex == AXIS_LX && value == 1)
+			{
+				cam.direction.rotate(-4,0,1,0);
+				degrees -= 4;
+			}
+			
+			return true;
+		}
+	});
+	
+}
 
 	protected void initAnimation()
 	{
@@ -139,29 +255,72 @@ public class GameScreen implements Screen
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
 		{
-			game.countdown.pause = true;
-			game.setScreen(new PauseScreen(game, this));
+			PAUSE = true;
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) //&& GameConfig.STATE !="tornado"
+		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) //&& GameConfig.STATE !="tornado"
 		{
 			GameConfig.stateIndex++;
 			GameConfig.stateIndex %= 4;
 		
 			GameConfig.STATE = state[GameConfig.stateIndex];
 		}
-		
-		
+		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) //&& GameConfig.STATE !="tornado"
+		{
+			GameConfig.stateIndex--;
+			
+			if(GameConfig.stateIndex < 0)
+				GameConfig.stateIndex = 3;
+			
+			GameConfig.STATE = state[GameConfig.stateIndex];
+		}
 	}
-		
+	
+	public void drawBonus()
+	{
+		if(GameConfig.bombXplosion != null)
+		{	
+			new TimeXplosion();
+			if(GameConfig.xplosion1)
+			{
+				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
+				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
+				xplosion.setScale(0.01f);
+				xplosionBatch.add(xplosion);	
+			}
+			else if(GameConfig.xplosion2)
+			{
+				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
+				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
+				xplosion.setScale(0.05f);
+				xplosionBatch.add(xplosion);	
+				
+			}
+		}
+	}
+
 	public void render(float delta) 
 	{
 //		System.out.println("elapsedTime   " + elapsedTime);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl20.glEnable(GL20.GL_BLEND);
+		
+		
 
-		handleInput();
+		if(joystick == null)
+			handleInput();
+
+		if(PAUSE)
+		{
+			PAUSE = false;
+			game.countdown.pause = true;
+			game.setScreen(new PauseScreen(game, this));
+		}
+
 		addAnimation();
 		handleAnimation();
+		handleSound();
 		world.update(delta);
 
 		// move player instance
@@ -257,6 +416,8 @@ public class GameScreen implements Screen
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));
 		}
+		drawBonus();
+		xplosionBatch.flush();
 	}
 
 	protected void addAnimation()
@@ -271,6 +432,40 @@ public class GameScreen implements Screen
 		{
 			coinController.add(new AnimationController(GameConfig.coins.get(i)));
 			coinController.get(i).setAnimation("Armature|ArmatureAction");
+		}
+	}
+	protected void handleSound()
+	{
+		if(GameConfig.tornadoSound)
+		{
+			SoundManager.vortexSound.loop(SoundManager.soundVolume);
+			GameConfig.tornadoSound = false;
+		}
+		else if(GameConfig.tornadoSoundStop)
+		{
+			SoundManager.vortexSound.stop();
+			GameConfig.tornadoSoundStop = false;
+		}
+		if(hitAnimation)
+		{
+			if(state[GameConfig.stateIndex] == "hit")
+			{
+				if(GameConfig.HIT && GameConfig.hitted)
+				{
+					SoundManager.hitSound.play();
+				}
+				else if(!GameConfig.HIT)
+				{
+					SoundManager.hitSound.stop();
+					GameConfig.hitted = false;
+				}
+					
+			}
+			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
+			{
+				SoundManager.explosionSound.play(SoundManager.soundVolume);
+			}
+				
 		}
 	}
 
@@ -294,6 +489,7 @@ public class GameScreen implements Screen
 			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 		
+		
 		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			if(state[GameConfig.stateIndex] != "tornado")
@@ -312,11 +508,12 @@ public class GameScreen implements Screen
 			}
 			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
 			{
+				
 				playerController.setAnimation("Armature|bomb",-1);
 				playerController.update(Gdx.graphics.getDeltaTime());
 			}
 		}
-		
+
 		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
 		{
 			playerController.setAnimation("Armature|ArmatureAction",-1);

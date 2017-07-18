@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.Shop;
+import GameGui.SoundManager;
 import network.NetworkScreen;
 import videogame.GameConfig;
 
@@ -99,14 +100,14 @@ public class StartScreen implements Screen
         
         table.add(singlePlayer).expandX().padTop(10);
         table.row();
-       // table.add(multiPlayer).expandX().padTop(10);
+        table.add(multiPlayer).expandX().padTop(10);
         table.row();
         table.add(editor).expandX().padTop(10);
         table.row();
         table.add(options).expandX().padTop(10);
         stage.addActor(table);
         
-        GameConfig.menuSoundtrack.play();
+        SoundManager.menuSoundtrack.play();
     }
  
     public void render(float delta)

@@ -68,12 +68,12 @@ public class World
 		if(GameConfig.STATE.equals("bomb1"))
 		{
 			if(!(bomb instanceof Bomb) && GameConfig.numBomb1 > 0)
-				bomb = new Bomb(false);
+				bomb = new Bomb();
 		}
 		else if(GameConfig.STATE.equals("bomb2"))
 		{
 			if(!(bomb instanceof Bomb) && GameConfig.numBomb2 > 0)
-				bomb = new Bomb(true);
+				bomb = new Bomb();
 		}
 		if(GameConfig.STATE.equals("tornado"))
 		{
@@ -85,8 +85,9 @@ public class World
 		{
 			if( GameConfig.STATE.equals("hit"))
 				 hit(delta);
-			else if(GameConfig.STATE.equals("bomb1") && GameConfig.numBomb1 > 0)
+			else if(GameConfig.STATE.equals("bomb1") && GameConfig.numBomb1 > 0 && bomb.isUpgrade() != true)
 			{
+				bomb.setUpgrade(false);
 				if(!bomb.inAction())
 				{
 					bomb.shoot();
@@ -95,6 +96,7 @@ public class World
 			}
 			else if(GameConfig.STATE.equals("bomb2") && GameConfig.numBomb2 > 0)
 			{
+				bomb.setUpgrade(true);
 				if(!bomb.inAction())
 				{
 					bomb.shoot();
@@ -114,11 +116,13 @@ public class World
 
 		    	if(!bomb.isUpgrade())
 		    	{
+		    		GameConfig.xplosion1 = true;
 					if(map[x][y] != null)
 						delete(x,y);		
 		    	}
 		    	else
 		    	{
+		    		GameConfig.xplosion2 = true;
 		    		for(int i = x-1; i <= x+1; i++)
 		    			for(int j = y-1; j <= y+1; j++)
 		    			{
@@ -127,9 +131,10 @@ public class World
 		    					if(map[i][j] != null)
 		    						delete(i,j);		
 		    				}
-		    			}
+		    			}	
 		    	}
-				bomb = null;
+		    	GameConfig.bombXplosion =bomb;
+		    	bomb = null;
 			}
 		}
 	}
@@ -163,6 +168,7 @@ public class World
 		{
 			if(GameConfig.player.collide(map[i][j]));
 			{
+				GameConfig.hitted = true;
 				if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				hit(delta);
 				else

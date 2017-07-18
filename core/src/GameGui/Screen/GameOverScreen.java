@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.Shop;
+import GameGui.SoundManager;
 import videogame.GameConfig;
 
 public class GameOverScreen implements Screen 
@@ -31,7 +32,7 @@ public class GameOverScreen implements Screen
 	{
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-		
+		GameConfig.reset();
 		GameConfig.coinsMultiplier = 1;
 		
 		spriteBatch = new SpriteBatch();
@@ -50,8 +51,8 @@ public class GameOverScreen implements Screen
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-      			GameConfig.gameSoundtrack.stop();
-            	GameConfig.menuSoundtrack.play();
+      			SoundManager.gameSoundtrack.stop();
+      			SoundManager.menuSoundtrack.play();
             	game.setScreen(game.startScreen);
 	            return true;
             }
@@ -63,8 +64,8 @@ public class GameOverScreen implements Screen
 		retry.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-      			GameConfig.reset();
-            	GameConfig.gameSoundtrack.stop();
+      			
+      			SoundManager.gameSoundtrack.stop();
             	game.setScreen(new Shop(game));
 	            return true;
             }

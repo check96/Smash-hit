@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
 import videogame.GameConfig;
 
 public class PauseScreen implements Screen
@@ -34,14 +35,18 @@ public class PauseScreen implements Screen
 	private boolean BACK = false;
 	private boolean FULLSCREEN = false;
 	
-	private Slider volume;
+	private Slider musicVolume;
+	private Slider soundVolume;
 	private TextButton back;
 	private TextButton quit;
 	private CheckBox on_off;
 	private Label musicLabel;
+	private Label soundLabel;
 	private Label fullscreen;
+
 	private SpriteBatch spriteBatch;
 	private Texture background;
+	
 
 	public PauseScreen(GameManager _game, GameScreen _screen)
 	{
@@ -63,26 +68,43 @@ public class PauseScreen implements Screen
 		table.center();
 		table.setFillParent(true);
 		
-		volume = new Slider(0, 1, 0.1f, false, skin);
-		volume.setValue(GameConfig.volume);
-		volume.addListener(new ChangeListener() {
+		musicVolume = new Slider(0, 1, 0.1f, false, skin);
+		musicVolume.setValue(SoundManager.musicVolume);
+		musicVolume.addListener(new ChangeListener() {
 
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				GameConfig.volume = volume.getValue();
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				SoundManager.musicVolume = musicVolume.getValue();
 				
-            	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
-            	GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+            	SoundManager.menuSoundtrack.setVolume(SoundManager.musicVolume);
+            	SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
             	
-            	game.options.putFloat("volume", GameConfig.volume);
+            	game.options.putFloat("musicVolume", SoundManager.musicVolume);
 				game.options.flush();
 			}
 		});
+		
+		soundVolume = new Slider(0, 1, 0.1f, false, skin);
+		soundVolume.setValue(SoundManager.soundVolume);
+		soundVolume.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				SoundManager.musicVolume = musicVolume.getValue();
+				
+            	game.options.putFloat("soundVolume", SoundManager.soundVolume);
+				game.options.flush();
+			}
+		});
+
 		
 		FULLSCREEN = game.options.getBoolean("fullscreen",false);
 		table = new Table(skin);
         table.setFillParent(true);
         
+        soundLabel = new Label("SOUND", new Label.LabelStyle(font, Color.BLACK));
 		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.BLACK));
 		
 		on_off = new CheckBox("", skin);
@@ -125,7 +147,10 @@ public class PauseScreen implements Screen
         });
 		
 		table.add(musicLabel).expandX();
-		table.add(volume).expandX();
+		table.add(musicVolume).expandX();
+		table.row();
+		table.add(soundLabel).expandX();
+		table.add(soundVolume).expandX();
 		table.row();
 		table.add(fullscreen).expandX();
 		table.add(on_off).expandX();
@@ -197,5 +222,4 @@ public class PauseScreen implements Screen
 	{
 		stage.dispose();
 	}
-
 }

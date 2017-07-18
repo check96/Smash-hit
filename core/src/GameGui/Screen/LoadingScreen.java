@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
 import network.MultiplayerScreen;
 import videogame.GameConfig;
 
@@ -24,7 +25,7 @@ public class LoadingScreen implements Screen
 	
 	public LoadingScreen(GameManager _game)
 	{
-		GameConfig.menuSoundtrack.stop();
+		SoundManager.menuSoundtrack.stop();
 
 		game = _game;
 		
@@ -42,7 +43,7 @@ public class LoadingScreen implements Screen
 	
 	public LoadingScreen(GameManager _game, String username)
 	{
-		GameConfig.menuSoundtrack.stop();
+		SoundManager.menuSoundtrack.stop();
 
 		this.game = _game;
 		this.username = username;

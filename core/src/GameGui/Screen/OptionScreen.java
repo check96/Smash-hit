@@ -22,16 +22,20 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
 import videogame.GameConfig;
 
 public class OptionScreen implements Screen 
 {	
 	private GameManager game;
 	private Stage stage;
-	private Slider volume;
+	private Slider musicVolume;
+	private Slider soundVolume;
 	private TextButton back;
 	private Label musicLabel;
 	private Label fullscreen;
+	private Label soundLabel;
+	
 	private Table table;
 	private CheckBox on_off;
 	private boolean FULLSCREEN = true;
@@ -57,26 +61,44 @@ public class OptionScreen implements Screen
     	
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
 		
-		volume = new Slider(0, 1, 0.1f, false, skin);
-		volume.setValue(GameConfig.volume);
-		volume.addListener(new ChangeListener() {
-
+		soundLabel = new Label("SOUND", new Label.LabelStyle(font, Color.BLACK));
+		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.BLACK));
+		
+		musicVolume = new Slider(0, 1, 0.1f, false, skin);
+		musicVolume.setValue(SoundManager.musicVolume);
+		musicVolume.addListener(new ChangeListener()
+		{
 			@Override
 			public void changed(ChangeEvent event, Actor actor)
 			{
-				GameConfig.volume = volume.getValue();
+				SoundManager.musicVolume = musicVolume.getValue();
 				
-            	GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
-            	GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
+				SoundManager.menuSoundtrack.setVolume(SoundManager.musicVolume);
+				SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
             	
-            	game.options.putFloat("volume", GameConfig.volume);
+            	game.options.putFloat("musicVolume", SoundManager.musicVolume);
 				game.options.flush();
 			}
 		});
 		
+		soundVolume = new Slider(0, 1, 0.1f, false, skin);
+		soundVolume.setValue(SoundManager.soundVolume);
+		soundVolume.addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				SoundManager.soundVolume = soundVolume.getValue();
+            	
+            	game.options.putFloat("soundVolume", SoundManager.soundVolume);
+				game.options.flush();
+			}
+		});
+
 		table = new Table(skin);
         table.setFillParent(true);
         
+		soundLabel = new Label("SOUND", new Label.LabelStyle(font, Color.WHITE));
 		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.WHITE));
 		
 		on_off = new CheckBox("", skin);
@@ -112,7 +134,10 @@ public class OptionScreen implements Screen
         back.setPosition(GameConfig.Screen_Width*450/GameConfig.width, GameConfig.Screen_Height*100/GameConfig.height);
         
 		table.add(musicLabel).expandX();
-		table.add(volume).expandX();
+		table.add(musicVolume).expandX();
+		table.row();
+		table.add(soundLabel).expandX();
+		table.add(soundVolume).expandX();
 		table.row();
 		table.add(fullscreen).expandX();
 		table.add(on_off).expandX();

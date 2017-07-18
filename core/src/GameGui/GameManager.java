@@ -27,11 +27,12 @@ public class GameManager extends Game
 		
 		GameConfig.Screen_Width = options.getInteger("screen_width",1024);
 		GameConfig.Screen_Height = options.getInteger("screen_height",600);
-		GameConfig.volume = options.getFloat("volume",1);
+		SoundManager.musicVolume = options.getFloat("musicVolume",1);
+		SoundManager.soundVolume = options.getFloat("soundVolume",1);
 		
-		GameConfig.menuSoundtrack.setVolume(GameConfig.volume);
-		GameConfig.gameSoundtrack.setVolume(GameConfig.volume);
-		
+		SoundManager.menuSoundtrack.setVolume(SoundManager.musicVolume);
+		SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
+	
 		mapGenerator = new MapGenerator(this);
 		startScreen = new StartScreen(this);
 		

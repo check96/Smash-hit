@@ -17,15 +17,14 @@ public class Bomb extends AbstractGameObject
 	private boolean shooted = false;
 	private boolean upgrade = false;
 	
-	public Bomb(boolean upgrade)
+	public Bomb()
 	{
 		super(GameConfig.player.getPosition(),null);
-		this.upgrade = upgrade;
 	}
-
-	public final boolean inAction() 	{return active;}
-	public final boolean shooted()		{return shooted;}
-	public final boolean isUpgrade()	{return upgrade;}
+	public void setUpgrade(boolean _upgrade)	{upgrade = _upgrade;}
+	public final boolean inAction() 			{return active;}
+	public final boolean shooted()				{return shooted;}
+	public final boolean isUpgrade()			{return upgrade;}
 	
 	public void manageBomb(float delta)
 	{
@@ -72,7 +71,7 @@ public class Bomb extends AbstractGameObject
 		direction = GameConfig.DIRECTION;
 		speed = new Vector3(velocity.x*direction.x, velocity.y*direction.y, velocity.z*direction.z);
 	}
-	
+
 	private boolean checkWallCollision()
 	{
 		synchronized (GameConfig.walls)
