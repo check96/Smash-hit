@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import GameGui.Screen.GameScreen;
 import entity.Destroyable;
 import entity.Wall;
+import network.MultiplayerScreen;
 import videogame.GameConfig;
 
 public class AssetHandler
@@ -118,11 +119,24 @@ public class AssetHandler
 		return (modelBuilder.end());
 	}                        
 	
-	// load player and floor
+	// load player 
 	public void loadPlayer()	
 	{
+		if(!GameConfig.MULTIPLAYER)
+		{
 			GameScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
 			GameScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+			
+			GameScreen.playerInstance2 = new ModelInstance(manager.get(player, Model.class));
+			GameScreen.playerInstance2.transform.setToTranslation(GameConfig.player2.getPosition());
+			
+		}
+		else
+		{
+			MultiplayerScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
+			MultiplayerScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+		}
+			
 	}
 
 	// load model instances

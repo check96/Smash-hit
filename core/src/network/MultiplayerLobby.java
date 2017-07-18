@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import GameGui.GameManager;
+import GameGui.SoundManager;
 import GameGui.Screen.LoadingScreen;
 import videogame.GameConfig;
 
@@ -30,6 +31,12 @@ public class MultiplayerLobby implements Screen
        
         if(GameConfig.server != null)
         	new ServerLaunchThread().start();
+
+        synchronized(game.mapGenerator)
+		{
+        	game.mapGenerator.pause = false;
+        	game.mapGenerator.notify();
+		}
 	}
 
 	@Override
@@ -43,7 +50,7 @@ public class MultiplayerLobby implements Screen
         spriteBatch.end();
         
         if(ready)
-        	game.setScreen(new LoadingScreen(game));
+        	game.setScreen(multiScreen);
 	}
 
 	@Override

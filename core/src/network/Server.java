@@ -51,43 +51,9 @@ public class Server extends Thread
 					c.start();
 				}
 				catch(Exception e){}
-				
 		}
-			
-		for(int i = 0; i<clients.size(); i++)
-		{
-				ServerThread s = clients.get(i);
-				s.out.write("ciao\n");
-				s.out.flush();
-		}
+		
+		clients.get(0).out.println("loadMap");
 	}
 }
-//			for(int i = 0; i < clients.size(); i++)
-//			{
-//				if(!clients.get(i).isConnected())
-//				{
-//					System.out.println("rimosso");
-//					clients.remove(i);
-//				}
-//					
-//			}
-//			
-//			try
-//			{
-//				socket = server.accept();
-//				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-//				out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-//			} catch (Exception e) {}
-//			System.out.println("client "+ socket.getPort() + "has Connected");
-//			
-//			String line;
-//			try 
-//			{
-//				line = in.readLine();
-//				System.out.println("line is: " +line);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//    }
 

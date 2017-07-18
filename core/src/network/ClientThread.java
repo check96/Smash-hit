@@ -8,18 +8,20 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import videogame.Countdown;
+
 public class ClientThread extends Thread
 {
-	public Socket s;
+	public Socket socket;
 	public BufferedReader in;
 	public PrintWriter out;
 	
-	public ClientThread(Socket _s) 
+	public ClientThread(Socket _socket) 
 	{
-		s =_s;
+		socket = _socket;
 		try {
-			in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			out = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -29,16 +31,38 @@ public class ClientThread extends Thread
 	{
 		while(true)
 		{
+			String line;
 			try {
- 				String line = in.readLine();
- 				System.out.println("client "+line);
- 				out.write("suca\n");
- 				out.flush();
+ 				line = in.readLine();
+ 				packetManager(line);
+ 			
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
 		}
 	}
+	
+	private void packetManager(String line)
+	{
+		String[] packet = line.split(",");
+		if(packet[0].equals("loadMap"))
+		{
+			
+		}
+		else if(packet[0].equals("move"))
+		{
+			
+		}
+		else if(packet[0].equals("destroy"))
+		{
+			
+		}
+		else if(packet[0].equals("time"))
+		{
+			Countdown.increment(5);
+		}
+	} 
 	
 	
 }

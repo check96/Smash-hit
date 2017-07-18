@@ -74,7 +74,9 @@ public abstract class AbstractGameObject implements ICollidable
 
 	private boolean playerCollide(AbstractGameObject box)
 	{
-				return false;
+		if(Position.dst(box.Position) < radius)
+			return true;
+		return false;
 	}
 	
 	

@@ -36,7 +36,7 @@ public class ServerThread extends Thread
 		try
 		{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
 		} catch (IOException e)
 		{
 			try { socket.close(); }

@@ -11,6 +11,7 @@ import GameGui.GameManager;
 import editor.Editor;
 import entity.Destroyable;
 import entity.Objects;
+import entity.Player;
 import entity.Wall;
 import entity.Walls;
 
@@ -179,6 +180,7 @@ public class MapGenerator extends Thread
 		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		createWalls();
+		
 		
 		//	 ^
 		// i |	  j ->

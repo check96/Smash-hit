@@ -20,7 +20,7 @@ public class World
 	public World()
 	{ 
 		GameConfig.LOCAL_COINS = 0;
-		
+		GameConfig.player2 = new Player(new Vector3(0,-4.8f,30), 4);
 		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,20));
 		GameConfig.player.setWeapon(weapon);
@@ -158,6 +158,9 @@ public class World
 
 	protected void checkCollsion(float delta)
 	{
+		if(GameConfig.player.collide(GameConfig.player2))
+			reaction(delta);
+		
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	

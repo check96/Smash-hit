@@ -23,24 +23,23 @@ public class Hud implements Disposable
     public Stage vortexStage;
    
     //Scene2D widgets
-    private Label roomLabel;
-    private Label scoreLabel;
-    private Label timeLabel;
-    private Label moneyLabel;
+    protected Label roomLabel;
+    protected Label scoreLabel;
+    protected Label timeLabel;
+    protected Label moneyLabel;
     
-    private Label levelLabel;
-    private Label pointsLabel;
-    private Label countdownLabel;
-    private Label coinsLabel;
-    private Label bombLabel;
+    protected Label levelLabel;
+    protected Label pointsLabel;
+    protected Label countdownLabel;
+    protected Label coinsLabel;
+    protected Label bombLabel;
     
     public SpriteBatch spriteBatch;
-    private Texture bonus;
-    private Texture coin;
-    private Texture vortex;
-    private Image vortexImage;
-    private float x1 = 1;
-    private float x2 = GameConfig.Screen_Width;
+    protected Texture bonus;
+    protected Texture coin;
+    protected Texture vortex;
+    protected Image vortexImage;
+    protected float x1 = 1;
     
     public Hud()
     {
