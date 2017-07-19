@@ -14,16 +14,13 @@ import java.net.UnknownHostException;
 import GameGui.GameManager;
 import network.packet.Packet;
 import network.packet.PacketType;
-import network.packet.hitPacket;
-import network.packet.loginPacket;
-import network.packet.movePacket;
+import network.packet.HitPacket;
+import network.packet.LoadPacket;
+import network.packet.MovePacket;
 
 public class ServerThread extends Thread
 {
-	private GameManager game;
-	private int port; 
 	private Socket socket;
-	private String ip;
 	public BufferedReader in;
 	public PrintWriter out;
 	private boolean connected = true;

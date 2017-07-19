@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import GameGui.GameManager;
+import network.packet.Packet;
 
 public class Server extends Thread
 {
@@ -54,6 +55,11 @@ public class Server extends Thread
 		}
 		
 		clients.get(0).out.println("loadMap");
+	}
+	
+	public void sendData(Packet packet)
+	{
+		
 	}
 }
 

@@ -260,6 +260,7 @@ public class World
 		GameConfig.player.move(delta);
 		GameConfig.player.move(delta);
 		
+		System.out.println(GameConfig.player.getWeapon().getDamage());
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
@@ -274,6 +275,7 @@ public class World
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
+//    			System.out.println(map[i][j]);
     			if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else

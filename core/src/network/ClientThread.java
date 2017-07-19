@@ -46,7 +46,7 @@ public class ClientThread extends Thread
 	private void packetManager(String line)
 	{
 		String[] packet = line.split(",");
-		if(packet[0].equals("loadMap"))
+		if(packet[0].equals("load"))
 		{
 			
 		}
@@ -54,7 +54,7 @@ public class ClientThread extends Thread
 		{
 			
 		}
-		else if(packet[0].equals("destroy"))
+		else if(packet[0].equals("hit"))
 		{
 			
 		}

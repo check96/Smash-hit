@@ -1,5 +1,6 @@
 package videogame;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,11 +10,13 @@ import com.badlogic.gdx.math.Vector3;
 import GameGui.AssetHandler;
 import GameGui.GameManager;
 import editor.Editor;
+import editor.PreviewPanel;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Player;
 import entity.Wall;
 import entity.Walls;
+import network.packet.LoadPacket;
 
 public class MapGenerator extends Thread
 {
@@ -67,13 +70,13 @@ public class MapGenerator extends Thread
 			GameConfig.walls.add(new Wall(new Vector3((-4.3f + GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+(GameConfig.level-2)*GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,0,-2+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
 			
 			//create front upper wall
-			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,17.4f,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_UPPER_WALL));
+			GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,17.4f,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_UPPER_WALL));
 			
 			//create front left wall
-			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-52 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_LEFT_WALL));
+			GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,-52 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_LEFT_WALL));
 			
 			//create front right wall
-			GameConfig.walls.add(new Wall(new Vector3((-4 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,54 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_RIGHT_WALL));
+			GameConfig.walls.add(new Wall(new Vector3((-5 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT)+ position,0,54 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_RIGHT_WALL));
 
 			//create ceiling
 			GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
@@ -123,7 +126,7 @@ public class MapGenerator extends Thread
 			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
 			
 			// 	create door
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
 					-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 			// load tools model
@@ -252,13 +255,31 @@ public class MapGenerator extends Thread
 		
 		// 	create door
 		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
-		-4 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
+		-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
+		
+		if(GameConfig.MULTIPLAYER)
+		{
+			String send = "";
+			
+			for(int i = 0; i < GameConfig.newTools.length; i++)
+				for(int j = 0; j < GameConfig.newTools[i].length; j++)
+					if(GameConfig.newTools[i][j] == null)
+						send+=0;
+					else
+						send += Integer.toString(GameConfig.newTools[i][j].type.id);
+			
+			LoadPacket packet = new LoadPacket(send);
+			
+		}
+		
+		
 		// load tools model
 		assets.loadTools();
-		
+
 		// add new tools to tools
-		upgrade();				
+		upgrade();		
+		
 	}
 
 	
