@@ -29,6 +29,8 @@ public class LoadingScreen implements Screen
 
 		game = _game;
 		
+		game.countdown.start();
+		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/loading_background.png"));
         
@@ -36,8 +38,7 @@ public class LoadingScreen implements Screen
 		
         synchronized(game.mapGenerator)
 		{
-        	game.mapGenerator.pause = false;
-        	game.mapGenerator.notify();
+    		game.mapGenerator.start();
 		}
 	}
 	

@@ -7,6 +7,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import videogame.Countdown;
+import videogame.GameConfig;
+
 public class ServerThread extends Thread
 {
 	private Socket socket;
@@ -51,9 +54,25 @@ public class ServerThread extends Thread
 		return connected;
 	}
 	
-	private void packetManagement(String line)
+	private synchronized void packetManagement(String line)
 	{
+		String[] packet = line.split(",");
 		
+		if(packet[0].equals("move"))
+		{
+			String send = "";
+			for(int i = 0; i < packet.length; i++)
+				send += packet[i];
+			GameConfig.server.sendData(send);
+		}
+		else if(packet[0].equals("hit"))
+		{
+			
+		}
+		else if(packet[0].equals("time"))
+		{
+			Countdown.increment(5);
+		}
 	}
 	
 	public void disconnect()

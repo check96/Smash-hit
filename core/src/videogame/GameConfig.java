@@ -79,6 +79,7 @@ public class GameConfig
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	public static boolean hitted = false;
+	public static String username = "";
 	
 	public static void reset()
 	{

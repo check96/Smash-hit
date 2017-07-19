@@ -45,7 +45,8 @@ public class NetworkScreen implements Screen {
 	private TextField port;
 	private TextField numPlayers;
 
-	public NetworkScreen(GameManager _game) {
+	public NetworkScreen(GameManager _game)
+	{
 		this.game = _game;
 		stage = new Stage(new ScreenViewport());
 		spriteBatch = new SpriteBatch();
@@ -201,7 +202,8 @@ public class NetworkScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) 
 			{
-				game.setScreen(new MultiplayerLobby(game, username.getText(), ip.getText(), Integer.parseInt(port.getText())));
+				GameConfig.username = username.getText();
+				game.setScreen(new MultiplayerLobby(game, ip.getText(), Integer.parseInt(port.getText())));
 				return true;
 			}
 		});

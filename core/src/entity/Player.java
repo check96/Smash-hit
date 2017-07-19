@@ -27,44 +27,44 @@ public class Player extends AbstractGameObject
 	public final Weapon getWeapon() 	{return weapon;}
 	public final String getUsername() 	{return username;}
 	
-	public void move(float delta)
+	public void move(float delta, Vector3 direction)
 	{	
 		if(GameConfig.RIGHT)
-			moveRight(delta);
+			moveRight(delta,direction);
 		if(GameConfig.LEFT)	
-			moveLeft(delta);
+			moveLeft(delta, direction);
 		if(GameConfig.ON)
-			moveOn(delta);
+			moveOn(delta, direction);
 		if(GameConfig.BACK)
-			moveBack(delta);
+			moveBack(delta, direction);
 		
 		weapon.move(this);
 	}
 	
-	public void moveRight(float delta)
+	public void moveRight(float delta, Vector3 direction)
 	{
-		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
 		Position.x -= speed.z * delta;	
 		Position.z += speed.x * delta;
 	}
 	
-	public void moveLeft(float delta)
+	public void moveLeft(float delta, Vector3 direction)
 	{
-		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
 		Position.x += speed.z * delta;
 		Position.z -= speed.x * delta; 
 	}
 		
-	public void moveOn(float delta)
+	public void moveOn(float delta, Vector3 direction)
 	{
-		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
 		Position.x += speed.x * delta;
 		Position.z += speed.z * delta;
 	}
 	
-	public void moveBack(float delta)
+	public void moveBack(float delta, Vector3 direction)
 	{
-		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
 		Position.x -= speed.x * delta;	
 		Position.z -= speed.z * delta;
 	}

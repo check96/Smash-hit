@@ -38,10 +38,6 @@ public class StartScreen implements Screen
         spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/menu_background.png"));
 
-        game.mapGenerator.assets.loadModels();
-		game.mapGenerator.start();
-		game.countdown.start();
-		
         editorScreen = new EditorScreen(game);
 		optionScreen = new OptionScreen(game);
 

@@ -23,10 +23,13 @@ public class MapGenerator extends Thread
 	public AssetHandler assets;
 	private GameManager game;
 	public boolean pause = true;
+	
 	public MapGenerator(GameManager _game)
 	{
 		assets = new AssetHandler();
 		game = _game;
+		pause = false;
+		assets.loadModels();
 	}
 	
 	public void run()
@@ -35,18 +38,17 @@ public class MapGenerator extends Thread
 		{
 			if(!pause )
 			{
-				if(!GameConfig.EDITOR || (GameConfig.MULTIPLAYER && GameConfig.isServer))
-					createRoom();
-				else if(GameConfig.EDITOR)			// load editor map
-				{
+				if((!GameConfig.EDITOR && !GameConfig.MULTIPLAYER) || ( GameConfig.MULTIPLAYER && GameConfig.isServer))
+			  		createRoom();
+				else if((GameConfig.EDITOR && !GameConfig.MULTIPLAYER))
+			  	{
 					GameConfig.EDITOR = false;
 					for(int i = 1; i <= Editor.numLevels; i++)
 					{
 						String line = game.editorLevels.getString("level"+i);
 						loadRoom(line);
 					}
-
-				}
+			  	}
 			}
 
 			synchronized(this)
@@ -269,8 +271,7 @@ public class MapGenerator extends Thread
 					else
 						send += Integer.toString(GameConfig.newTools[i][j].type.id);
 			
-			LoadPacket packet = new LoadPacket(send);
-			
+			GameConfig.server.sendData(new LoadPacket(send));
 		}
 		
 		

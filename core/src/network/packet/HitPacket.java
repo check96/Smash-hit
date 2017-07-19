@@ -1,7 +1,6 @@
 package network.packet;
 
-import network.ServerThread;
-import network.Server;
+import videogame.GameConfig;
 
 public class HitPacket extends Packet 
 {
@@ -10,6 +9,7 @@ public class HitPacket extends Packet
 
 	public HitPacket(int _i, int _j)
 	{
+		username = GameConfig.username;
 		i = _i;
 		j = _j;
 	}

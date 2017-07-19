@@ -34,7 +34,7 @@ public class World
 			map = GameConfig.tools.get(GameConfig.actualLevel-1);
 		}
 		
-		GameConfig.player.move(delta);
+		GameConfig.player.move(delta, GameConfig.DIRECTION);
 		checkCollsion(delta);
 		
 		GameConfig.ON = false;
@@ -179,13 +179,13 @@ public class World
 	protected void reaction(float delta)
 	{
 		if(GameConfig.ON)
-			GameConfig.player.moveBack(delta);
+			GameConfig.player.moveBack(delta, GameConfig.DIRECTION);
 		else if(GameConfig.BACK)
-			GameConfig.player.moveOn(delta);
+			GameConfig.player.moveOn(delta, GameConfig.DIRECTION);
 		else if(GameConfig.LEFT)
-			GameConfig.player.moveRight(delta);
+			GameConfig.player.moveRight(delta, GameConfig.DIRECTION);
 		else if(GameConfig.RIGHT)
-			GameConfig.player.moveLeft(delta);
+			GameConfig.player.moveLeft(delta, GameConfig.DIRECTION);
 	}
 
 	protected void delete(int i, int j)
@@ -228,14 +228,14 @@ public class World
 	
 	protected void hit(float delta)
 	{
-		GameConfig.player.moveOn(delta);
-		GameConfig.player.moveOn(delta);
+		GameConfig.player.moveOn(delta, GameConfig.DIRECTION);
+		GameConfig.player.moveOn(delta, GameConfig.DIRECTION);
 		
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
-		GameConfig.player.moveBack(delta);
-		GameConfig.player.moveBack(delta);
+		GameConfig.player.moveBack(delta, GameConfig.DIRECTION);
+		GameConfig.player.moveBack(delta, GameConfig.DIRECTION);
 		
 		// decrease tool's life
     	if(map[i][j] instanceof Destroyable)

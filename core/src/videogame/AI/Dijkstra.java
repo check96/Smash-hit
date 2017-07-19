@@ -141,8 +141,6 @@ public class Dijkstra
 				end = v;
 			else if(v.x == clockX && v.y == clockY)
 				clock = v;
-			
-			System.out.println(clockX+"   "+clockY);
 		}
     }
     

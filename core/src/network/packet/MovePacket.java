@@ -1,20 +1,25 @@
 package network.packet;
 
-import network.ServerThread;
-import network.Server;
+import com.badlogic.gdx.math.Vector3;
+
+import videogame.GameConfig;
 
 public class MovePacket extends Packet
 {
-	private float x, y, z;
-	public MovePacket(float _x, float _y, float _z)
+	private float x,y,z;
+	private String key;
+	
+	public MovePacket(Vector3 direction, String _key)
 	{
-		x = _x;
-		y = _y;
-		z = _z;
+		x = direction.x;
+		y = direction.y;
+		z = direction.z;
+		key = _key;
+		username = GameConfig.username;;
 	}
 		
 	@Override
-	public String toString() {return ("move,"+x+","+y+","+z);}
+	public String toString() {return ("move," + username + "," + key + "," + x + "," + y + "," + z);}
 	
 	
 }

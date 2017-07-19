@@ -1,11 +1,9 @@
 package network;
 
 import java.io.IOException;
-
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,32 +14,21 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.decals.CameraGroupStrategy;
-import com.badlogic.gdx.graphics.g3d.decals.Decal;
-import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.math.Quaternion;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
-import GameGui.TimeXplosion;
-import GameGui.HUD.Hud;
 import GameGui.HUD.MultiplayerHUD;
 import GameGui.Screen.GameOverScreen;
 import GameGui.Screen.PauseScreen;
+import network.packet.MovePacket;
 import videogame.Countdown;
 import videogame.GameConfig;
-import videogame.World;
-import videogame.AI.Dijkstra;
-import videogame.AI.Vertex;
-import videogame.bonus.Bomb;
 
 public class MultiplayerScreen implements Screen 
 {
@@ -49,29 +36,20 @@ public class MultiplayerScreen implements Screen
 	protected Camera cam;
 	protected ModelBatch batch;
 	public static ModelInstance playerInstance;
-	private ModelInstance bomb1Instance;
-	private ModelInstance bomb2Instance;
-	private ArrayList<ModelInstance> hints;
 	protected Environment environment;
-	protected World world;
+	protected MultiplayerWorld world;
 	protected int degrees = 90;
 	protected long hitTime = 0;
 	protected long startTime = 0;
-	protected float elapsedTime = 0;
 	protected boolean hitAnimation = false;
-	private Hud hud;
+	private MultiplayerHUD hud;
 	protected AnimationController playerController;
 	protected ArrayList<AnimationController> destroyedController;
 	protected ArrayList<AnimationController> coinController;
 	protected String[] state = new String[4];
-	private String username;
 	private Socket socket;
-	private ClientThread m;
-	protected Decal xplosion;
-	protected DecalBatch xplosionBatch;
-	protected TextureRegion xplosionRegion;
-	protected Texture xplosionTexture;
-	
+	private ClientThread client;
+
 	protected Controller joystick;
 //	private final int A = 0;
 	private final int B = 1;
@@ -88,20 +66,20 @@ public class MultiplayerScreen implements Screen
 
 	public MultiplayerScreen() { }
 		
-	public MultiplayerScreen(GameManager _game, String username, String ip, int port)
+	public MultiplayerScreen(GameManager _game, String ip, int port)
 	{
 		try {
 			socket = new Socket(ip, port);
-			m = new ClientThread(socket);
-			m.start();
+			client = new ClientThread(socket);
+			client.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		this.username = username;
 		this.game = _game;
+		
 		for (Controller c : Controllers.getControllers()) 
 		{
 			if(c.getName().contains("XBOX") && c.getName().contains("360")) 
@@ -114,14 +92,9 @@ public class MultiplayerScreen implements Screen
 			initJoystick();
 		}
 
-		state[0] = "hit";
-		state[1] = "bomb1";
-		state[2] = "bomb2";
-		state[3] = "tornado";
-		
 		SoundManager.gameSoundtrack.play();
 		
-		world = new World();
+		world = new MultiplayerWorld();
 		batch = new ModelBatch();
 
 		game.mapGenerator.assets.loadPlayer();
@@ -129,16 +102,8 @@ public class MultiplayerScreen implements Screen
 		initEnvironment();
 		initAnimation();
 
-		xplosionTexture = new Texture("Icons/explosion1.png");
-		xplosionRegion = new TextureRegion(xplosionTexture);
-		xplosion = Decal.newDecal(xplosionRegion,true);		
-		xplosionBatch = new DecalBatch(new CameraGroupStrategy(cam));		
-		
-		bomb1Instance = new ModelInstance(game.mapGenerator.assets.bomb1);
-		bomb2Instance = new ModelInstance(game.mapGenerator.assets.bomb2);
-		
 		game.countdown.pause = false;
-		hud = new Hud();
+		hud = new MultiplayerHUD();
 	}
 
 	private void initJoystick()
@@ -235,28 +200,39 @@ public class MultiplayerScreen implements Screen
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-		hints = new ArrayList<ModelInstance>();
 	}
 
 	public void handleInput() 
 	{
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
+		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"left").toString());
 			GameConfig.LEFT = true;
+		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.D))
+		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"right").toString());
 			GameConfig.RIGHT = true;
+		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.W))
+		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"on").toString());
 			GameConfig.ON = true;
+		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.S))
+		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"back").toString());
 			GameConfig.BACK = true;		
-		if (Gdx.input.isKeyPressed(Input.Keys.F))
-			help();
+		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"LEFT").toString());
 			cam.direction.rotate(4,0,1,0);
 			degrees += 4;
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 		{
+			client.out.println(new MovePacket(GameConfig.DIRECTION,"RIGHT").toString());
 			cam.direction.rotate(-4,0,1,0);
 			degrees -= 4;
 		}
@@ -270,56 +246,31 @@ public class MultiplayerScreen implements Screen
 		{
 			PAUSE = true;
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT)) //&& GameConfig.STATE !="tornado"
-		{
-			GameConfig.stateIndex++;
-			GameConfig.stateIndex %= 4;
-		
-			GameConfig.STATE = state[GameConfig.stateIndex];
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_LEFT)) //&& GameConfig.STATE !="tornado"
-		{
-			GameConfig.stateIndex--;
-			
-			if(GameConfig.stateIndex < 0)
-				GameConfig.stateIndex = 3;
-			
-			GameConfig.STATE = state[GameConfig.stateIndex];
-		}
 	}
 	
-	public void drawBonus()
-	{
-		if(GameConfig.bombXplosion != null)
-		{	
-			new TimeXplosion();
-			if(GameConfig.xplosion1)
-			{
-				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
-				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
-				xplosion.setScale(0.01f);
-				xplosionBatch.add(xplosion);	
-			}
-			else if(GameConfig.xplosion2)
-			{
-				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
-				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
-				xplosion.setScale(0.05f);
-				xplosionBatch.add(xplosion);	
-				
-			}
-		}
-	}
-
 	public void render(float delta) 
 	{
-//		System.out.println("elapsedTime   " + elapsedTime);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		
-		
+		if(!client.receive.equals(""))
+		{
+			String[] packets = client.receive.split(","); 
+			if(packets[0].equals("load"))
+			{
+				if(!GameConfig.isServer)
+					game.mapGenerator.loadRoom(packets[1]);
+			}
+			else if(packets[0].equals("ready"))
+			{
+				world.addPlayers(packets);
+				MultiplayerLobby.ready = true;
+			}
+			else
+				world.packetManager(packets, delta);
+		}
 
 		if(joystick == null)
 			handleInput();
@@ -328,7 +279,7 @@ public class MultiplayerScreen implements Screen
 		{
 			PAUSE = false;
 			game.countdown.pause = true;
-//			game.setScreen(new PauseScreen(game, this));
+			game.setScreen(new PauseScreen(game, this));
 		}
 
 		addAnimation();
@@ -351,40 +302,11 @@ public class MultiplayerScreen implements Screen
 		// render player instance
 		batch.render(playerInstance, environment);
 		
-		// render hints
-		for(final ModelInstance mod : hints)
-			batch.render(mod, environment);
-		
-//		ModelInstance model = new ModelInstance(game.mapGenerator.assets.grid);
-//		model.transform.setToTranslation(41f,-4.8f,41.5f);
-//		batch.render(model, environment);
-//		
-//		ModelInstance model2 = new ModelInstance(game.mapGenerator.assets.grid);
-//		model2.transform.setToTranslation(221,-4.8f,41.5f);
-//		batch.render(model2, environment);
-		
 		// render walls
 		synchronized (GameConfig.wallsInstance)
 		{
 			for (final ModelInstance wall : GameConfig.wallsInstance)
 				batch.render(wall, environment);
-		}
-		
-		if(world.getBomb() instanceof Bomb )
-		{
-			if(world.getBomb().shooted())
-			{
-				if(!world.getBomb().isUpgrade())
-				{
-					bomb1Instance.transform.setToTranslation(world.getBomb().getPosition());
-					batch.render(bomb1Instance, environment);
-				}
-				else
-				{
-					bomb2Instance.transform.setToTranslation(world.getBomb().getPosition());
-					batch.render(bomb2Instance, environment);
-				}
-			}
 		}
 		
 		// render tools instance
@@ -429,8 +351,6 @@ public class MultiplayerScreen implements Screen
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));
 		}
-		drawBonus();
-		xplosionBatch.flush();
 	}
 
 	protected void addAnimation()
@@ -449,36 +369,17 @@ public class MultiplayerScreen implements Screen
 	}
 	protected void handleSound()
 	{
-		if(GameConfig.tornadoSound)
-		{
-			SoundManager.vortexSound.loop(SoundManager.soundVolume);
-			GameConfig.tornadoSound = false;
-		}
-		else if(GameConfig.tornadoSoundStop)
-		{
-			SoundManager.vortexSound.stop();
-			GameConfig.tornadoSoundStop = false;
-		}
 		if(hitAnimation)
 		{
-			if(state[GameConfig.stateIndex] == "hit")
+			if(GameConfig.HIT && GameConfig.hitted)
 			{
-				if(GameConfig.HIT && GameConfig.hitted)
-				{
-					SoundManager.hitSound.play();
-				}
-				else if(!GameConfig.HIT)
-				{
-					SoundManager.hitSound.stop();
-					GameConfig.hitted = false;
-				}
-					
+				SoundManager.hitSound.play();
 			}
-			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
+			else if(!GameConfig.HIT)
 			{
-				SoundManager.explosionSound.play(SoundManager.soundVolume);
+				SoundManager.hitSound.stop();
+				GameConfig.hitted = false;
 			}
-				
 		}
 	}
 
@@ -490,41 +391,16 @@ public class MultiplayerScreen implements Screen
 				clock.update(Gdx.graphics.getDeltaTime());
 		}
 		
-		synchronized (game.mapGenerator.assets.vortexAnimation)
-		{
-			for (AnimationController vortex : game.mapGenerator.assets.vortexAnimation)
-				vortex.update(Gdx.graphics.getDeltaTime());
-		}
-
-		if(state[GameConfig.stateIndex] == "tornado")
-		{
-			playerController.setAnimation("Armature|bonus",-1);
-			playerController.update(Gdx.graphics.getDeltaTime());
-		}
-		
-		
 		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
-			if(state[GameConfig.stateIndex] != "tornado")
-			{
-				playerController.setAnimation("Armature|ArmatureAction",-1);
-				playerController.update(Gdx.graphics.getDeltaTime());
-			}
+			playerController.setAnimation("Armature|ArmatureAction",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 
 		if(hitAnimation)
 		{
-			if(state[GameConfig.stateIndex] == "hit")
-			{
-				playerController.setAnimation("Armature|hit",-1);
-				playerController.update(Gdx.graphics.getDeltaTime());
-			}
-			else if(state[GameConfig.stateIndex] == "bomb1" || state[GameConfig.stateIndex] == "bomb2")
-			{
-				
-				playerController.setAnimation("Armature|bomb",-1);
-				playerController.update(Gdx.graphics.getDeltaTime());
-			}
+			playerController.setAnimation("Armature|hit",-1);
+			playerController.update(Gdx.graphics.getDeltaTime());
 		}
 
 		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
@@ -555,26 +431,8 @@ public class MultiplayerScreen implements Screen
 		GameConfig.tools.clear();
 		GameConfig.toolsInstance.clear();
 		batch.dispose();
-//		game.mapGenerator.assets.dispose();
 		hud.dispose();
 	}
-
-	private void help()
-	{
-		hints.clear();
-		
-		// apply dijkstra
-        List<Vertex> path = Dijkstra.getShortestPath();
-        
-        //	create hints model
-        float position = (GameConfig.actualLevel-1) * 5.5f * GameConfig.ROOM_ROW;
-        for (Vertex vertex : path)
-        {
-        	ModelInstance mod = new ModelInstance(game.mapGenerator.assets.help);
-        	mod.transform.setToTranslation(-2+vertex.x * GameConfig.CELL_HEIGHT +position, -4.7f, 1 + vertex.y * GameConfig.CELL_WIDTH);
-        	hints.add(mod);
-		}
-     }
 	
 	@Override
 	public void show() { }

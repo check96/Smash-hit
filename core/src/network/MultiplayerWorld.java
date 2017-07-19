@@ -3,26 +3,20 @@ package network;
 import com.badlogic.gdx.math.Vector3;
 
 import entity.Player;
-import entity.Weapon;
+import videogame.Countdown;
 import videogame.GameConfig;
 import videogame.World;
 
 public class MultiplayerWorld extends World 
 {
-	private int id;
 	private Player player;
 	
-	public MultiplayerWorld(String username)
+	public MultiplayerWorld()
 	{
-//		this.id = id;
 		GameConfig.LOCAL_COINS = 0;
 		
-		Player player = new Player(new Vector3(0,-4.8f, 15+(20*id)), 4);
-		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,40));
-		player.setWeapon(weapon);
-		
 		for(Player pl : GameConfig.players)
-			if(pl.getUsername().equals(username))
+			if(pl.getUsername().equals(GameConfig.username))
 				player = pl;
 	}
 
@@ -34,7 +28,7 @@ public class MultiplayerWorld extends World
 			map = GameConfig.tools.get(GameConfig.actualLevel-1);
 		}
 		
-		GameConfig.player.move(delta);
+		GameConfig.player.move(delta, GameConfig.DIRECTION);
 		checkCollsion(delta);
 		checkPlayerCollision(delta);
 		
@@ -69,5 +63,40 @@ public class MultiplayerWorld extends World
 			
 	}
 	
+	public synchronized void packetManager(String[] packet, float delta)
+	{
+		if(packet[0].equals("move"))
+		{
+			for (Player player : GameConfig.players)
+			{
+				if(player.getUsername().equals(packet[1]))
+				{
+					Vector3 direction = new Vector3(Integer.parseInt(packet[3]),Integer.parseInt(packet[4]),Integer.parseInt(packet[5]));
+					if(packet[2].equals("on"))
+						player.moveOn(delta, direction);
+					else if(packet[2].equals("back"))
+						player.moveBack(delta, direction);
+					else if(packet[2].equals("left"))
+						player.moveLeft(delta, direction);
+					else if(packet[2].equals("right"))
+						player.moveRight(delta, direction);
+				}
+			}
+		}
+		else if(packet[0].equals("hit"))
+		{
+			
+		}
+		else if(packet[0].equals("time"))
+		{
+			Countdown.increment(5);
+		}
+	}
+
+	public void addPlayers(String[] usernames)
+	{
+		for(int i = 1; i < usernames.length; i++)
+			GameConfig.players.add(new Player(new Vector3(0,-4.8f, 10*i), 4, usernames[i]));
+	}
 	
 }

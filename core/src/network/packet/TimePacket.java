@@ -1,8 +1,5 @@
 package network.packet;
 
-import network.Server;
-import network.ServerThread;
-
 public class TimePacket extends Packet 
 {
 	int time;

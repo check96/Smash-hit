@@ -1,16 +1,10 @@
 package network;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import GameGui.GameManager;
 import network.packet.Packet;
 
 public class Server extends Thread
@@ -19,9 +13,8 @@ public class Server extends Thread
 	public Socket socket;
 	public static MultiplayerScreen screen;
 	private int numPlayers = 1;
+	private ArrayList<String> usernames = new ArrayList<String>();
 	public static ArrayList<ServerThread> clients = new ArrayList<ServerThread>();
-	private BufferedReader in;
-	private PrintWriter out;
 	
 	public Server(int port, int numPlayers)
 	{
@@ -54,12 +47,24 @@ public class Server extends Thread
 				catch(Exception e){}
 		}
 		
-		clients.get(0).out.println("loadMap");
+		String names = "";
+		for(int i = 0; i < usernames.size() ; i++)
+			names += usernames.get(i) + ",";
+			
+		for(int i = 0; i < clients.size(); i++)
+			clients.get(i).out.println("ready"+names);
 	}
 	
 	public void sendData(Packet packet)
 	{
-		
+		for(int i = 0; i < clients.size(); i++)
+			clients.get(i).out.println(packet.toString());
+	}
+	
+	public void sendData(String line)
+	{
+		for(int i = 0; i < clients.size(); i++)
+			clients.get(i).out.println(line);
 	}
 }
 

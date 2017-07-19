@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import GameGui.GameManager;
-import GameGui.SoundManager;
-import GameGui.Screen.LoadingScreen;
 import videogame.GameConfig;
 
 public class MultiplayerLobby implements Screen
@@ -16,18 +14,16 @@ public class MultiplayerLobby implements Screen
 	private GameManager game;
 	private SpriteBatch spriteBatch;
 	private Texture background;
-	private MultiplayerScreen multiScreen;
-	private ServerThread client;
+	private MultiplayerScreen multiplayerScreen;
 	
 	public static boolean ready = false;
 	
-	public MultiplayerLobby(GameManager _game, String username, String ip, int port)
+	public MultiplayerLobby(GameManager _game, String ip, int port)
 	{
-	
 		this.game = _game;
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/multiplayer_background.png"));
-        multiScreen = new MultiplayerScreen(game, username, ip, port);
+        multiplayerScreen = new MultiplayerScreen(game, ip, port);
        
         if(GameConfig.server != null)
         	new ServerLaunchThread().start();
@@ -36,8 +32,7 @@ public class MultiplayerLobby implements Screen
         {
         	synchronized(game.mapGenerator)
 			{
-	        	game.mapGenerator.pause = false;
-	        	game.mapGenerator.notify();
+	        	game.mapGenerator.start();
 			}
         }
 	}
@@ -53,7 +48,7 @@ public class MultiplayerLobby implements Screen
         spriteBatch.end();
         
         if(ready)
-        	game.setScreen(multiScreen);
+        	game.setScreen(multiplayerScreen);
 	}
 
 	@Override

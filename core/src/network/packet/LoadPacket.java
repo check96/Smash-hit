@@ -1,7 +1,6 @@
 package network.packet;
 
-import network.ServerThread;
-import network.Server;
+import videogame.GameConfig;
 
 public class LoadPacket extends Packet
 {

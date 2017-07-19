@@ -9,60 +9,40 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import videogame.Countdown;
+import videogame.GameConfig;
 
 public class ClientThread extends Thread
 {
 	public Socket socket;
 	public BufferedReader in;
 	public PrintWriter out;
+	public String receive = "";
 	
 	public ClientThread(Socket _socket) 
 	{
 		socket = _socket;
-		try {
+		
+		try
+		{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()),true);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		out.println(GameConfig.username);
 	}
 	@Override
 	public void run() 
 	{
 		while(true)
 		{
-			String line;
-			try {
- 				line = in.readLine();
- 				packetManager(line);
- 			
+			try
+			{
+ 				receive = in.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
 	}
-	
-	private void packetManager(String line)
-	{
-		String[] packet = line.split(",");
-		if(packet[0].equals("load"))
-		{
-			
-		}
-		else if(packet[0].equals("move"))
-		{
-			
-		}
-		else if(packet[0].equals("hit"))
-		{
-			
-		}
-		else if(packet[0].equals("time"))
-		{
-			Countdown.increment(5);
-		}
-	} 
-	
-	
 }

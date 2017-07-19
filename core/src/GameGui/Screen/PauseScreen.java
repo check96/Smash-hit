@@ -24,12 +24,14 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
+import network.MultiplayerScreen;
 import videogame.GameConfig;
 
 public class PauseScreen implements Screen
 {
 	private GameManager game;
-	private GameScreen screen;
+	private GameScreen gameScreen;
+	private MultiplayerScreen multiplayerScreen;
 	private Stage stage;
 
 	private boolean BACK = false;
@@ -47,12 +49,22 @@ public class PauseScreen implements Screen
 	private SpriteBatch spriteBatch;
 	private Texture background;
 	
-
+	public PauseScreen(GameManager _game, MultiplayerScreen _screen)
+	{
+		this.game = _game;
+		this.multiplayerScreen = _screen;
+		init();
+	}
+	
 	public PauseScreen(GameManager _game, GameScreen _screen)
 	{
 		this.game = _game;
-		this.screen = _screen;		
-
+		this.gameScreen = _screen;
+		init();
+	}
+		
+	public void init()
+	{
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/pause_background.png"));
@@ -182,7 +194,10 @@ public class PauseScreen implements Screen
 				game.countdown.pause = false;
 				game.countdown.notify();
 			}
-			game.setScreen(screen);
+			if(gameScreen instanceof GameScreen)
+				game.setScreen(gameScreen);
+			else if(multiplayerScreen instanceof MultiplayerScreen)
+				game.setScreen(multiplayerScreen);
 		}
 		
 		on_off.setChecked(FULLSCREEN);
