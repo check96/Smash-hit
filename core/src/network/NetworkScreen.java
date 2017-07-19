@@ -180,6 +180,7 @@ public class NetworkScreen implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) 
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
+				GameConfig.isServer = true;
 				stage.clear();
 				stage.addActor(username);
 				stage.addActor(usernameLabel);

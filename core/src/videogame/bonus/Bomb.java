@@ -50,7 +50,10 @@ public class Bomb extends AbstractGameObject
 	    	if(getY() < -5)
 	    		active = false;
 	    	else if(checkWallCollision())
-	    		active = false;
+	    	{
+	    	//	if(x != GameConfig.ROOM_ROW-1 && y != 5)
+	    			active = false;
+	    	}
 		}
 	}
 	

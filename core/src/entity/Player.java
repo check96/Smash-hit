@@ -28,32 +28,44 @@ public class Player extends AbstractGameObject
 	public final String getUsername() 	{return username;}
 	
 	public void move(float delta)
-	{			
-		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
-		
+	{	
 		if(GameConfig.RIGHT)
-		{
-			Position.x -= speed.z * delta;	
-			Position.z += speed.x * delta;
-		}
+			moveRight(delta);
 		if(GameConfig.LEFT)	
-		{
-			Position.x += speed.z * delta;
-			Position.z -= speed.x * delta; 
-		}
-		
-		if(GameConfig.ON)	
-		{
-			Position.x += speed.x * delta;
-			Position.z += speed.z * delta;
-		}
-		
-		if(GameConfig.BACK)	
-		{
-			Position.x -= speed.x * delta;	
-			Position.z -= speed.z * delta;
-		}
+			moveLeft(delta);
+		if(GameConfig.ON)
+			moveOn(delta);
+		if(GameConfig.BACK)
+			moveBack(delta);
 		
 		weapon.move(this);
+	}
+	
+	public void moveRight(float delta)
+	{
+		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Position.x -= speed.z * delta;	
+		Position.z += speed.x * delta;
+	}
+	
+	public void moveLeft(float delta)
+	{
+		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Position.x += speed.z * delta;
+		Position.z -= speed.x * delta; 
+	}
+		
+	public void moveOn(float delta)
+	{
+		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Position.x += speed.x * delta;
+		Position.z += speed.z * delta;
+	}
+	
+	public void moveBack(float delta)
+	{
+		Vector3 speed = new Vector3(velocity.x*GameConfig.DIRECTION.x, velocity.y*GameConfig.DIRECTION.y, velocity.z*GameConfig.DIRECTION.z);
+		Position.x -= speed.x * delta;	
+		Position.z -= speed.z * delta;
 	}
 }

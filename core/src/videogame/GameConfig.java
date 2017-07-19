@@ -35,7 +35,8 @@ public class GameConfig
 
 	public static boolean EDITOR = false;
 	public static boolean MULTIPLAYER = false;
-
+	public static boolean isServer = false;
+	
 	public static int maceLevel = 0;
 	public static int vortexLevel = 0;
 	public static int clockLevel = 0;
@@ -78,7 +79,6 @@ public class GameConfig
 	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	public static boolean hitted = false;
-	public static Player player2;
 	
 	public static void reset()
 	{

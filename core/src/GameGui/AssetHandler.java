@@ -126,10 +126,6 @@ public class AssetHandler
 		{
 			GameScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
 			GameScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
-			
-			GameScreen.playerInstance2 = new ModelInstance(manager.get(player, Model.class));
-			GameScreen.playerInstance2.transform.setToTranslation(GameConfig.player2.getPosition());
-			
 		}
 		else
 		{

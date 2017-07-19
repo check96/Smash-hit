@@ -20,7 +20,6 @@ public class World
 	public World()
 	{ 
 		GameConfig.LOCAL_COINS = 0;
-		GameConfig.player2 = new Player(new Vector3(0,-4.8f,30), 4);
 		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,20));
 		GameConfig.player.setWeapon(weapon);
@@ -158,9 +157,6 @@ public class World
 
 	protected void checkCollsion(float delta)
 	{
-		if(GameConfig.player.collide(GameConfig.player2))
-			reaction(delta);
-		
     	int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
@@ -183,37 +179,13 @@ public class World
 	protected void reaction(float delta)
 	{
 		if(GameConfig.ON)
-		{
-			GameConfig.ON = false;
-			GameConfig.BACK = true;
-			GameConfig.player.move(delta);
-			GameConfig.ON = true;
-			GameConfig.BACK = false;
-		}
+			GameConfig.player.moveBack(delta);
 		else if(GameConfig.BACK)
-		{
-			GameConfig.BACK = false;
-			GameConfig.ON = true;
-			GameConfig.player.move(delta);
-			GameConfig.BACK = true;
-			GameConfig.ON = false;
-		}
+			GameConfig.player.moveOn(delta);
 		else if(GameConfig.LEFT)
-		{
-			GameConfig.LEFT = false;
-			GameConfig.RIGHT = true;
-			GameConfig.player.move(delta);
-			GameConfig.LEFT = true;
-			GameConfig.RIGHT = false;
-		}
+			GameConfig.player.moveRight(delta);
 		else if(GameConfig.RIGHT)
-		{
-			GameConfig.RIGHT = false;
-			GameConfig.LEFT = true;
-			GameConfig.player.move(delta);
-			GameConfig.RIGHT = true;
-			GameConfig.LEFT = false;
-		}
+			GameConfig.player.moveLeft(delta);
 	}
 
 	protected void delete(int i, int j)
@@ -256,26 +228,20 @@ public class World
 	
 	protected void hit(float delta)
 	{
-		GameConfig.ON = true;
-		GameConfig.player.move(delta);
-		GameConfig.player.move(delta);
+		GameConfig.player.moveOn(delta);
+		GameConfig.player.moveOn(delta);
 		
-		System.out.println(GameConfig.player.getWeapon().getDamage());
 		int	i = (int) ((GameConfig.player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
-    	GameConfig.ON = false;
-		GameConfig.BACK = true;
-		GameConfig.player.move(delta);
-		GameConfig.player.move(delta);
-		GameConfig.BACK = false;
+		GameConfig.player.moveBack(delta);
+		GameConfig.player.moveBack(delta);
 		
 		// decrease tool's life
     	if(map[i][j] instanceof Destroyable)
     	{
     		if(GameConfig.player.collide(map[i][j]))
     		{
-//    			System.out.println(map[i][j]);
     			if(map[i][j].type == Objects.CLOCK || map[i][j].type == Objects.VORTEX)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else

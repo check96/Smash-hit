@@ -35,9 +35,9 @@ public class MapGenerator extends Thread
 		{
 			if(!pause )
 			{
-				if(!GameConfig.EDITOR)
+				if(!GameConfig.EDITOR || (GameConfig.MULTIPLAYER && GameConfig.isServer))
 					createRoom();
-				else			// load editor map
+				else if (GameConfig.EDITOR || (GameConfig.MULTIPLAYER && !GameConfig.isServer))			// load editor map
 					loadRoom();
 			}
 

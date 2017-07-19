@@ -49,7 +49,6 @@ public class GameScreen implements Screen
 	protected Camera cam;
 	protected ModelBatch batch;
 	public static ModelInstance playerInstance;
-	public static ModelInstance playerInstance2;
 	private ModelInstance bomb1Instance;
 	private ModelInstance bomb2Instance;
 	private ArrayList<ModelInstance> hints;
@@ -338,7 +337,6 @@ public class GameScreen implements Screen
 
 		// render player instance
 		batch.render(playerInstance, environment);
-		batch.render(playerInstance2, environment);
 		
 		// render hints
 		for(final ModelInstance mod : hints)
