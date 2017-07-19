@@ -37,8 +37,16 @@ public class MapGenerator extends Thread
 			{
 				if(!GameConfig.EDITOR || (GameConfig.MULTIPLAYER && GameConfig.isServer))
 					createRoom();
-				else if (GameConfig.EDITOR || (GameConfig.MULTIPLAYER && !GameConfig.isServer))			// load editor map
-					loadRoom();
+				else if(GameConfig.EDITOR)			// load editor map
+				{
+					GameConfig.EDITOR = false;
+					for(int i = 1; i <= Editor.numLevels; i++)
+					{
+						String line = game.editorLevels.getString("level"+i);
+						loadRoom(line);
+					}
+
+				}
 			}
 
 			synchronized(this)
@@ -85,59 +93,52 @@ public class MapGenerator extends Thread
 			GameConfig.walls.add(new Wall(new Vector3((GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2)+position,-5, -2+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),Walls.FLOOR));
 		}
 	}
-	
-	private void loadRoom()
+
+	public void loadRoom(String line)
 	{
 		Random rand = new Random(System.currentTimeMillis());
-		GameConfig.EDITOR = false;
-		for(int i = 1; i <= Editor.numLevels; i++)
+		int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
+		
+		for(int j=0; j<points.length; j++)
 		{
-			int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
-			String line = game.editorLevels.getString("level"+i);
-			 
-			for(int j=0; j<points.length; j++)
-			{
-				String subLine = line.substring(j * GameConfig.ROOM_COLUMN, j * GameConfig.ROOM_COLUMN + GameConfig.ROOM_COLUMN);
-				for(int k=0; k < points[j].length; k++)
-					points[j][k] = subLine.charAt(k) - 48;
-			}
-
-			uploadTools(points);
-
-			// clear positions near the doors
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 +1] = null;
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = null;
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 -1] = null;
-			GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 +1] = null;
-			GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
-			GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
+			String subLine = line.substring(j * GameConfig.ROOM_COLUMN, j * GameConfig.ROOM_COLUMN + GameConfig.ROOM_COLUMN);
 			
-				
-				
-			// create the clock
-			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
-
-				// 	choose side of clock (right or left)
-			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
-			
-			float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
-			float z = h * GameConfig.CELL_WIDTH;
-			
-			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
-			
-			// 	create door
-			GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
-					-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
-
-			// load tools model
-			assets.loadTools();
-			
-			// add new tools to tools
-			upgrade();				
+			for(int k=0; k < points[j].length; k++)
+				points[j][k] = subLine.charAt(k) - 48;
 		}
+
+		uploadTools(points);
+
+		// clear positions near the doors
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = null;
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2 -1] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 +1] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
+		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
+
+		// create the clock
+		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
+
+			// 	choose side of clock (right or left)
+		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
+		
+		float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+		float z = h * GameConfig.CELL_WIDTH;
+		
+		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
+		
+		// 	create door
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+				-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
+
+		// load tools model
+		assets.loadTools();
+		
+		// add new tools to tools
+		upgrade();				
 	}
 
-	// ONLY for editor
 	public void uploadTools(int[][] map)
 	{		
 		float position = GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1); 
@@ -183,7 +184,6 @@ public class MapGenerator extends Thread
 		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		createWalls();
-		
 		
 		//	 ^
 		// i |	  j ->

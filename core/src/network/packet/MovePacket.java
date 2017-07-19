@@ -12,16 +12,7 @@ public class MovePacket extends Packet
 		y = _y;
 		z = _z;
 	}
-	
-	@Override
-	public void writeData(ServerThread client) {}
-
-	@Override
-	public void writeData(Server server) {}
-
-	@Override
-	public byte[] getData() {return null;}
-	
+		
 	@Override
 	public String toString() {return ("move,"+x+","+y+","+z);}
 	

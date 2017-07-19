@@ -32,11 +32,14 @@ public class MultiplayerLobby implements Screen
         if(GameConfig.server != null)
         	new ServerLaunchThread().start();
 
-        synchronized(game.mapGenerator)
-		{
-        	game.mapGenerator.pause = false;
-        	game.mapGenerator.notify();
-		}
+        if(GameConfig.isServer)
+        {
+        	synchronized(game.mapGenerator)
+			{
+	        	game.mapGenerator.pause = false;
+	        	game.mapGenerator.notify();
+			}
+        }
 	}
 
 	@Override

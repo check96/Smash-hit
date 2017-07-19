@@ -13,15 +13,6 @@ public class TimePacket extends Packet
 	}
 	
 	@Override
-	public void writeData(ServerThread client) {}
-
-	@Override
-	public void writeData(Server server) {}
-
-	@Override
-	public byte[] getData() {return null;}
-	
-	@Override
 	public String toString() {
 		return ("time,"+time);
 	}

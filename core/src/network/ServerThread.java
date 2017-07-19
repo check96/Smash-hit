@@ -1,22 +1,11 @@
 package network;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.DatagramPacket;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
-
-import GameGui.GameManager;
-import network.packet.Packet;
-import network.packet.PacketType;
-import network.packet.HitPacket;
-import network.packet.LoadPacket;
-import network.packet.MovePacket;
 
 public class ServerThread extends Thread
 {
@@ -38,7 +27,6 @@ public class ServerThread extends Thread
 		{
 			try { socket.close(); }
 			catch(Exception e1) { System.out.println(e1.getMessage());}
-		
 		}
 	}
 	
@@ -49,8 +37,7 @@ public class ServerThread extends Thread
 			try
 			{
 				String line = in.readLine();
-				System.out.println("server " + line);
-//				packetManagement(line);
+				packetManagement(line);
 				
 			} catch (Exception e)
 			{
