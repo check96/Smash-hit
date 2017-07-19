@@ -271,7 +271,7 @@ public class MapGenerator extends Thread
 					else
 						send += Integer.toString(GameConfig.newTools[i][j].type.id);
 			
-			GameConfig.server.sendData(new LoadPacket(send));
+//			GameConfig.server.sendData(new LoadPacket(send));
 		}
 		
 		

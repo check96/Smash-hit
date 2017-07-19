@@ -77,7 +77,6 @@ public class MultiplayerScreen implements Screen
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		this.game = _game;
 		
 		for (Controller c : Controllers.getControllers()) 
@@ -102,7 +101,7 @@ public class MultiplayerScreen implements Screen
 		initEnvironment();
 		initAnimation();
 
-		game.countdown.pause = false;
+//		game.countdown.pause = false;
 		hud = new MultiplayerHUD();
 	}
 
@@ -122,22 +121,6 @@ public class MultiplayerScreen implements Screen
 					hitAnimation = true;
 					hitTime = System.currentTimeMillis();
 				}
-			}
-			else if(buttonIndex == RB) //&& GameConfig.STATE !="tornado"
-			{
-				GameConfig.stateIndex++;
-				GameConfig.stateIndex %= 4;
-			
-				GameConfig.STATE = state[GameConfig.stateIndex];
-			}
-			else if(buttonIndex == LB) //&& GameConfig.STATE !="tornado"
-			{
-				GameConfig.stateIndex--;
-				
-				if(GameConfig.stateIndex < 0)
-					GameConfig.stateIndex = 3;
-				
-				GameConfig.STATE = state[GameConfig.stateIndex];
 			}
 			else if(buttonIndex == START)		// START
 				PAUSE = true;
@@ -257,16 +240,12 @@ public class MultiplayerScreen implements Screen
 		
 		if(!client.receive.equals(""))
 		{
+//			System.out.println(client.receive);
 			String[] packets = client.receive.split(","); 
 			if(packets[0].equals("load"))
 			{
 				if(!GameConfig.isServer)
 					game.mapGenerator.loadRoom(packets[1]);
-			}
-			else if(packets[0].equals("ready"))
-			{
-				world.addPlayers(packets);
-				MultiplayerLobby.ready = true;
 			}
 			else
 				world.packetManager(packets, delta);

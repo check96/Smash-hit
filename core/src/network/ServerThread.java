@@ -37,14 +37,15 @@ public class ServerThread extends Thread
 	{
 		while(true)
 		{
-			try
-			{
-				String line = in.readLine();
+		
+			String line;
+			try {
+				line = in.readLine();
 				packetManagement(line);
-				
-			} catch (Exception e)
-			{
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
+			
 			
 		}
 	}
@@ -58,12 +59,13 @@ public class ServerThread extends Thread
 	{
 		String[] packet = line.split(",");
 		
-		if(packet[0].equals("move"))
+		if(packet[0].equals("login"))
 		{
-			String send = "";
-			for(int i = 0; i < packet.length; i++)
-				send += packet[i];
-			GameConfig.server.sendData(send);
+			GameConfig.server.sendData(line);
+		}
+		else if(packet[0].equals("move"))
+		{
+			GameConfig.server.sendData(line);
 		}
 		else if(packet[0].equals("hit"))
 		{

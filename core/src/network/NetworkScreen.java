@@ -21,7 +21,8 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import GameGui.GameManager;
 import videogame.GameConfig;
 
-public class NetworkScreen implements Screen {
+public class NetworkScreen implements Screen 
+{
 	private GameManager game;
 	private Stage stage;
 	private SpriteBatch spriteBatch;

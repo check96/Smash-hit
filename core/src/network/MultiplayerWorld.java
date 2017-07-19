@@ -1,5 +1,7 @@
 package network;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector3;
 
 import entity.Player;
@@ -10,14 +12,12 @@ import videogame.World;
 public class MultiplayerWorld extends World 
 {
 	private Player player;
+	public static ArrayList<String> usernames = new ArrayList<String>();
 	
 	public MultiplayerWorld()
 	{
 		GameConfig.LOCAL_COINS = 0;
 		
-		for(Player pl : GameConfig.players)
-			if(pl.getUsername().equals(GameConfig.username))
-				player = pl;
 	}
 
 	@Override
@@ -65,7 +65,11 @@ public class MultiplayerWorld extends World
 	
 	public synchronized void packetManager(String[] packet, float delta)
 	{
-		if(packet[0].equals("move"))
+		if(packet[0].equals("login"))
+		{
+			usernames.add(packet[1]);
+		}
+		else if(packet[0].equals("move"))
 		{
 			for (Player player : GameConfig.players)
 			{
@@ -93,10 +97,10 @@ public class MultiplayerWorld extends World
 		}
 	}
 
-	public void addPlayers(String[] usernames)
+	public static void addPlayers()
 	{
-		for(int i = 1; i < usernames.length; i++)
-			GameConfig.players.add(new Player(new Vector3(0,-4.8f, 10*i), 4, usernames[i]));
+		for(int i = 1; i < usernames.size(); i++)
+			GameConfig.players.add(new Player(new Vector3(0,-4.8f, 10*i), 4, usernames.get(i)));
 	}
 	
 }

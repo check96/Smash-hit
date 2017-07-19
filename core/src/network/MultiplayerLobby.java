@@ -47,8 +47,8 @@ public class MultiplayerLobby implements Screen
         spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
         
-        if(ready)
-        	game.setScreen(multiplayerScreen);
+//        if(ready)
+//        	game.setScreen(multiplayerScreen);
 	}
 
 	@Override
