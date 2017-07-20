@@ -4,7 +4,7 @@ public class Countdown extends Thread
 {
 	private static int initial_time = 600;
 	private static int time;
-	public boolean pause = true;
+	public boolean active = false;
 	
 	public Countdown()
 	{ 
@@ -17,7 +17,7 @@ public class Countdown extends Thread
 	{
 		while(true)
 		{
-			if(!pause)
+			if(active)
 				time--;
 			
 			synchronized(this)

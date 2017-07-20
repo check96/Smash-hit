@@ -85,7 +85,8 @@ public class MultiplayerScreen implements Screen
 		initEnvironment();
 		initAnimation();
 
-		game.countdown.pause = false;
+		game.countdown.active = true;
+		
 		hud = new MultiplayerHUD();
 		
 		try
@@ -231,7 +232,7 @@ public class MultiplayerScreen implements Screen
 		if(PAUSE)
 		{
 			PAUSE = false;
-			game.countdown.pause = true;
+			game.countdown.active = false;
 			game.setScreen(new PauseScreen(game, this));
 		}
 
@@ -296,11 +297,11 @@ public class MultiplayerScreen implements Screen
 		{
 			synchronized (game.countdown)
 			{
-				game.countdown.pause = true;
+				game.countdown.active = false;
 			}
 			synchronized(game.mapGenerator)
 			{
-				game.mapGenerator.pause = true;
+				game.mapGenerator.active = false;
 			}
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));

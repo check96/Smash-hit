@@ -19,13 +19,13 @@ public class MapGenerator extends Thread
 {
 	public AssetHandler assets;
 	private GameManager game;
-	public boolean pause = true;
+	public boolean active = false;
 	
 	public MapGenerator(GameManager _game)
 	{
 		assets = new AssetHandler();
 		game = _game;
-		pause = false;
+		active = false;
 		assets.loadModels();
 	}
 	
@@ -33,12 +33,13 @@ public class MapGenerator extends Thread
 	{
 		while(true)
 		{
-			if(!pause )
+			if(active )
 			{
 				if((!GameConfig.EDITOR && !GameConfig.MULTIPLAYER) || ( GameConfig.MULTIPLAYER && GameConfig.isServer))
 			  		createRoom();
 				else if((GameConfig.EDITOR && !GameConfig.MULTIPLAYER))
 			  	{
+					System.out.println(GameConfig.EDITOR);
 					GameConfig.EDITOR = false;
 					for(int i = 1; i <= Editor.numLevels; i++)
 					{
@@ -286,6 +287,8 @@ public class MapGenerator extends Thread
 	public void upgrade()
 	{
 		GameConfig.level++;
+		
+		System.out.println(GameConfig.tools.size());
 		synchronized(GameConfig.tools)
 		{
 			Destroyable[][] array = (Destroyable[][]) GameConfig.newTools.clone();

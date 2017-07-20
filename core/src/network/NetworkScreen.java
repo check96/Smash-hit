@@ -77,7 +77,7 @@ public class NetworkScreen implements Screen
 		numPlayersLabel = new Label("number of players", new Label.LabelStyle(font, color));
 		numPlayersLabel.setPosition(250, 305);
 
-		ip = new TextField("192.168.1.204", mySkin);
+		ip = new TextField("192.168.1.206", mySkin);
 		ip.setPosition(550, 370);
 		ip.setSize(220, 60);
 

@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 		bomb1Instance = new ModelInstance(game.mapGenerator.assets.bomb1);
 		bomb2Instance = new ModelInstance(game.mapGenerator.assets.bomb2);
 
-		game.countdown.pause = false;
+		game.countdown.active = true;
 		hud = new Hud();
 	}
 
@@ -251,7 +251,7 @@ public class GameScreen implements Screen {
 		}
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || keyStart) 
 		{
-			game.countdown.pause = true;
+			game.countdown.active = false;
 			game.setScreen(new PauseScreen(game, this));
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.CONTROL_RIGHT) || keyY)
@@ -377,10 +377,10 @@ public class GameScreen implements Screen {
 
 		if (GameConfig.GAME_OVER) {
 			synchronized (game.countdown) {
-				game.countdown.pause = true;
+				game.countdown.active = false;
 			}
 			synchronized (game.mapGenerator) {
-				game.mapGenerator.pause = true;
+				game.mapGenerator.active = false;
 			}
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));

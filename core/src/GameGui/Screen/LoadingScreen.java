@@ -26,23 +26,26 @@ public class LoadingScreen implements Screen
 	
 	public LoadingScreen(GameManager game, MultiplayerScreen _multiplayerScreen)
 	{
-		this(game);
+		this.game = game;
+		init();
 		this.multiplayerScreen = _multiplayerScreen;
 	}
 	
 	public LoadingScreen(GameManager _game)
 	{
-		SoundManager.menuSoundtrack.stop();
-
 		game = _game;
-		
+		init();
+	}
+	public void init()	
+	{
+		SoundManager.menuSoundtrack.stop();
 		
 		spriteBatch = new SpriteBatch();
         backgroundSingle = new Texture(Gdx.files.internal("texture/loading_background_single.png"));
         backgroundMulti = new Texture(Gdx.files.internal("texture/loading_background_multi.png"));
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
 	
-        game.mapGenerator.pause = false; 
+        game.mapGenerator.active = true; 
         
         if(GameConfig.MULTIPLAYER)
         {

@@ -195,7 +195,7 @@ public class PauseScreen implements Screen
 			
 			synchronized(game.countdown)
 			{
-				game.countdown.pause = false;
+				game.countdown.active = true;
 				game.countdown.notify();
 			}
 			if(gameScreen instanceof GameScreen)

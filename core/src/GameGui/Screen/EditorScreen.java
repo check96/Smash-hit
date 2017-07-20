@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
@@ -67,9 +68,10 @@ public class EditorScreen implements Screen
 		table.bottom();
         table.setFillParent(true);        
         
-        levels = new Label("NUMBER OF LEVELS", new Label.LabelStyle(Font, Color.BLACK));
+        levels = new Label("NUMBER OF LEVELS", new Label.LabelStyle(Font, Color.WHITE));
         
         numLevels = new TextField("1", mySkin);
+        numLevels.setAlignment(Align.center);
 		numLevels.setSize(200, 70);        
 		
 		back = new TextButton("BACK", skin);
