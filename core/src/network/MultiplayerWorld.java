@@ -227,9 +227,15 @@ public class MultiplayerWorld
 	public static void addPlayers()
 	{
 		GameConfig.players.clear();
+		
+		System.out.println("username: "+ GameConfig.username);
+		System.out.println();
+		System.out.print("client usernames: ");
 		for(int i = 0; i < usernames.size(); i++)
 		{
 			GameConfig.players.add(new Player(new Vector3(5,-4.8f, 10 * (i+1)), 4, usernames.get(i)));
+			
+			System.out.print(usernames.get(i)+"  ");
 			
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;
