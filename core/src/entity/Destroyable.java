@@ -38,9 +38,6 @@ public class Destroyable extends AbstractGameObject
 	public void setHealth(int health)
 	{
 		this.health = health;
-		
-		if(health < 0)
-			health = 0;
 	}
 
 	

@@ -224,6 +224,7 @@ public class MultiplayerWorld
 			int j = Integer.parseInt(packet[4]);
 			int health = Integer.parseInt(packet[5]);
 			
+			System.out.println(GameConfig.tools.get(room)[i][j].type + "  " + health);
 			GameConfig.tools.get(room)[i][j].setHealth(health);
 			
 			if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
@@ -231,7 +232,7 @@ public class MultiplayerWorld
 				if(map[i][j].type == Objects.CLOCK)
 				{
 					Countdown.increment(5);
-//					client.out.println(new TimePacket(5).toString());
+					client.out.println(new TimePacket(5).toString());
 				}
 													
 				//remove tools and toolsInstance
