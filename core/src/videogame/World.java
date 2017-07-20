@@ -82,7 +82,7 @@ public class World
 		
 		if(GameConfig.HIT) 
 		{
-			if( GameConfig.STATE.equals("hit"))
+			if(GameConfig.STATE.equals("hit"))
 				 hit(delta);
 			else if(GameConfig.STATE.equals("bomb1") && GameConfig.numBomb1 > 0 && bomb.isUpgrade() != true)
 			{
@@ -132,7 +132,7 @@ public class World
 		    				}
 		    			}	
 		    	}
-		    	GameConfig.bombXplosion =bomb;
+		    	GameConfig.bombXplosion = bomb;
 		    	bomb = null;
 			}
 		}

@@ -45,7 +45,7 @@ public class Deleter
 					if(!clock)
 					{
 						GameConfig.destroyed.add(instance);
-						addCoinsAnimation(objPosition, money);
+//						addCoinsAnimation(objPosition, money);
 					}
 					
 					iterator.remove();

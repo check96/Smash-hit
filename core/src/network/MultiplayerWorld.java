@@ -9,6 +9,7 @@ import entity.Objects;
 import entity.Player;
 import entity.Wall;
 import entity.Walls;
+import entity.Weapon;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
 import network.packet.TimePacket;
@@ -37,13 +38,14 @@ public class MultiplayerWorld
 		int id = GameConfig.ID;
 		
 		boolean movement = GameConfig.players.get(id).move(delta, GameConfig.DIRECTION);
-
 		boolean collide = checkCollsion(delta);
-		
 		boolean playerCollide = checkPlayerCollision(delta);
 		
 		if(movement || collide || playerCollide)
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
+		
+		if(GameConfig.HIT)
+			hit(delta);
 		
 		GameConfig.ON = false;
 		GameConfig.LEFT = false;
@@ -97,7 +99,6 @@ public class MultiplayerWorld
 
 	private boolean checkCollsion(float delta)
 	{
-		
     	int	i = (int) ((GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
@@ -136,13 +137,13 @@ public class MultiplayerWorld
 	{
 		// add score and coins
 		GameConfig.SCORE += map[i][j].type.score;
-	/*	
+
 		boolean clock = false;
 		
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
 
-//		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward()); */
+		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward()); 
 		map[i][j] = null;
 	}
 	
@@ -165,12 +166,11 @@ public class MultiplayerWorld
     			if(map[i][j].type == Objects.CLOCK)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else
-    				map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
+    				map[i][j].decreaseHealth(GameConfig.players.get(GameConfig.ID).getWeapon().getDamage()*delta);
     		
     			client.out.println(new HitPacket(i, j, map[i][j].getHealth()).toString());
     		}
     		
-
 			if(map[i][j].getHealth() == 0)
 			{
 				if(map[i][j].type == Objects.CLOCK)
@@ -223,7 +223,6 @@ public class MultiplayerWorld
 			int j = Integer.parseInt(packet[4]);
 			int health = Integer.parseInt(packet[5]);
 			
-			System.out.println(GameConfig.tools.get(room)[i][j].type + "  " + health);
 			GameConfig.tools.get(room)[i][j].setHealth(health);
 			
 			if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
@@ -243,7 +242,6 @@ public class MultiplayerWorld
 			Countdown.increment(5);
 		}
 	}
-
 	
 	public static void addPlayers()
 	{
@@ -251,7 +249,10 @@ public class MultiplayerWorld
 		
 		for(int i = 0; i < usernames.size(); i++)
 		{
-			GameConfig.players.add(new Player(new Vector3(5,-4.8f, 10 * (i+1)), 4, usernames.get(i)));
+			Player player = new Player(new Vector3(5,-4.8f, 10 * (i+1)), 4, usernames.get(i));
+			player.setWeapon(new Weapon(player.getPosition()));
+			
+			GameConfig.players.add(player);
 			
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;

@@ -51,7 +51,7 @@ public class Player extends AbstractGameObject
 			moveBack(delta, direction);
 			return true;
 		}
-		
+
 		return false;
 	}
 	
