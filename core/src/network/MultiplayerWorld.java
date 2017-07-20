@@ -223,18 +223,21 @@ public class MultiplayerWorld
 			int j = Integer.parseInt(packet[4]);
 			int health = Integer.parseInt(packet[5]);
 			
-			GameConfig.tools.get(room)[i][j].setHealth(health);
-			
-			if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
+			if(GameConfig.tools.get(room)[i][j] instanceof Destroyable)
 			{
-				if(map[i][j].type == Objects.CLOCK)
+				GameConfig.tools.get(room)[i][j].setHealth(health);
+			
+				if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
 				{
-					Countdown.increment(5);
-					client.out.println(new TimePacket(5).toString());
+					if(map[i][j].type == Objects.CLOCK)
+					{
+						Countdown.increment(5);
+						client.out.println(new TimePacket(5).toString());
+					}
+														
+					//remove tools and toolsInstance
+					delete(i,j);
 				}
-													
-				//remove tools and toolsInstance
-				delete(i,j);
 			}
 		}
 		else if(packet[0].equals("time"))
