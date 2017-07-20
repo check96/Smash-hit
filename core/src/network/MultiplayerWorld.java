@@ -185,7 +185,6 @@ public class MultiplayerWorld
     	}
 	}
 
-
 	private boolean checkPlayerCollision(float delta) 
 	{
 		for(int i = 0; i<GameConfig.players.size(); i++)

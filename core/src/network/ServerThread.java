@@ -73,7 +73,7 @@ public class ServerThread extends Thread
 		}
 		else if(packet[0].equals("hit"))
 		{
-			
+			GameConfig.server.sendData(line);
 		}
 		else if(packet[0].equals("time"))
 		{
