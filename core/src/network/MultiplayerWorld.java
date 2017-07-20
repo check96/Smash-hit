@@ -35,10 +35,11 @@ public class MultiplayerWorld
 		
 		int id = GameConfig.ID;
 		
-		if(GameConfig.players.get(id).move(delta, GameConfig.DIRECTION))
-			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
+		boolean movement = GameConfig.players.get(id).move(delta, GameConfig.DIRECTION);
 
-		if(checkCollsion(delta))
+		boolean collide = checkCollsion(delta);
+		
+		if(movement || collide)
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
 		checkPlayerCollision(delta);
