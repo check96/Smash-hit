@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import com.badlogic.gdx.Gdx;
+
 import videogame.GameConfig;
 
 public class ClientThread extends Thread
@@ -14,11 +16,14 @@ public class ClientThread extends Thread
 	public Socket socket;
 	public BufferedReader in;
 	public PrintWriter out;
-	public String receive = "";
+//	public String receive = "";
+	private MultiplayerScreen multiplayerScreen;
 	
-	public ClientThread(Socket _socket) 
+	public ClientThread(Socket _socket, MultiplayerScreen _multiplayerScreen) 
 	{
-		socket = _socket;
+		this.socket = _socket;
+		this.multiplayerScreen = _multiplayerScreen;
+		
 		try
 		{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -36,24 +41,38 @@ public class ClientThread extends Thread
 		{
 			try
 			{
- 				receive = in.readLine();
- 				if(receive.substring(0, 5).equals("login"))
- 				{
- 					MultiplayerWorld.usernames.clear();
- 					String[] usernames = receive.split(",");
- 					for(int i = 1; i < usernames.length; i++)
- 						MultiplayerWorld.usernames.add(usernames[i]);
-
- 					MultiplayerWorld.addPlayers();
- 				}
- 				if(receive.equals("ready"))
- 				{
- 					MultiplayerLobby.ready = true;
- 					receive = "";
- 				}
-			} catch (IOException e) {
+ 				String receive = in.readLine();
+ 				packetManagement(receive);
+ 							} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
+
+	private void packetManagement(String receive)
+	{
+		if(receive.equals("ready"))
+			MultiplayerLobby.ready = true;
+		else if(receive.substring(0, 5).equals("login"))
+		{
+			MultiplayerWorld.usernames.clear();
+			String[] usernames = receive.split(",");
+			for(int i = 1; i < usernames.length; i++)
+				MultiplayerWorld.usernames.add(usernames[i]);
+
+			MultiplayerWorld.addPlayers();
+		}
+		else
+		{
+			String[] packets = receive.split(","); 
+			if(packets[0].equals("load"))
+			{
+				if(!GameConfig.isServer)
+					multiplayerScreen.game.mapGenerator.loadRoom(packets[1]);
+			}
+			else
+				multiplayerScreen.getWorld().packetManager(packets, Gdx.graphics.getDeltaTime());
+		}
+	}
+
 }

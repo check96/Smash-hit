@@ -32,7 +32,7 @@ import videogame.GameConfig;
 
 public class MultiplayerScreen implements Screen 
 {
-	private GameManager game;
+	public GameManager game;
 	private Camera cam;
 	private ModelBatch batch;
 	public static ModelInstance playerInstance;
@@ -67,18 +67,10 @@ public class MultiplayerScreen implements Screen
 
 	public MultiplayerScreen() { }
 		
+	public MultiplayerWorld getWorld() {return world;}
+	
 	public MultiplayerScreen(GameManager _game, String ip, int port)
 	{
-		try
-		{
-			socket = new Socket(ip, port);
-			client = new ClientThread(socket);
-			client.start();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		this.game = _game;
 		
 		playerControllers = new ArrayList<AnimationController>();
@@ -104,6 +96,17 @@ public class MultiplayerScreen implements Screen
 
 //		game.countdown.pause = false;
 		hud = new MultiplayerHUD();
+		
+		try
+		{
+			socket = new Socket(ip, port);
+			client = new ClientThread(socket, this);
+			client.start();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initJoystick()
@@ -242,19 +245,6 @@ public class MultiplayerScreen implements Screen
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		
-		if(!client.receive.equals(""))
-		{
-//			System.out.println(client.receive);
-			String[] packets = client.receive.split(","); 
-			if(packets[0].equals("load"))
-			{
-				if(!GameConfig.isServer)
-					game.mapGenerator.loadRoom(packets[1]);
-			}
-			else
-				world.packetManager(packets, delta);
-		}
-
 		if(joystick == null)
 			handleInput();
 
