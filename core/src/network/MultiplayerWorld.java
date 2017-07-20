@@ -39,10 +39,10 @@ public class MultiplayerWorld
 
 		boolean collide = checkCollsion(delta);
 		
-		if(movement || collide)
+		boolean playerCollide = checkPlayerCollision(delta);
+		
+		if(movement || collide || playerCollide)
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
-
-		checkPlayerCollision(delta);
 		
 		GameConfig.ON = false;
 		GameConfig.LEFT = false;
@@ -203,9 +203,21 @@ public class MultiplayerWorld
 	}
 
 
-	private void checkPlayerCollision(float delta) 
+	private boolean checkPlayerCollision(float delta) 
 	{
+		for(int i = 0; i<GameConfig.players.size(); i++)
+		{
+			if(i != GameConfig.ID)
+			{
+				if(GameConfig.players.get(GameConfig.ID).collide(GameConfig.players.get(i)))
+				{
+					reaction(delta);
+					return true;
+				}
+			}
+		}
 		
+		return false;
 	}
 	
 	public synchronized void packetManager(String[] packet, float delta)
