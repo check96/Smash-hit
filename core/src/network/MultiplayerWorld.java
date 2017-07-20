@@ -94,8 +94,8 @@ public class MultiplayerWorld
 	private void checkCollsion(float delta, Player player)
 	{
 		
-    	int	i = (int) ((GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
-    	int	j = (int) ((GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+    	int	i = (int) ((player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
+    	int	j = (int) ((player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
 		if((i == 0 && j !=5)  || (i == GameConfig.ROOM_ROW-1 && j != 5) || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
 			checkWallCollision(delta, player);
