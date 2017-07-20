@@ -38,7 +38,9 @@ public class MultiplayerWorld
 		if(GameConfig.players.get(id).move(delta, GameConfig.DIRECTION))
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
-		checkCollsion(delta);
+		for(Player player : GameConfig.players)
+			checkCollsion(delta, player);
+
 		checkPlayerCollision(delta);
 		
 		GameConfig.ON = false;
@@ -72,7 +74,7 @@ public class MultiplayerWorld
 		
 	}
 
-	private void checkWallCollision(float delta)
+	private void checkWallCollision(float delta, Player player)
 	{
 		synchronized (GameConfig.walls)
 		{
@@ -80,46 +82,46 @@ public class MultiplayerWorld
 			{
 				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
 				{
-					if(GameConfig.players.get(GameConfig.ID).collide(wall))
+					if(player.collide(wall))
 					{
-						reaction(delta);
+						reaction(delta, player);
 					}
 				}
 			}
 		}
 	}
 
-	private void checkCollsion(float delta)
+	private void checkCollsion(float delta, Player player)
 	{
+		
     	int	i = (int) ((GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
     	int	j = (int) ((GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
 		if((i == 0 && j !=5)  || (i == GameConfig.ROOM_ROW-1 && j != 5) || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
-			checkWallCollision(delta);
+			checkWallCollision(delta, player);
 
 		if(map[i][j] instanceof Destroyable)
 		{
-			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
+			if(player.collide(map[i][j]));
 			{
 				if(map[i][j].type == Objects.CLOCK)
     				hit(delta);
 				else
-					reaction(delta);
-				client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
+					reaction(delta, player);
 			}
 		}
 	}
 		
-	private void reaction(float delta)
+	private void reaction(float delta, Player player)
 	{
 		if(GameConfig.ON)
-			GameConfig.players.get(GameConfig.ID).moveBack(delta, GameConfig.DIRECTION);
+			player.moveBack(delta, GameConfig.DIRECTION);
 		else if(GameConfig.BACK)
-			GameConfig.players.get(GameConfig.ID).moveOn(delta, GameConfig.DIRECTION);
+			player.moveOn(delta, GameConfig.DIRECTION);
 		else if(GameConfig.LEFT)
-			GameConfig.players.get(GameConfig.ID).moveRight(delta, GameConfig.DIRECTION);
+			player.moveRight(delta, GameConfig.DIRECTION);
 		else if(GameConfig.RIGHT)
-			GameConfig.players.get(GameConfig.ID).moveLeft(delta, GameConfig.DIRECTION);
+			player.moveLeft(delta, GameConfig.DIRECTION);
 	}
 
 	private void delete(int i, int j)
