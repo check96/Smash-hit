@@ -38,8 +38,8 @@ public class MultiplayerWorld
 		if(GameConfig.players.get(id).move(delta, GameConfig.DIRECTION))
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
-		for(Player player : GameConfig.players)
-			checkCollsion(delta, player);
+		if(checkCollsion(delta))
+			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
 		checkPlayerCollision(delta);
 		
@@ -49,7 +49,6 @@ public class MultiplayerWorld
 		GameConfig.BACK = false;
 		GameConfig.HIT = false;
 		
-
 		checkGameOver();
 		
 		synchronized (GameConfig.tools)
@@ -74,7 +73,7 @@ public class MultiplayerWorld
 		
 	}
 
-	private void checkWallCollision(float delta, Player player)
+	private boolean checkWallCollision(float delta)
 	{
 		synchronized (GameConfig.walls)
 		{
@@ -82,46 +81,53 @@ public class MultiplayerWorld
 			{
 				if(wall.type != Walls.CEILING && wall.type != Walls.FLOOR)
 				{
-					if(player.collide(wall))
+					if(GameConfig.players.get(GameConfig.ID).collide(wall))
 					{
-						reaction(delta, player);
+						reaction(delta);
+						return true;
 					}
 				}
 			}
 		}
+		
+		return false;
 	}
 
-	private void checkCollsion(float delta, Player player)
+	private boolean checkCollsion(float delta)
 	{
 		
-    	int	i = (int) ((player.getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
-    	int	j = (int) ((player.getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+    	int	i = (int) ((GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
+    	int	j = (int) ((GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
     	
 		if((i == 0 && j !=5)  || (i == GameConfig.ROOM_ROW-1 && j != 5) || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
-			checkWallCollision(delta, player);
+			if(checkWallCollision(delta))
+				client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
 		if(map[i][j] instanceof Destroyable)
 		{
-			if(player.collide(map[i][j]));
+			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
 				if(map[i][j].type == Objects.CLOCK)
     				hit(delta);
 				else
-					reaction(delta, player);
+					reaction(delta);
+				return true;
 			}
 		}
+		
+		return false;
 	}
 		
-	private void reaction(float delta, Player player)
+	private void reaction(float delta)
 	{
 		if(GameConfig.ON)
-			player.moveBack(delta, GameConfig.DIRECTION);
+			GameConfig.players.get(GameConfig.ID).moveBack(delta, GameConfig.DIRECTION);
 		else if(GameConfig.BACK)
-			player.moveOn(delta, GameConfig.DIRECTION);
+			GameConfig.players.get(GameConfig.ID).moveOn(delta, GameConfig.DIRECTION);
 		else if(GameConfig.LEFT)
-			player.moveRight(delta, GameConfig.DIRECTION);
+			GameConfig.players.get(GameConfig.ID).moveRight(delta, GameConfig.DIRECTION);
 		else if(GameConfig.RIGHT)
-			player.moveLeft(delta, GameConfig.DIRECTION);
+			GameConfig.players.get(GameConfig.ID).moveLeft(delta, GameConfig.DIRECTION);
 	}
 
 	private void delete(int i, int j)
