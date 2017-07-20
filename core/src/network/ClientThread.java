@@ -60,7 +60,7 @@ public class ClientThread extends Thread
 			
 			MultiplayerLobby.ready = true;
 		}
-		else if(receive.substring(0,5).equals("login"))
+		else if(packet[0].equals("login"))
 		{
 			MultiplayerWorld.usernames.clear();
 			String[] usernames = receive.split(",");

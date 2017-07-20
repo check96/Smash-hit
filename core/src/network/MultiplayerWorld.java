@@ -9,6 +9,7 @@ import entity.Objects;
 import entity.Player;
 import entity.Wall;
 import entity.Walls;
+import network.packet.HitPacket;
 import network.packet.MovePacket;
 import network.packet.TimePacket;
 import videogame.Countdown;
@@ -135,33 +136,13 @@ public class MultiplayerWorld
 	{
 		// add score and coins
 		GameConfig.SCORE += map[i][j].type.score;
-		GameConfig.LOCAL_COINS += map[i][j].getMoneyReward() * GameConfig.coinsMultiplier;
-		
+	/*	
 		boolean clock = false;
 		
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
 
-		switch (map[i][j].type)
-		{
-			case DESK:	 GameConfig.destroyedDesks++;
-						 break;
-						
-			case CHAIR:  GameConfig.destroyedChairs++;
-						 break;
-			
-			case LOCKER: GameConfig.destroyedLockers++;
-						 break;
-			
-			case DOOR:   GameConfig.destroyedDoors++;
-						 break;
-						 
-			case PLANT:	 GameConfig.destroyedPlants++;
-						 break;
-			default: 	 break;
-		}
-		
-		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward());
+//		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward()); */
 		map[i][j] = null;
 	}
 	
@@ -179,14 +160,16 @@ public class MultiplayerWorld
 		// decrease tool's life
     	if(map[i][j] instanceof Destroyable)
     	{
-    		if(GameConfig.player.collide(map[i][j]))
+    		if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]))
     		{
     			if(map[i][j].type == Objects.CLOCK)
     				map[i][j].decreaseHealth(map[i][j].getHealth());
     			else
     				map[i][j].decreaseHealth(GameConfig.player.getWeapon().getDamage()*delta);
+    		
+    			client.out.println(new HitPacket(i, j, map[i][j].getHealth()).toString());
     		}
-
+    		
 
 			if(map[i][j].getHealth() == 0)
 			{
@@ -236,7 +219,24 @@ public class MultiplayerWorld
 		}
 		else if(packet[0].equals("hit"))
 		{
+			int room = Integer.parseInt(packet[2]);
+			int i = Integer.parseInt(packet[3]);
+			int j = Integer.parseInt(packet[4]);
+			int health = Integer.parseInt(packet[5]);
 			
+			GameConfig.tools.get(room)[i][j].setHealth(health);
+			
+			if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
+			{
+				if(map[i][j].type == Objects.CLOCK)
+				{
+					Countdown.increment(5);
+//					client.out.println(new TimePacket(5).toString());
+				}
+													
+				//remove tools and toolsInstance
+				delete(i,j);
+			}
 		}
 		else if(packet[0].equals("time"))
 		{
@@ -256,8 +256,6 @@ public class MultiplayerWorld
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;
 		}
-		
-		System.out.println("ID: "+ GameConfig.ID);
 	}
 	
 }

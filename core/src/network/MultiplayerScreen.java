@@ -198,6 +198,7 @@ public class MultiplayerScreen implements Screen
 		{
 			cam.direction.rotate(4,0,1,0);
 			GameConfig.players.get(GameConfig.ID).angle += 4;
+			
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
