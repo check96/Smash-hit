@@ -56,8 +56,15 @@ public class Server extends Thread
 	
 	public void sendData(Packet packet)
 	{
+		String[] packets = packet.toString().split(",");
+		
+		int id = Integer.parseInt(packets[1]);
+		
 		for(int i = 0; i < clients.size(); i++)
-			clients.get(i).out.println(packet.toString());
+		{
+			if(i != id)
+				clients.get(i).out.println(packet.toString());
+		}
 	}
 	
 	public void sendData(String line)

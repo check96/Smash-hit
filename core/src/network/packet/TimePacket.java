@@ -1,5 +1,7 @@
 package network.packet;
 
+import videogame.GameConfig;
+
 public class TimePacket extends Packet 
 {
 	int time;
@@ -11,6 +13,6 @@ public class TimePacket extends Packet
 	
 	@Override
 	public String toString() {
-		return ("time,"+time);
+		return ("time,"+GameConfig.ID + "," + time);
 	}
 }

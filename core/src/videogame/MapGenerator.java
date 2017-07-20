@@ -262,7 +262,6 @@ public class MapGenerator extends Thread
 		
 		if(GameConfig.MULTIPLAYER)
 		{
-			System.out.println("mapGenerator");
 			String send = "";
 			for(int i = 0; i < GameConfig.newTools.length; i++)
 				for(int j = 0; j < GameConfig.newTools[i].length; j++)

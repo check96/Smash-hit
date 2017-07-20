@@ -1,5 +1,7 @@
 package network.packet;
 
+import videogame.GameConfig;
+
 public class LoadPacket extends Packet
 {
 	String map;
@@ -12,7 +14,7 @@ public class LoadPacket extends Packet
 	@Override
 	public String toString ()
 	{
-		return ("load,"+map);
+		return ("load,"+GameConfig.ID + "," + map);
 	}
 
 }
