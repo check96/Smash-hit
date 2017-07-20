@@ -32,6 +32,7 @@ public class StartScreen implements Screen
     
     public StartScreen(GameManager _game)
     {
+    	
     	game = _game;
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
@@ -104,6 +105,12 @@ public class StartScreen implements Screen
         stage.addActor(table);
         
         SoundManager.menuSoundtrack.play();
+        game.countdown.start();
+        
+        synchronized(game.mapGenerator)
+		{
+        	game.mapGenerator.start();
+		}
     }
  
     public void render(float delta)

@@ -81,8 +81,6 @@ public class Dijkstra
     
     private static void createMap()
     {
-    	float position = GameConfig.ROOM_ROW *GameConfig.CELL_HEIGHT* (GameConfig.actualLevel-1);
-    		
 		if(GameConfig.player.getX() < 0)
 			endX = 0;
 		else
@@ -103,9 +101,10 @@ public class Dijkstra
 						map[i][j] = 1 / GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getMoneyReward();
 					
 					if(GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].type == Objects.CLOCK)
-						clockX = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX()-position)/GameConfig.CELL_HEIGHT)+1;
-						clockY = (int)((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getZ()-position)/GameConfig.CELL_WIDTH)+1;
-					
+					{
+						clockX = (int) ((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
+			    		clockY = (int) ((GameConfig.tools.get(GameConfig.actualLevel-1)[i][j].getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+					}
 				}
 			}
 	

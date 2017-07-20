@@ -1,7 +1,6 @@
 package network;
 
 import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Vector3;
 
 import GameGui.Deleter;
@@ -10,18 +9,21 @@ import entity.Objects;
 import entity.Player;
 import entity.Wall;
 import entity.Walls;
+import network.packet.MovePacket;
+import network.packet.TimePacket;
 import videogame.Countdown;
 import videogame.GameConfig;
-import videogame.World;
 
 public class MultiplayerWorld 
 {
 	private Destroyable[][] map;
 	public static ArrayList<String> usernames = new ArrayList<String>();
+	private ClientThread client;
 	
-	public MultiplayerWorld()
+	public MultiplayerWorld(ClientThread client)
 	{
 		GameConfig.LOCAL_COINS = 0;
+		this.client = client;
 	}
 
 	public void update(float delta)
@@ -34,6 +36,7 @@ public class MultiplayerWorld
 		int id = GameConfig.ID;
 		
 		GameConfig.players.get(id).move(delta, GameConfig.DIRECTION);
+
 		checkCollsion(delta);
 		checkPlayerCollision(delta);
 		
@@ -41,8 +44,10 @@ public class MultiplayerWorld
 		GameConfig.LEFT = false;
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
-		
 		GameConfig.HIT = false;
+
+		client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
+		
 		checkGameOver();
 		
 		synchronized (GameConfig.tools)
@@ -96,6 +101,7 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
+				System.out.println("ID: "+GameConfig.ID+"   collide with: "+map[i][j].type);
 				if(map[i][j].type == Objects.CLOCK)
     				hit(delta);
 				else
@@ -176,7 +182,10 @@ public class MultiplayerWorld
 			if(map[i][j].getHealth() == 0)
 			{
 				if(map[i][j].type == Objects.CLOCK)
+				{
+					client.out.println(new TimePacket(5).toString());
 					Countdown.increment(5 * (GameConfig.clockLevel+1));
+				}
 													
 				//remove tools and toolsInstance
 				delete(i,j);
@@ -196,15 +205,13 @@ public class MultiplayerWorld
 		{
 			int id = Integer.parseInt(packet[1]);
 
-			Vector3 direction = new Vector3(Float.parseFloat(packet[3]),Float.parseFloat(packet[4]),Float.parseFloat(packet[5]));
-			if(packet[2].equals("on"))
-				GameConfig.players.get(id).moveOn(delta, direction);
-			else if(packet[2].equals("back"))
-				GameConfig.players.get(id).moveBack(delta, direction);
-			else if(packet[2].equals("left"))
-				GameConfig.players.get(id).moveLeft(delta, direction);
-			else if(packet[2].equals("right"))
-				GameConfig.players.get(id).moveRight(delta, direction);
+			int angle = Integer.parseInt(packet[2]);
+			float x = Float.parseFloat(packet[3]);
+			float y = Float.parseFloat(packet[4]);
+			float z = Float.parseFloat(packet[5]);
+			
+			GameConfig.players.get(id).setPosition(x,y,z);
+			GameConfig.players.get(id).angle = angle;
 		}
 		else if(packet[0].equals("hit"))
 		{
@@ -216,6 +223,7 @@ public class MultiplayerWorld
 		}
 	}
 
+	
 	public static void addPlayers()
 	{
 		GameConfig.players.clear();

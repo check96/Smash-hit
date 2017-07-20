@@ -264,7 +264,7 @@ public class MapGenerator extends Thread
 			for(int i = 0; i < GameConfig.newTools.length; i++)
 				for(int j = 0; j < GameConfig.newTools[i].length; j++)
 					if(GameConfig.newTools[i][j] == null)
-						send+=0;
+						send += "0";
 					else
 						send += Integer.toString(GameConfig.newTools[i][j].type.id);
 			

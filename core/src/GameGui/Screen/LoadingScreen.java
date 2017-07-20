@@ -18,7 +18,8 @@ public class LoadingScreen implements Screen
 	private MultiplayerScreen multiplayerScreen;
 	
 	private SpriteBatch spriteBatch;
-	private Texture background;
+	private Texture backgroundSingle;
+	private Texture backgroundMulti;
 	private Texture loadingBar; 
 	
 	private float progress;
@@ -34,21 +35,15 @@ public class LoadingScreen implements Screen
 		SoundManager.menuSoundtrack.stop();
 
 		game = _game;
-		game.countdown.start();
+		
 		
 		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/loading_background.png"));
-        
+        backgroundSingle = new Texture(Gdx.files.internal("texture/loading_background_single.png"));
+        backgroundMulti = new Texture(Gdx.files.internal("texture/loading_background_multi.png"));
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
-		
-        if(!GameConfig.MULTIPLAYER || GameConfig.isServer)
-        {
-        	synchronized(game.mapGenerator)
-			{
-	        	game.mapGenerator.start();
-			}
-        }
-
+	
+        game.mapGenerator.pause = false; 
+        
         if(GameConfig.MULTIPLAYER)
         {
         	synchronized(game.mapGenerator)
@@ -56,6 +51,7 @@ public class LoadingScreen implements Screen
 	        	game.mapGenerator.assets.loadPlayer();
 			}
         }
+        
 	}
 	
 	
@@ -84,7 +80,12 @@ public class LoadingScreen implements Screen
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         
         spriteBatch.begin();
-        spriteBatch.draw(background,0,0);
+        
+        if(!GameConfig.MULTIPLAYER)
+        	spriteBatch.draw(backgroundSingle,0,0);
+        else
+        	spriteBatch.draw(backgroundMulti,0,0);
+        
         spriteBatch.draw(loadingBar, GameConfig.Screen_Width*250/GameConfig.width, 0);
         spriteBatch.end();
     }

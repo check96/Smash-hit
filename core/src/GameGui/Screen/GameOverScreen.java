@@ -34,6 +34,7 @@ public class GameOverScreen implements Screen
 	private Label destroyedPlants;
 	private Label destroyedLockers;
 	private Label destroyedObjects;
+	private Label object;
 	private Label score;
 	private Label coins;
 	private SpriteBatch money;
@@ -103,22 +104,29 @@ public class GameOverScreen implements Screen
 		if(GameConfig.SCORE > highscore)
 		{
 			score = new Label("NEW Highscore: "+ GameConfig.SCORE, new Label.LabelStyle(font, color));
+			score.setPosition(50, 300);
 			
 			game.options.putInteger("highscore", GameConfig.SCORE);
 			game.options.flush();
 		}
 		else
+		{
 			score = new Label("Score: "+ GameConfig.SCORE, new Label.LabelStyle(font, color));
-		
-		
-		destroyedDesks = new Label("Desks Destroyed: "+ GameConfig.destroyedDesks, new Label.LabelStyle(font, color));
-        destroyedChairs = new Label("Chairs Destroyed: "+ GameConfig.destroyedChairs, new Label.LabelStyle(font, color));
-        destroyedDoors = new Label("Doors Destroyed: "+ GameConfig.destroyedDoors, new Label.LabelStyle(font, color));
-        destroyedPlants = new Label("Plants Destroyed: "+ GameConfig.destroyedPlants, new Label.LabelStyle(font, color));
-        destroyedLockers = new Label("Lockers Destroyed: "+ GameConfig.destroyedLockers, new Label.LabelStyle(font, color));
-        destroyedObjects = new Label("Total Objects Destroyed: "+ GameConfig.destroyedObjects, new Label.LabelStyle(font, color));
+			score.setPosition(50, 300);
+		}
+		int somma = GameConfig.destroyedDesks + GameConfig.destroyedChairs +
+					GameConfig.destroyedDoors + GameConfig.destroyedPlants +
+					GameConfig.destroyedLockers;
+		object = new Label("Object Destroyed :",new Label.LabelStyle(font, color));
+		destroyedDesks = new Label("Desks : "+ GameConfig.destroyedDesks, new Label.LabelStyle(font, color));
+        destroyedChairs = new Label("Chairs : "+ GameConfig.destroyedChairs, new Label.LabelStyle(font, color));
+        destroyedDoors = new Label("Doors : "+ GameConfig.destroyedDoors, new Label.LabelStyle(font, color));
+        destroyedPlants = new Label("Plants : "+ GameConfig.destroyedPlants, new Label.LabelStyle(font, color));
+        destroyedLockers = new Label("Lockers : "+ GameConfig.destroyedLockers, new Label.LabelStyle(font, color));
+        destroyedObjects = new Label("Total : "+ somma, new Label.LabelStyle(font, color));
         
-        table.add(score).expandX();
+        table.row();
+        table.add(object).expandX();
         table.row();
         table.add(destroyedDesks).expandX();
         table.row();
@@ -134,6 +142,7 @@ public class GameOverScreen implements Screen
     	table.row();
 
     	stage.addActor(coins);
+    	stage.addActor(score);
     	stage.addActor(table);
 		stage.addActor(retry);
 		stage.addActor(quit);

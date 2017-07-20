@@ -8,10 +8,12 @@ public class Player extends AbstractGameObject
 	private Weapon weapon;
 	private Vector3 velocity = new Vector3(20,20,20);
 	private String username;
+	public int angle;
 	
 	public Player (Vector3 _position, float radius)
 	{
 		super(_position, radius);
+		angle = 90;
 	}
 	
 	public Player (Vector3 _position, float radius, String username)
@@ -49,7 +51,6 @@ public class Player extends AbstractGameObject
 	public void moveLeft(float delta, Vector3 direction)
 	{
 		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
-		System.out.println("speed: "+speed+"    delta: "+delta);
 		Position.x += speed.z * delta;
 		Position.z -= speed.x * delta; 
 	}

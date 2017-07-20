@@ -39,7 +39,6 @@ public class MultiplayerScreen implements Screen
 	public static ArrayList<ModelInstance> playersInstance = new ArrayList<ModelInstance>();
 	private Environment environment;
 	private MultiplayerWorld world;
-	private int degrees = 90;
 	private long hitTime = 0;
 	private long startTime = 0;
 	private boolean hitAnimation = false;
@@ -47,23 +46,16 @@ public class MultiplayerScreen implements Screen
 	private ArrayList<AnimationController> playerControllers;
 	private ArrayList<AnimationController> destroyedController;
 	private ArrayList<AnimationController> coinController;
-	private String[] state = new String[4];
 	private Socket socket;
 	private ClientThread client;
 
 	private Controller joystick;
-//	private final int A = 0;
 	private final int B = 1;
-//	private final int Y = 3;
-//	private final int X = 2;
-//	private final int LB = 4;
-//	private final int RB = 5;
+	private final int Y = 3;
+	private final int LB = 4;
+	private final int RB = 5;
     private final int START = 7;
 	private boolean PAUSE = false;
-//	private final int AXIS_LY = 0; //-1 is up | +1 is down
-//	private final int AXIS_LX = 1; //-1 is left | +1 is right
-//	private final int AXIS_RY = 2; //-1 is up | +1 is down
-//	private final int AXIS_RX = 3; //-1 is left | +1 is right
 
 	public MultiplayerScreen() { }
 		
@@ -87,14 +79,13 @@ public class MultiplayerScreen implements Screen
 
 		SoundManager.gameSoundtrack.play();
 		
-		world = new MultiplayerWorld();
 		batch = new ModelBatch();
 
 		initCamera();
 		initEnvironment();
 		initAnimation();
 
-//		game.countdown.pause = false;
+		game.countdown.pause = false;
 		hud = new MultiplayerHUD();
 		
 		try
@@ -107,6 +98,7 @@ public class MultiplayerScreen implements Screen
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		world = new MultiplayerWorld(client);
 	}
 
 	private void initJoystick()
@@ -195,36 +187,24 @@ public class MultiplayerScreen implements Screen
 	public void handleInput() 
 	{
 		if (Gdx.input.isKeyPressed(Input.Keys.A))
-		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"left").toString());
 			GameConfig.LEFT = true;
-		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.D))
-		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"right").toString());
 			GameConfig.RIGHT = true;
-		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.W))
-		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"on").toString());
 			GameConfig.ON = true;
-		}
 		else if (Gdx.input.isKeyPressed(Input.Keys.S))
-		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"back").toString());
 			GameConfig.BACK = true;		
-		}
 		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
 		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"LEFT").toString());
 			cam.direction.rotate(4,0,1,0);
-			degrees += 4;
+			GameConfig.players.get(GameConfig.ID).angle += 4;
+			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
 		{
-			client.out.println(new MovePacket(GameConfig.DIRECTION,"RIGHT").toString());
 			cam.direction.rotate(-4,0,1,0);
-			degrees -= 4;
+			GameConfig.players.get(GameConfig.ID).angle -= 4;
+			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(),GameConfig.players.get(GameConfig.ID).angle));
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
 		{
@@ -264,6 +244,7 @@ public class MultiplayerScreen implements Screen
 		for(int i = 0; i < playersInstance.size(); i++)
 		{
 			playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
+			playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
 			batch.render(playersInstance.get(i), environment);
 		}
 		

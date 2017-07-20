@@ -16,7 +16,6 @@ public class ClientThread extends Thread
 	public Socket socket;
 	public BufferedReader in;
 	public PrintWriter out;
-//	public String receive = "";
 	private MultiplayerScreen multiplayerScreen;
 	
 	public ClientThread(Socket _socket, MultiplayerScreen _multiplayerScreen) 
@@ -43,7 +42,8 @@ public class ClientThread extends Thread
 			{
  				String receive = in.readLine();
  				packetManagement(receive);
- 							} catch (IOException e) {
+ 			} catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 		}

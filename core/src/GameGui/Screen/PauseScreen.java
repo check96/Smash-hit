@@ -73,14 +73,12 @@ public class PauseScreen implements Screen
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter(); 
     	
         parameter.size = 30;
-    	BitmapFont font = generator.generateFont(parameter);    
+    	BitmapFont font = generator.generateFont(parameter);   
+    	
 		Skin skin = new Skin(Gdx.files.internal("skin/comic/skin/comic-ui.json"));
-
-		Table table = new Table(skin);
-		table.center();
-		table.setFillParent(true);
 		
 		musicVolume = new Slider(0, 1, 0.1f, false, skin);
+		musicVolume.setPosition(500, 250);
 		musicVolume.setValue(SoundManager.musicVolume);
 		musicVolume.addListener(new ChangeListener() {
 
@@ -98,6 +96,7 @@ public class PauseScreen implements Screen
 		});
 		
 		soundVolume = new Slider(0, 1, 0.1f, false, skin);
+		soundVolume.setPosition(500, 200);
 		soundVolume.setValue(SoundManager.soundVolume);
 		soundVolume.addListener(new ChangeListener() {
 
@@ -113,13 +112,15 @@ public class PauseScreen implements Screen
 
 		
 		FULLSCREEN = game.options.getBoolean("fullscreen",false);
-		table = new Table(skin);
-        table.setFillParent(true);
+		
         
-        soundLabel = new Label("SOUND", new Label.LabelStyle(font, Color.BLACK));
-		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.BLACK));
+        soundLabel = new Label("SOUND", new Label.LabelStyle(font, Color.WHITE));
+        soundLabel.setPosition(320, 200);
+		musicLabel = new Label("MUSIC", new Label.LabelStyle(font, Color.WHITE));
+		musicLabel.setPosition(320, 250);
 		
 		on_off = new CheckBox("", skin);
+		on_off.setPosition(570, 150);
 		on_off.setChecked(FULLSCREEN);
 		on_off.addListener(new InputListener(){
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -138,9 +139,11 @@ public class PauseScreen implements Screen
 			}
 		});
 		
-		fullscreen = new Label("FULLSCREEN", new Label.LabelStyle(font, Color.BLACK));
+		fullscreen = new Label("FULLSCREEN", new Label.LabelStyle(font, Color.WHITE));
+		fullscreen.setPosition(320, 150);
 
 		back = new TextButton("BACK", skin);
+		back.setPosition(320, 50);
 		back.addListener(new InputListener()
 		{
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
@@ -149,28 +152,29 @@ public class PauseScreen implements Screen
 	            return true;
             }
         });
+		
 		quit = new TextButton("QUIT", skin);
+		quit.setPosition(520, 50);
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
+      			GameConfig.LOCAL_COINS = 0;
       			game.setScreen(new GameOverScreen(game));
 	            return true;
             }
         });
-		
-		table.add(musicLabel).expandX();
-		table.add(musicVolume).expandX();
-		table.row();
-		table.add(soundLabel).expandX();
-		table.add(soundVolume).expandX();
-		table.row();
-		table.add(fullscreen).expandX();
-		table.add(on_off).expandX();
-		table.row();
-		table.add(back).expandX();
-		table.add(quit).expandX();
 
-		stage.addActor(table);
+		stage.addActor(musicLabel);
+		stage.addActor(musicVolume);
+		stage.addActor(soundVolume);
+		stage.addActor(soundLabel);
+		stage.addActor(fullscreen);
+		stage.addActor(on_off);
+		stage.addActor(back);
+		stage.addActor(quit);
+
+		
+		
 	}
 	
 	@Override

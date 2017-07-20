@@ -23,8 +23,8 @@ public class GameManager extends Game
 		options = Gdx.app.getPreferences("options");
 		editorLevels = Gdx.app.getPreferences("levels");
 		
-		GameConfig.Screen_Width = options.getInteger("screen_width",1024);
-		GameConfig.Screen_Height = options.getInteger("screen_height",600);
+//		GameConfig.Screen_Width = options.getInteger("screen_width",1024);
+//		GameConfig.Screen_Height = options.getInteger("screen_height",600);
 		SoundManager.musicVolume = options.getFloat("musicVolume",1);
 		SoundManager.soundVolume = options.getFloat("soundVolume",1);
 		
