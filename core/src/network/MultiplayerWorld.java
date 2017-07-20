@@ -73,7 +73,6 @@ public class MultiplayerWorld
 	{
 		if(Countdown.getTime() == 0)
 			GameConfig.GAME_OVER = true;
-		
 	}
 
 	private boolean checkWallCollision(float delta)

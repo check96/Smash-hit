@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.g3d.decals.Decal;
 import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
-import com.badlogic.gdx.math.Interpolation.BounceOut;
 import com.badlogic.gdx.math.Quaternion;
 
 import GameGui.GameManager;
@@ -38,7 +37,8 @@ import videogame.AI.Vertex;
 import videogame.bonus.Bomb;
 import videogame.World;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen
+{
 	private GameManager game;
 	private Camera cam;
 	private ModelBatch batch;
@@ -62,7 +62,6 @@ public class GameScreen implements Screen {
 	private TextureRegion xplosionRegion;
 	private Texture xplosionTexture;
 	
-	
 	//pressing button boolean
 	private boolean keyB = false;
 	private boolean keyLB = false;
@@ -83,8 +82,7 @@ public class GameScreen implements Screen {
 	private final int RB = 5;
 	private final int START = 7;
 
-	public GameScreen() {
-	}
+	public GameScreen() { }
 
 	public GameScreen(GameManager _game) 
 	{
@@ -95,10 +93,8 @@ public class GameScreen implements Screen {
 				joystick = c;
 		}
 
-		if (joystick != null) {
-			System.out.println("joystick connected");
+		if (joystick != null)
 			initJoystick();
-		}
 
 		state[0] = "hit";
 		state[1] = "bomb1";
@@ -146,6 +142,7 @@ public class GameScreen implements Screen {
 					keyStart = true;
 				return true;
 			}
+			
 			@Override
 			public boolean buttonUp(Controller controller, int buttonIndex) 
 			{
@@ -191,7 +188,8 @@ public class GameScreen implements Screen {
 		});
 	}
 
-	private void initAnimation() {
+	private void initAnimation()
+	{
 		destroyedController = new ArrayList<AnimationController>();
 		coinController = new ArrayList<AnimationController>();
 
@@ -199,7 +197,8 @@ public class GameScreen implements Screen {
 		playerController.setAnimation("Armature|ArmatureAction", -1);
 	}
 
-	private void initCamera() {
+	private void initCamera()
+	{
 		cam = new PerspectiveCamera(67, GameConfig.Screen_Width, GameConfig.Screen_Height);
 		cam.position.set(GameConfig.player.getPosition());
 		cam.lookAt(GameConfig.DIRECTION);
@@ -211,14 +210,16 @@ public class GameScreen implements Screen {
 		cam.update();
 	}
 
-	private void initEnvironment() {
+	private void initEnvironment()
+	{
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 		hints = new ArrayList<ModelInstance>();
 	}
 
-	public void handleInput() {
+	public void handleInput()
+	{
 		if (Gdx.input.isKeyPressed(Input.Keys.A) || moveLeft)
 			GameConfig.LEFT = true;
 		else if (Gdx.input.isKeyPressed(Input.Keys.D) || moveRight)
@@ -273,25 +274,30 @@ public class GameScreen implements Screen {
 		}
 	}
 
-	public void drawBonus() {
-		if (GameConfig.bombXplosion != null) {
+	public void drawBonus()
+	{
+		if (GameConfig.bombXplosion != null)
+		{
 			new TimeXplosion();
-			if (GameConfig.xplosion1) {
+			if (GameConfig.xplosion1)
+			{
 				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
 				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
 				xplosion.setScale(0.01f);
 				xplosionBatch.add(xplosion);
-			} else if (GameConfig.xplosion2) {
+			}
+			else if (GameConfig.xplosion2)
+			{
 				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
 				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
 				xplosion.setScale(0.05f);
 				xplosionBatch.add(xplosion);
-
 			}
 		}
 	}
 
-	public void render(float delta) {
+	public void render(float delta)
+	{
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);

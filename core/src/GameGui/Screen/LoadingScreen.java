@@ -36,6 +36,7 @@ public class LoadingScreen implements Screen
 		game = _game;
 		init();
 	}
+	
 	public void init()	
 	{
 		SoundManager.menuSoundtrack.stop();
@@ -45,9 +46,6 @@ public class LoadingScreen implements Screen
         backgroundMulti = new Texture(Gdx.files.internal("texture/loading_background_multi.png"));
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
 	
-        if(!GameConfig.MULTIPLAYER)
-        	game.mapGenerator.active = true; 
-        
         if(GameConfig.MULTIPLAYER)
         {
         	synchronized(game.mapGenerator)
@@ -55,9 +53,7 @@ public class LoadingScreen implements Screen
 	        	game.mapGenerator.assets.loadPlayer();
 			}
         }
-        
 	}
-	
 	
 	@Override
 	public void show()
@@ -76,13 +72,14 @@ public class LoadingScreen implements Screen
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
+        	System.out.println("finish");
         	if(GameConfig.MULTIPLAYER)
         		game.setScreen(multiplayerScreen);
         	else
         		game.setScreen(new GameScreen(game));
         }
-        loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         
+        loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         spriteBatch.begin();
         
         if(!GameConfig.MULTIPLAYER)

@@ -97,7 +97,8 @@ public class NetworkScreen implements Screen
 		back = new TextButton("back", skin);
 		back.setSize(150, 80);
 		back.setPosition(50, 50);
-		back.addListener(new InputListener() {
+		back.addListener(new InputListener()
+		{
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) 
 			{
@@ -185,7 +186,15 @@ public class NetworkScreen implements Screen
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
 				GameConfig.isServer = true;
-				game.mapGenerator.createRoom();
+				synchronized(GameConfig.tools)
+				{
+					GameConfig.tools.clear();
+				}
+				synchronized(game.mapGenerator)
+				{
+					game.mapGenerator.active = false;
+					game.mapGenerator.createRoom();
+				}
 				stage.clear();
 				stage.addActor(username);
 				stage.addActor(usernameLabel);

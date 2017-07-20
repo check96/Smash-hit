@@ -26,7 +26,7 @@ public class MapGenerator extends Thread
 	{
 		assets = new AssetHandler();
 		game = _game;
-		active = false;
+		active = true;
 		assets.loadModels();
 	}
 	
@@ -34,10 +34,10 @@ public class MapGenerator extends Thread
 	{
 		while(true)
 		{
-			if(active )
+			if(active)
 			{
 				if((!GameConfig.EDITOR && !GameConfig.MULTIPLAYER) || (GameConfig.MULTIPLAYER && GameConfig.isServer))
-			  		createRoom();
+					createRoom();
 				else if((GameConfig.EDITOR && !GameConfig.MULTIPLAYER))
 			  	{
 					GameConfig.EDITOR = false;
@@ -272,21 +272,17 @@ public class MapGenerator extends Thread
 				GameConfig.server.sendData(new LoadPacket(send));
 		}
 		
-		
 		// load tools model
 		assets.loadTools();
 
 		// add new tools to tools
 		upgrade();		
-		
 	}
 	// clone newTools and newInstances and add them to tools and toolsInstance
 	@SuppressWarnings("unchecked")
 	public void upgrade()
 	{
 		GameConfig.level++;
-		
-		System.out.println(GameConfig.tools.size());
 		synchronized(GameConfig.tools)
 		{
 			Destroyable[][] array = (Destroyable[][]) GameConfig.newTools.clone();
