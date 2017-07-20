@@ -184,12 +184,8 @@ public class MapGenerator extends Thread
 
 		// initialize the map
 		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
-		
 		createWalls();
-		
-		//	 ^
-		// i |	  j ->
-		
+
 		for (int i = 0; i < GameConfig.newTools.length; i+=2)
 			for (int j = 1; j < GameConfig.newTools[i].length-1; j++)
 			{
@@ -230,37 +226,37 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
 		
-		//create the vortex
-		if(rand.nextBoolean())
-		{
-			int vI = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW));
-			int vJ = Math.abs(rand.nextInt()% (GameConfig.ROOM_COLUMN));
-			
-			float vX = vI * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
-			float vZ = vJ * GameConfig.CELL_WIDTH;
-
-			GameConfig.newTools[vI][vJ] = new Destroyable(new Vector3(vX -1.5f, -3f, vZ), 0, Objects.VORTEX); 		
-		}
-		
-		
-		// create the clock
-		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
-
-			// 	choose side of clock (right or left)
-		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
-		
-		float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
-		float z = h * GameConfig.CELL_WIDTH;
-		
-		float clockMoney = Math.abs((rand.nextInt()%3)) +1;
-		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
-		
-		// 	create door
+//	 	create door
 		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
 		-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
+		if(!GameConfig.MULTIPLAYER)
+		{
+			//create the vortex
+			if(rand.nextBoolean())
+			{
+				int vI = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW));
+				int vJ = Math.abs(rand.nextInt()% (GameConfig.ROOM_COLUMN));
+				
+				float vX = vI * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+				float vZ = vJ * GameConfig.CELL_WIDTH;
 		
-		if(GameConfig.MULTIPLAYER)
+				GameConfig.newTools[vI][vJ] = new Destroyable(new Vector3(vX -1.5f, -3f, vZ), 0, Objects.VORTEX); 		
+			}
+
+			// create the clock
+			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
+		
+				// 	choose side of clock (right or left)
+			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
+			
+			float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+			float z = h * GameConfig.CELL_WIDTH;
+			
+			float clockMoney = Math.abs((rand.nextInt()%3)) +1;
+			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), clockMoney, Objects.CLOCK); 			
+		}
+		else
 		{
 			String send = "";
 			for(int i = 0; i < GameConfig.newTools.length; i++)
