@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import GameGui.GameManager;
@@ -76,9 +77,9 @@ public class NetworkScreen implements Screen
 		numPlayersLabel = new Label("number of players", new Label.LabelStyle(font, color));
 		numPlayersLabel.setPosition(250, 305);
 
-		ip = new TextField("127.0.0.1", mySkin);
+		ip = new TextField("192.168.1.204", mySkin);
 		ip.setPosition(550, 370);
-		ip.setSize(150, 60);
+		ip.setSize(220, 60);
 
 		username = new TextField("dgfgd", mySkin);
 		username.setPosition(550, 305);
@@ -89,6 +90,7 @@ public class NetworkScreen implements Screen
 		port.setSize(150, 60);
 
 		numPlayers = new TextField("2", mySkin);
+		numPlayers.setAlignment(Align.center);
 		numPlayers.setPosition(550, 305);
 		numPlayers.setSize(150, 60);
 
