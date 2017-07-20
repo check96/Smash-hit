@@ -32,6 +32,8 @@ public class ClientThread extends Thread
 		}
 		
 		out.println("login,"+GameConfig.username);
+		
+		System.out.println("now");
 	}
 	@Override
 	public void run() 
@@ -53,7 +55,7 @@ public class ClientThread extends Thread
 	{
 		if(receive.equals("ready"))
 			MultiplayerLobby.ready = true;
-		else if(receive.substring(0, 5).equals("login"))
+		else if(receive.substring(0,5).equals("login"))
 		{
 			MultiplayerWorld.usernames.clear();
 			String[] usernames = receive.split(",");

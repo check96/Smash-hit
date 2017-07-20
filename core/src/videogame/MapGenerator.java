@@ -39,7 +39,6 @@ public class MapGenerator extends Thread
 			  		createRoom();
 				else if((GameConfig.EDITOR && !GameConfig.MULTIPLAYER))
 			  	{
-					System.out.println(GameConfig.EDITOR);
 					GameConfig.EDITOR = false;
 					for(int i = 1; i <= Editor.numLevels; i++)
 					{
@@ -135,8 +134,11 @@ public class MapGenerator extends Thread
 		// load tools model
 		assets.loadTools();
 		
+		System.out.println("CREATED");
 		// add new tools to tools
 		upgrade();				
+		
+		System.out.println(GameConfig.tools.size());
 	}
 
 	public void uploadTools(int[][] map)
@@ -174,7 +176,7 @@ public class MapGenerator extends Thread
 					default:	break;
 				}
 			}
-		}
+	}
 	
 	private void createRoom()
 	{

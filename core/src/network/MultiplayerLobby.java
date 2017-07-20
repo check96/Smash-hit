@@ -45,7 +45,7 @@ public class MultiplayerLobby implements Screen
 	}
 
 	@Override
-	public void show() { }
+	public void show() { Gdx.input.setInputProcessor(null);}
 
 	@Override
 	public void resize(int width, int height) 

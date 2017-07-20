@@ -86,7 +86,6 @@ public class MultiplayerScreen implements Screen
 		initAnimation();
 
 		game.countdown.active = true;
-		
 		hud = new MultiplayerHUD();
 		
 		try
