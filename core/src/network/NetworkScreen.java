@@ -190,8 +190,13 @@ public class NetworkScreen implements Screen
 				{
 					GameConfig.tools.clear();
 				}
+				synchronized(GameConfig.toolsInstance)
+				{
+					GameConfig.toolsInstance.clear();
+				}
 				synchronized(game.mapGenerator)
 				{
+					game.mapGenerator.active = false;
 					game.mapGenerator.active = false;
 					game.mapGenerator.createRoom();
 				}
@@ -224,7 +229,6 @@ public class NetworkScreen implements Screen
 		stage.addActor(join);
 		stage.addActor(create);
 		stage.addActor(back);
-
 	}
 
 	@Override
