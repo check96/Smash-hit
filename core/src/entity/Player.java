@@ -29,16 +29,30 @@ public class Player extends AbstractGameObject
 	public final Weapon getWeapon() 	{return weapon;}
 	public final String getUsername() 	{return username;}
 	
-	public void move(float delta, Vector3 direction)
+	public boolean move(float delta, Vector3 direction)
 	{	
 		if(GameConfig.RIGHT)
+		{
 			moveRight(delta,direction);
+			return true;
+		}
 		if(GameConfig.LEFT)	
+		{
 			moveLeft(delta, direction);
+			return true;
+		}
 		if(GameConfig.ON)
+		{
 			moveOn(delta, direction);
+			return true;
+		}
 		if(GameConfig.BACK)
+		{
 			moveBack(delta, direction);
+			return true;
+		}
+		
+		return false;
 	}
 	
 	public void moveRight(float delta, Vector3 direction)

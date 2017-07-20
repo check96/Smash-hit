@@ -20,7 +20,6 @@ public class ClientThread extends Thread
 	
 	public ClientThread(Socket _socket, MultiplayerScreen _multiplayerScreen) 
 	{
-		System.out.println("ID: " + GameConfig.ID);
 		this.socket = _socket;
 		this.multiplayerScreen = _multiplayerScreen;
 		
@@ -33,9 +32,6 @@ public class ClientThread extends Thread
 		}
 		
 		out.println("login,"+GameConfig.username);
-		
-		System.out.println("now");
-		System.out.println(GameConfig.tools.size());
 	}
 	@Override
 	public void run() 

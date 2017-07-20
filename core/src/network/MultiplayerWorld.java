@@ -35,7 +35,8 @@ public class MultiplayerWorld
 		
 		int id = GameConfig.ID;
 		
-		GameConfig.players.get(id).move(delta, GameConfig.DIRECTION);
+		if(GameConfig.players.get(id).move(delta, GameConfig.DIRECTION))
+			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
 		checkCollsion(delta);
 		checkPlayerCollision(delta);
@@ -45,9 +46,8 @@ public class MultiplayerWorld
 		GameConfig.RIGHT = false;
 		GameConfig.BACK = false;
 		GameConfig.HIT = false;
-
-		client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 		
+
 		checkGameOver();
 		
 		synchronized (GameConfig.tools)
@@ -101,11 +101,11 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
-				System.out.println("ID: "+GameConfig.ID+"   collide with: "+map[i][j].type);
 				if(map[i][j].type == Objects.CLOCK)
     				hit(delta);
 				else
 					reaction(delta);
+				client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 			}
 		}
 	}
@@ -228,18 +228,15 @@ public class MultiplayerWorld
 	{
 		GameConfig.players.clear();
 		
-		System.out.println("username: "+ GameConfig.username);
-		System.out.println();
-		System.out.print("client usernames: ");
 		for(int i = 0; i < usernames.size(); i++)
 		{
 			GameConfig.players.add(new Player(new Vector3(5,-4.8f, 10 * (i+1)), 4, usernames.get(i)));
 			
-			System.out.print(usernames.get(i)+"  ");
-			
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;
 		}
+		
+		System.out.println("ID: "+ GameConfig.ID);
 	}
 	
 }
