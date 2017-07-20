@@ -128,17 +128,14 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
 		
 		// 	create door
-		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-4f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
+		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-5f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
 				-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();
 		
-		System.out.println("CREATED");
 		// add new tools to tools
 		upgrade();				
-		
-		System.out.println(GameConfig.tools.size());
 	}
 
 	private void uploadTools(int[][] map)
@@ -284,8 +281,6 @@ public class MapGenerator extends Thread
 		upgrade();		
 		
 	}
-
-	
 	// clone newTools and newInstances and add them to tools and toolsInstance
 	@SuppressWarnings("unchecked")
 	public void upgrade()
