@@ -13,6 +13,7 @@ import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
 import entity.Walls;
+import network.MultiplayerLobby;
 import network.packet.LoadPacket;
 
 public class MapGenerator extends Thread
@@ -35,7 +36,7 @@ public class MapGenerator extends Thread
 		{
 			if(active )
 			{
-				if((!GameConfig.EDITOR && !GameConfig.MULTIPLAYER) || ( GameConfig.MULTIPLAYER && GameConfig.isServer))
+				if((!GameConfig.EDITOR && !GameConfig.MULTIPLAYER) || (GameConfig.MULTIPLAYER && GameConfig.isServer))
 			  		createRoom();
 				else if((GameConfig.EDITOR && !GameConfig.MULTIPLAYER))
 			  	{
@@ -61,10 +62,9 @@ public class MapGenerator extends Thread
 		}
 	}
 	
-	public void createWalls()
+	private void createWalls()
 	{
 		float position = (GameConfig.level-1) * GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT;
-
 		synchronized(GameConfig.walls)
 		{
 			//create left wall
@@ -141,7 +141,7 @@ public class MapGenerator extends Thread
 		System.out.println(GameConfig.tools.size());
 	}
 
-	public void uploadTools(int[][] map)
+	private void uploadTools(int[][] map)
 	{		
 		float position = GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1); 
 		
@@ -178,7 +178,7 @@ public class MapGenerator extends Thread
 			}
 	}
 	
-	private void createRoom()
+	public void createRoom()
 	{
 		Random rand = new Random(System.currentTimeMillis());
 
@@ -262,8 +262,8 @@ public class MapGenerator extends Thread
 		
 		if(GameConfig.MULTIPLAYER)
 		{
+			System.out.println("mapGenerator");
 			String send = "";
-			
 			for(int i = 0; i < GameConfig.newTools.length; i++)
 				for(int j = 0; j < GameConfig.newTools[i].length; j++)
 					if(GameConfig.newTools[i][j] == null)
@@ -271,7 +271,10 @@ public class MapGenerator extends Thread
 					else
 						send += Integer.toString(GameConfig.newTools[i][j].type.id);
 			
-			GameConfig.server.sendData(new LoadPacket(send));
+			if(GameConfig.tools.isEmpty())
+				MultiplayerLobby.loadPacket = new LoadPacket(send);
+			else
+				GameConfig.server.sendData(new LoadPacket(send));
 		}
 		
 		

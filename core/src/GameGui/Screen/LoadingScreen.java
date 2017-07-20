@@ -45,7 +45,8 @@ public class LoadingScreen implements Screen
         backgroundMulti = new Texture(Gdx.files.internal("texture/loading_background_multi.png"));
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
 	
-        game.mapGenerator.active = true; 
+        if(!GameConfig.MULTIPLAYER)
+        	game.mapGenerator.active = true; 
         
         if(GameConfig.MULTIPLAYER)
         {

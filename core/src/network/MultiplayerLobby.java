@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import GameGui.GameManager;
 import GameGui.Screen.LoadingScreen;
+import network.packet.LoadPacket;
 import videogame.GameConfig;
 
 public class MultiplayerLobby implements Screen
@@ -18,6 +19,7 @@ public class MultiplayerLobby implements Screen
 	private MultiplayerScreen multiplayerScreen;
 	
 	public static boolean ready = false;
+	public static LoadPacket loadPacket;
 	
 	public MultiplayerLobby(GameManager _game, String ip, int port)
 	{
@@ -44,6 +46,11 @@ public class MultiplayerLobby implements Screen
         	game.setScreen(new LoadingScreen(game, multiplayerScreen));
 	}
 
+	public void loadMap()
+	{
+		game.mapGenerator.active = true;
+	}
+	
 	@Override
 	public void show() { Gdx.input.setInputProcessor(null);}
 

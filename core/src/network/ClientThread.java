@@ -34,6 +34,7 @@ public class ClientThread extends Thread
 		out.println("login,"+GameConfig.username);
 		
 		System.out.println("now");
+		System.out.println(GameConfig.tools.size());
 	}
 	@Override
 	public void run() 
@@ -53,8 +54,15 @@ public class ClientThread extends Thread
 
 	private void packetManagement(String receive)
 	{
-		if(receive.equals("ready"))
+		String[] packet = receive.split(",");
+		
+		if(packet[0].equals("load"))
+		{
+			if(!GameConfig.isServer)
+				multiplayerScreen.game.mapGenerator.loadRoom(packet[1]);
+			
 			MultiplayerLobby.ready = true;
+		}
 		else if(receive.substring(0,5).equals("login"))
 		{
 			MultiplayerWorld.usernames.clear();
@@ -65,16 +73,7 @@ public class ClientThread extends Thread
 			MultiplayerWorld.addPlayers();
 		}
 		else
-		{
-			String[] packets = receive.split(","); 
-			if(packets[0].equals("load"))
-			{
-				if(!GameConfig.isServer)
-					multiplayerScreen.game.mapGenerator.loadRoom(packets[1]);
-			}
-			else
-				multiplayerScreen.getWorld().packetManager(packets, Gdx.graphics.getDeltaTime());
-		}
+				multiplayerScreen.getWorld().packetManager(packet, Gdx.graphics.getDeltaTime());
 	}
 
 }

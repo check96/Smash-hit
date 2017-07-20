@@ -44,7 +44,6 @@ public class Server extends Thread
 			try
 			{
 				Socket socket = server.accept();
-//				System.out.println(socket + "has connected");
 				ServerThread c = new ServerThread(socket);
 				clients.add(c);
 				c.start();
@@ -52,7 +51,7 @@ public class Server extends Thread
 			catch(Exception e){}
 		}
 		
-		sendData("ready");
+		sendData(MultiplayerLobby.loadPacket);
 	}	
 	
 	public void sendData(Packet packet)

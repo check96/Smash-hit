@@ -185,6 +185,7 @@ public class NetworkScreen implements Screen
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
 				GameConfig.isServer = true;
+				game.mapGenerator.createRoom();
 				stage.clear();
 				stage.addActor(username);
 				stage.addActor(usernameLabel);
