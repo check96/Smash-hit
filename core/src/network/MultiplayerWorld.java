@@ -143,7 +143,7 @@ public class MultiplayerWorld
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
 
-		Deleter.remove(clock, map[i][j].getPosition(), map[i][j].getMoneyReward()); 
+		Deleter.remove(clock, map[i][j].getPosition()); 
 		map[i][j] = null;
 	}
 	
@@ -176,7 +176,7 @@ public class MultiplayerWorld
 				if(map[i][j].type == Objects.CLOCK)
 				{
 					client.out.println(new TimePacket(5).toString());
-					Countdown.increment(5 * (GameConfig.clockLevel+1));
+					Countdown.increment(5);
 				}
 													
 				//remove tools and toolsInstance

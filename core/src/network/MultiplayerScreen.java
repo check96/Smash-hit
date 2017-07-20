@@ -278,9 +278,9 @@ public class MultiplayerScreen implements Screen
 			}
 		}
 		
-		// render destroyed tools
-		for (final ModelInstance instance : GameConfig.destroyed)
-			batch.render(instance, environment);
+//		// render destroyed tools
+//		for (final ModelInstance instance : GameConfig.destroyed)
+//			batch.render(instance, environment);
 		
 		// render coins
 		for (final ModelInstance instance : GameConfig.coins)

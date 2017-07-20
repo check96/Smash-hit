@@ -32,7 +32,7 @@ public class Deleter
 		}
 	}
 
-	public static void remove(boolean clock, Vector3 objPosition, float money)
+	public static void remove(boolean clock, Vector3 objPosition)
 	{
 		synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 		{
