@@ -116,16 +116,19 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2] = null;
 		GameConfig.newTools[GameConfig.ROOM_ROW -1][GameConfig.ROOM_COLUMN/2 -1] = null;
 
-		// create the clock
-		int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
-
-			// 	choose side of clock (right or left)
-		int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
-		
-		float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
-		float z = h * GameConfig.CELL_WIDTH;
-		
-		GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
+		if(!GameConfig.MULTIPLAYER)
+		{
+			// create the clock
+			int w = Math.abs(rand.nextInt()% (GameConfig.ROOM_ROW-6))+3;
+	
+				// 	choose side of clock (right or left)
+			int h = rand.nextBoolean() ? 0 : GameConfig.ROOM_COLUMN -1;
+			
+			float x = w * GameConfig.CELL_HEIGHT + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * (GameConfig.level - 1);
+			float z = h * GameConfig.CELL_WIDTH;
+			
+			GameConfig.newTools[w][h] = new Destroyable(new Vector3(x -1.5f, -3f, z), 0, Objects.CLOCK); 			
+		}
 		
 		// 	create door
 		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-5f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,

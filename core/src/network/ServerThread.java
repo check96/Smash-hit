@@ -84,7 +84,8 @@ public class ServerThread extends Thread
 	
 	public void disconnect()
 	{
-		try {
+		try 
+		{
 			connected = false;
 			socket.close();
 		} catch (IOException e) {

@@ -12,7 +12,6 @@ import entity.Walls;
 import entity.Weapon;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
-import network.packet.TimePacket;
 import videogame.Countdown;
 import videogame.GameConfig;
 
@@ -110,10 +109,7 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
-				if(map[i][j].type == Objects.CLOCK)
-    				hit(delta);
-				else
-					reaction(delta);
+				reaction(delta);
 				return true;
 			}
 		}
@@ -173,12 +169,6 @@ public class MultiplayerWorld
     		
 			if(map[i][j].getHealth() == 0)
 			{
-				if(map[i][j].type == Objects.CLOCK)
-				{
-					client.out.println(new TimePacket(5).toString());
-					Countdown.increment(5);
-				}
-													
 				//remove tools and toolsInstance
 				delete(i,j);
 			}
@@ -229,12 +219,6 @@ public class MultiplayerWorld
 			
 				if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
 				{
-					if(map[i][j].type == Objects.CLOCK)
-					{
-						Countdown.increment(5);
-						client.out.println(new TimePacket(5).toString());
-					}
-														
 					//remove tools and toolsInstance
 					delete(i,j);
 				}
