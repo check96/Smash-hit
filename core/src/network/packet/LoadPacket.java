@@ -1,7 +1,5 @@
 package network.packet;
 
-import videogame.GameConfig;
-
 public class LoadPacket extends Packet
 {
 	String map;

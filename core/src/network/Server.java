@@ -2,8 +2,6 @@ package network;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -41,13 +39,12 @@ public class Server extends Thread
 	
 	public void launch()
 	{
-		
 		for(int i = 0; i<numPlayers; i++)
 		{
 			try
 			{
 				Socket socket = server.accept();
-				System.out.println(socket + "has connected");
+//				System.out.println(socket + "has connected");
 				ServerThread c = new ServerThread(socket);
 				clients.add(c);
 				c.start();

@@ -15,14 +15,12 @@ public class GameManager extends Game
 	public MapGenerator mapGenerator;
 	public StartScreen startScreen;
 	public Preferences options;
-	public Preferences scores;
 	public Preferences editorLevels;
 	
 	@Override
 	public void create()
 	{			
 		options = Gdx.app.getPreferences("options");
-		scores = Gdx.app.getPreferences("Scores");
 		editorLevels = Gdx.app.getPreferences("levels");
 		
 		GameConfig.Screen_Width = options.getInteger("screen_width",1024);

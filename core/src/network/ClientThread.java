@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import videogame.GameConfig;
-import videogame.World;
 
 public class ClientThread extends Thread
 {
@@ -20,7 +19,6 @@ public class ClientThread extends Thread
 	public ClientThread(Socket _socket) 
 	{
 		socket = _socket;
-		
 		try
 		{
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -39,17 +37,17 @@ public class ClientThread extends Thread
 			try
 			{
  				receive = in.readLine();
- 				System.out.println(receive);
  				if(receive.substring(0, 5).equals("login"))
  				{
- 					MultiplayerWorld.usernames.add(receive.substring(7));
+ 					MultiplayerWorld.usernames.clear();
+ 					String[] usernames = receive.split(",");
+ 					for(int i = 1; i < usernames.length; i++)
+ 						MultiplayerWorld.usernames.add(usernames[i]);
+
+ 					MultiplayerWorld.addPlayers();
  				}
  				if(receive.equals("ready"))
  				{
- 					System.out.println(MultiplayerWorld.usernames.size());
- 					for(int i = 0; i<MultiplayerWorld.usernames.size(); i++)
- 						System.out.println(MultiplayerWorld.usernames.get(i));
- 					MultiplayerWorld.addPlayers();
  					MultiplayerLobby.ready = true;
  					receive = "";
  				}

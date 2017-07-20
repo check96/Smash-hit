@@ -15,20 +15,25 @@ import videogame.GameConfig;
 public class LoadingScreen implements Screen
 {
 	private GameManager game;
+	private MultiplayerScreen multiplayerScreen;
 	
 	private SpriteBatch spriteBatch;
 	private Texture background;
 	private Texture loadingBar; 
 	
-	private String username;
 	private float progress;
+	
+	public LoadingScreen(GameManager game, MultiplayerScreen _multiplayerScreen)
+	{
+		this(game);
+		this.multiplayerScreen = _multiplayerScreen;
+	}
 	
 	public LoadingScreen(GameManager _game)
 	{
 		SoundManager.menuSoundtrack.stop();
 
 		game = _game;
-		
 		game.countdown.start();
 		
 		spriteBatch = new SpriteBatch();
@@ -36,30 +41,24 @@ public class LoadingScreen implements Screen
         
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
 		
-        synchronized(game.mapGenerator)
-		{
-    		game.mapGenerator.start();
-		}
+        if(!GameConfig.MULTIPLAYER || GameConfig.isServer)
+        {
+        	synchronized(game.mapGenerator)
+			{
+	        	game.mapGenerator.start();
+			}
+        }
+
+        if(GameConfig.MULTIPLAYER)
+        {
+        	synchronized(game.mapGenerator)
+			{
+	        	game.mapGenerator.assets.loadPlayer();
+			}
+        }
 	}
 	
-	public LoadingScreen(GameManager _game, String username)
-	{
-		SoundManager.menuSoundtrack.stop();
-
-		this.game = _game;
-		this.username = username;
-		spriteBatch = new SpriteBatch();
-        background = new Texture(Gdx.files.internal("texture/loading_background.png"));
-        
-        loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_0.png"));
-		
-        synchronized(game.mapGenerator)
-		{
-        	game.mapGenerator.pause = false;
-        	game.mapGenerator.notify();
-		}
-	}
-
+	
 	@Override
 	public void show()
 	{
@@ -77,9 +76,9 @@ public class LoadingScreen implements Screen
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
-//        	if(GameConfig.MULTIPLAYER)
-//        		game.setScreen(new MultiplayerScreen(game,username));
-//        	else
+        	if(GameConfig.MULTIPLAYER)
+        		game.setScreen(multiplayerScreen);
+        	else
         		game.setScreen(new GameScreen(game));
         }
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));

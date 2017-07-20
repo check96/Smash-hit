@@ -37,7 +37,6 @@ public class ServerThread extends Thread
 	{
 		while(true)
 		{
-		
 			String line;
 			try {
 				line = in.readLine();
@@ -45,8 +44,6 @@ public class ServerThread extends Thread
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
-			
 		}
 	}
 
@@ -61,7 +58,14 @@ public class ServerThread extends Thread
 		
 		if(packet[0].equals("login"))
 		{
-			GameConfig.server.sendData(line);
+			String send = "login,";
+			for (String username : MultiplayerWorld.usernames)
+			{
+				send += username + ",";
+			}
+			send += packet[1];
+			MultiplayerWorld.usernames.add(packet[1]);
+			GameConfig.server.sendData(send);
 		}
 		else if(packet[0].equals("move"))
 		{

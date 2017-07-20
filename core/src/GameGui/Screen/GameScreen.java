@@ -3,11 +3,8 @@ package GameGui.Screen;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -16,7 +13,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -28,9 +24,6 @@ import com.badlogic.gdx.graphics.g3d.decals.DecalBatch;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Quaternion;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
@@ -46,31 +39,29 @@ import videogame.World;
 public class GameScreen implements Screen 
 {
 	private GameManager game;
-	protected Camera cam;
-	protected ModelBatch batch;
+	private Camera cam;
+	private ModelBatch batch;
 	public static ModelInstance playerInstance;
 	private ModelInstance bomb1Instance;
 	private ModelInstance bomb2Instance;
 	private ArrayList<ModelInstance> hints;
-	protected Environment environment;
-	protected World world;
-	protected int degrees = 90;
-	protected long hitTime = 0;
-	protected long startTime = 0;
-	protected float elapsedTime = 0;
-	protected boolean hitAnimation = false;
+	private Environment environment;
+	private World world;
+	private int degrees = 90;
+	private long hitTime = 0;
+	private boolean hitAnimation = false;
 	private Hud hud;
-	protected AnimationController playerController;
-	protected ArrayList<AnimationController> destroyedController;
-	protected ArrayList<AnimationController> coinController;
-	protected String[] state = new String[4];
+	private AnimationController playerController;
+	private ArrayList<AnimationController> destroyedController;
+	private ArrayList<AnimationController> coinController;
+	private String[] state = new String[4];
 	
-	protected Decal xplosion;
-	protected DecalBatch xplosionBatch;
-	protected TextureRegion xplosionRegion;
-	protected Texture xplosionTexture;
+	private Decal xplosion;
+	private DecalBatch xplosionBatch;
+	private TextureRegion xplosionRegion;
+	private Texture xplosionTexture;
 	
-	protected Controller joystick;
+	private Controller joystick;
 //	private final int A = 0;
 	private final int B = 1;
 //	private final int Y = 3;
@@ -111,7 +102,7 @@ public class GameScreen implements Screen
 		world = new World();
 		batch = new ModelBatch();
 
-		game.mapGenerator.assets.loadPlayer();
+//		game.mapGenerator.assets.loadPlayer();
 		initCamera();
 		initEnvironment();
 		initAnimation();
@@ -194,8 +185,7 @@ public class GameScreen implements Screen
 	});
 	
 }
-
-	protected void initAnimation()
+	private void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
 		coinController = new ArrayList<AnimationController>();
@@ -204,7 +194,7 @@ public class GameScreen implements Screen
 		playerController.setAnimation("Armature|ArmatureAction",-1);
 	}
 
-	protected void initCamera() 
+	private void initCamera() 
 	{
 		cam = new PerspectiveCamera(67, GameConfig.Screen_Width, GameConfig.Screen_Height);
 		cam.position.set(GameConfig.player.getPosition());
@@ -217,7 +207,7 @@ public class GameScreen implements Screen
 		cam.update();
 	}
 
-	protected void initEnvironment() 
+	private void initEnvironment() 
 	{
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
@@ -300,14 +290,10 @@ public class GameScreen implements Screen
 
 	public void render(float delta) 
 	{
-//		System.out.println("elapsedTime   " + elapsedTime);
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		
-		
-
 		if(joystick == null)
 			handleInput();
 
@@ -420,7 +406,7 @@ public class GameScreen implements Screen
 		xplosionBatch.flush();
 	}
 
-	protected void addAnimation()
+	private void addAnimation()
 	{
 		for(int i = destroyedController.size(); i < GameConfig.destroyed.size(); i++)
 		{
@@ -434,7 +420,7 @@ public class GameScreen implements Screen
 			coinController.get(i).setAnimation("Armature|ArmatureAction");
 		}
 	}
-	protected void handleSound()
+	private void handleSound()
 	{
 		if(GameConfig.tornadoSound)
 		{
@@ -469,7 +455,7 @@ public class GameScreen implements Screen
 		}
 	}
 
-	protected void handleAnimation()
+	private void handleAnimation()
 	{
 		synchronized (game.mapGenerator.assets.clockAnimation)
 		{

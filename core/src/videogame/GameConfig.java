@@ -2,8 +2,6 @@ package videogame;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
@@ -80,6 +78,7 @@ public class GameConfig
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	public static boolean hitted = false;
 	public static String username = "";
+	public static int ID = 0;
 	
 	public static void reset()
 	{

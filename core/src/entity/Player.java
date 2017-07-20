@@ -37,8 +37,6 @@ public class Player extends AbstractGameObject
 			moveOn(delta, direction);
 		if(GameConfig.BACK)
 			moveBack(delta, direction);
-		
-		weapon.move(this);
 	}
 	
 	public void moveRight(float delta, Vector3 direction)
@@ -51,6 +49,7 @@ public class Player extends AbstractGameObject
 	public void moveLeft(float delta, Vector3 direction)
 	{
 		Vector3 speed = new Vector3(velocity.x * direction.x, velocity.y * direction.y, velocity.z * direction.z);
+		System.out.println("speed: "+speed+"    delta: "+delta);
 		Position.x += speed.z * delta;
 		Position.z -= speed.x * delta; 
 	}

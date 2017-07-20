@@ -4,12 +4,15 @@ import videogame.GameConfig;
 
 public class HitPacket extends Packet 
 {
-	int i;
-	int j;
-
+	private int i;
+	private int j;
+	private int id;
+	private int room;
+	
 	public HitPacket(int _i, int _j)
 	{
-		username = GameConfig.username;
+		room = GameConfig.actualLevel-1;
+		id = GameConfig.ID;
 		i = _i;
 		j = _j;
 	}
@@ -17,7 +20,7 @@ public class HitPacket extends Packet
 	@Override
 	public String toString() 
 	{
-		return ("hit,"+i+","+j);
+		return ("hit," + id + "," + room + "," + i + "," + j);
 	}
 
 }

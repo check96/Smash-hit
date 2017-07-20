@@ -1,6 +1,5 @@
 package videogame;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -10,10 +9,8 @@ import com.badlogic.gdx.math.Vector3;
 import GameGui.AssetHandler;
 import GameGui.GameManager;
 import editor.Editor;
-import editor.PreviewPanel;
 import entity.Destroyable;
 import entity.Objects;
-import entity.Player;
 import entity.Wall;
 import entity.Walls;
 import network.packet.LoadPacket;
@@ -271,7 +268,7 @@ public class MapGenerator extends Thread
 					else
 						send += Integer.toString(GameConfig.newTools[i][j].type.id);
 			
-//			GameConfig.server.sendData(new LoadPacket(send));
+			GameConfig.server.sendData(new LoadPacket(send));
 		}
 		
 		

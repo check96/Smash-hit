@@ -129,10 +129,13 @@ public class AssetHandler
 		}
 		else
 		{
-			MultiplayerScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
-			MultiplayerScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+			for(int i = 0; i < GameConfig.players.size(); i++)
+			{
+				ModelInstance instance = new ModelInstance(manager.get(player, Model.class)); 
+				instance.transform.setToTranslation(GameConfig.players.get(i).getPosition());
+				MultiplayerScreen.playersInstance.add(instance);
+			}
 		}
-			
 	}
 
 	// load model instances

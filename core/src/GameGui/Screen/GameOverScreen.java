@@ -2,12 +2,16 @@ package GameGui.Screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,20 +28,29 @@ public class GameOverScreen implements Screen
     private Stage stage;
     private TextButton quit;
 	private TextButton retry;
-	 
+	private Label destroyedDesks;
+	private Label destroyedChairs;
+	private Label destroyedDoors;
+	private Label destroyedPlants;
+	private Label destroyedLockers;
+	private Label destroyedObjects;
+	private Label score;
+	private Label coins;
+	private SpriteBatch money;
 	private SpriteBatch spriteBatch;
 	private Texture background;
-	
+	private Texture moneyTexture;
 	public GameOverScreen(GameManager _game)
 	{
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-		GameConfig.reset();
+		
 		GameConfig.coinsMultiplier = 1;
 		
+		money = new SpriteBatch();
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/game_over_background.png"));
-		
+        moneyTexture = new Texture(Gdx.files.internal("Icons/money.png"));
 		GameConfig.COINS += GameConfig.LOCAL_COINS;
 
 		game.options.putInteger("coins", GameConfig.COINS);
@@ -47,10 +60,11 @@ public class GameOverScreen implements Screen
 		
 		quit = new TextButton("QUIT", skin);
 		quit.setSize(200, 80);
-		quit.setPosition(GameConfig.Screen_Width*350/GameConfig.width, GameConfig.Screen_Height*150/GameConfig.height);
+		quit.setPosition(GameConfig.Screen_Width*280/GameConfig.width, GameConfig.Screen_Height*50/GameConfig.height);
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
+      			GameConfig.reset();
       			SoundManager.gameSoundtrack.stop();
       			SoundManager.menuSoundtrack.play();
             	game.setScreen(game.startScreen);
@@ -60,24 +74,69 @@ public class GameOverScreen implements Screen
 		
 		retry = new TextButton("RETRY", skin);
 		retry.setSize(200, 80);
-		retry.setPosition(GameConfig.Screen_Width*100/GameConfig.width, GameConfig.Screen_Height*150/GameConfig.height);
+		retry.setPosition(GameConfig.Screen_Width*520/GameConfig.width, GameConfig.Screen_Height*50/GameConfig.height);
 		retry.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-      			
+      			GameConfig.reset();
       			SoundManager.gameSoundtrack.stop();
             	game.setScreen(new Shop(game));
 	            return true;
             }
         });
 		Table table = new Table();
-        table.center();
+		table.center();
         table.setFillParent(true);
         
-		table.add(quit).expandX().padTop(1);
-		table.add(retry).expandX().padTop(1);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("font/comic.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+		parameter.size = 25;
+		BitmapFont font = generator.generateFont(parameter);
+		Color color = Color.WHITE;
+
+		coins = new Label(""+GameConfig.COINS, new Label.LabelStyle(font, color));
+		coins.setPosition(200, 360);
 		
-		stage.addActor(table);
+		int highscore = game.options.getInteger("hishscore", 0);
+		
+		if(GameConfig.SCORE > highscore)
+		{
+			score = new Label("NEW Highscore: "+ GameConfig.SCORE, new Label.LabelStyle(font, color));
+			
+			game.options.putInteger("highscore", GameConfig.SCORE);
+			game.options.flush();
+		}
+		else
+			score = new Label("Score: "+ GameConfig.SCORE, new Label.LabelStyle(font, color));
+		
+		
+		destroyedDesks = new Label("Desks Destroyed: "+ GameConfig.destroyedDesks, new Label.LabelStyle(font, color));
+        destroyedChairs = new Label("Chairs Destroyed: "+ GameConfig.destroyedChairs, new Label.LabelStyle(font, color));
+        destroyedDoors = new Label("Doors Destroyed: "+ GameConfig.destroyedDoors, new Label.LabelStyle(font, color));
+        destroyedPlants = new Label("Plants Destroyed: "+ GameConfig.destroyedPlants, new Label.LabelStyle(font, color));
+        destroyedLockers = new Label("Lockers Destroyed: "+ GameConfig.destroyedLockers, new Label.LabelStyle(font, color));
+        destroyedObjects = new Label("Total Objects Destroyed: "+ GameConfig.destroyedObjects, new Label.LabelStyle(font, color));
+        
+        table.add(score).expandX();
+        table.row();
+        table.add(destroyedDesks).expandX();
+        table.row();
+        table.add(destroyedChairs).expandX();
+        table.row();
+        table.add(destroyedDoors).expandX();
+        table.row();
+    	table.add(destroyedPlants).expandX();
+    	table.row();
+    	table.add(destroyedLockers).expandX();
+    	table.row();
+    	table.add(destroyedObjects).expandX();
+    	table.row();
+
+    	stage.addActor(coins);
+    	stage.addActor(table);
+		stage.addActor(retry);
+		stage.addActor(quit);
 	}
 	
 	
@@ -97,10 +156,15 @@ public class GameOverScreen implements Screen
         spriteBatch.draw(background, 0, 0);
         spriteBatch.end();
         
+        money.begin();
+        money.draw(moneyTexture,260,350);
+        money.end();
+        
 		stage.act();
 		stage.draw();
 	}
 
+	
 	@Override
 	public void resize(int width, int height)
 	{

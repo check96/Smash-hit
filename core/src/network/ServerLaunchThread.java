@@ -5,10 +5,7 @@ import videogame.GameConfig;
 public class ServerLaunchThread extends Thread
 {
 	
-	public ServerLaunchThread()
-	{
-	}
-	
+	public ServerLaunchThread()	{ }
 	
 	@Override
 	public void run()
