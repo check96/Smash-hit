@@ -58,11 +58,12 @@ public class Server extends Thread
 	{
 		String[] packets = packet.toString().split(",");
 		
+		String code = packets[0];
 		int id = Integer.parseInt(packets[1]);
 		
 		for(int i = 0; i < clients.size(); i++)
 		{
-			if(i != id)
+			if(i != id || code.equals("load"))
 				clients.get(i).out.println(packet.toString());
 		}
 	}
