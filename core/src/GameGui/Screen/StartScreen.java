@@ -109,6 +109,10 @@ public class StartScreen implements Screen
 		{
         	game.mapGenerator.start();
 		}
+        synchronized(game.multiplayerMapGenerator)
+     	{
+            game.multiplayerMapGenerator.start();
+     	}
     }
  
     public void render(float delta)

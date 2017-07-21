@@ -28,8 +28,15 @@ public class MultiplayerLobby implements Screen
         background = new Texture(Gdx.files.internal("texture/multiplayer_background.png"));
         multiplayerScreen = new MultiplayerScreen(game, ip, port);
        
-        if(GameConfig.server != null)
+        if(GameConfig.server == null)
+        {
+        	game.multiplayerMapGenerator.active = false;
+        	GameConfig.tools.clear();
+        	GameConfig.toolsInstance.clear();
+        }
+        else 
         	new ServerLaunchThread().start();
+       
 	}
 
 	@Override

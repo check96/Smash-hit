@@ -198,8 +198,8 @@ public class NetworkScreen implements Screen
 				}
 				synchronized(game.multiplayerMapGenerator)
 				{
+					game.multiplayerMapGenerator.active = false;
 					game.multiplayerMapGenerator.createRoom();
-					game.multiplayerMapGenerator.start();
 				}
 				stage.clear();
 				stage.addActor(username);
