@@ -81,6 +81,7 @@ public class GameScreen implements Screen
 	private final int LB = 4;
 	private final int RB = 5;
 	private final int START = 7;
+	private final int AXIS_TRIGGER = 4;	// LT = 1		RT = -1
 
 	public GameScreen() { }
 

@@ -32,7 +32,6 @@ public class MultiplayerMapGenerator extends Thread
 		{
 			if(active && GameConfig.isServer)
 			{
-				System.out.println("CREATE");
 				createRoom();
 			}
 
@@ -111,7 +110,6 @@ public class MultiplayerMapGenerator extends Thread
 		
 		// add new tools to tools
 		upgrade();				
-		System.out.println("load size  " + GameConfig.tools.size());
 	}
 
 	private void uploadTools(int[][] map)

@@ -10,6 +10,7 @@ import entity.Player;
 import entity.Wall;
 import entity.Walls;
 import entity.Weapon;
+import network.packet.DoorPacket;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
 import videogame.Countdown;
@@ -108,7 +109,6 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
-				System.out.println("ID: "+ GameConfig.ID + "   " + map[i][j].type + " in "+ map[i][j].getPosition());
 				reaction(delta);
 				return true;
 			}
@@ -168,6 +168,9 @@ public class MultiplayerWorld
     		
 			if(map[i][j].getHealth() == 0)
 			{
+				if(map[i][j].type == Objects.DOOR)
+					client.out.println(new DoorPacket());
+				
 				//remove tools and toolsInstance
 				delete(i,j);
 			}
@@ -204,6 +207,10 @@ public class MultiplayerWorld
 			
 			GameConfig.players.get(id).setPosition(x,y,z);
 			GameConfig.players.get(id).angle = angle;
+		}
+		else if(packet[0].equals("hit"))
+		{
+			delete(GameConfig.ROOM_ROW-1,GameConfig.ROOM_COLUMN/2);
 		}
 		else if(packet[0].equals("hit"))
 		{

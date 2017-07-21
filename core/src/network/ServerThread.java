@@ -67,6 +67,10 @@ public class ServerThread extends Thread
 			MultiplayerWorld.usernames.add(packet[1]);
 			GameConfig.server.sendData(send);
 		}
+		else if(packet[0].equals("door"))
+		{
+			GameConfig.server.sendData(line);
+		}
 		else if(packet[0].equals("move"))
 		{
 			GameConfig.server.sendData(line);
