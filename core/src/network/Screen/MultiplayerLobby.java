@@ -32,7 +32,6 @@ public class MultiplayerLobby implements Screen
 	public MultiplayerLobby(GameManager _game, String ip, int port)
 	{
 		this.game = _game;
-		
 		stage = new Stage(new ScreenViewport());
 		
 		spriteBatch = new SpriteBatch();

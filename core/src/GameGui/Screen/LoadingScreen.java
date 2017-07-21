@@ -27,8 +27,8 @@ public class LoadingScreen implements Screen
 	public LoadingScreen(GameManager game, MultiplayerScreen _multiplayerScreen)
 	{
 		this.game = game;
-		init();
 		this.multiplayerScreen = _multiplayerScreen;
+		init();
 	}
 	
 	public LoadingScreen(GameManager _game)
@@ -49,6 +49,7 @@ public class LoadingScreen implements Screen
         if(GameConfig.MULTIPLAYER)
         {
 	       	game.multiplayerMapGenerator.assets.loadPlayer();
+	       	multiplayerScreen.initAnimation();
         }
 	}
 	

@@ -92,7 +92,6 @@ public class MultiplayerScreen implements Screen
 
 		initCamera();
 		initEnvironment();
-		initAnimation();
 
 		hud = new MultiplayerHUD();
 		
@@ -168,15 +167,19 @@ public class MultiplayerScreen implements Screen
 		});
 	}
 	
-	private void initAnimation()
+	public void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
+		playerControllers = new ArrayList<AnimationController>();
+		
+		System.out.println(GameConfig.playersInstance.size());
 		
 		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
 			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
 			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
 		}
+		System.out.println(playerControllers.size());
 	}
 
 	private void initCamera() 
