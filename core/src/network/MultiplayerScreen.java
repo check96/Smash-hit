@@ -64,6 +64,7 @@ public class MultiplayerScreen implements Screen
 	public MultiplayerScreen(GameManager _game, String ip, int port)
 	{
 		this.game = _game;
+		game.mapGenerator.active = true;
 		
 		playerControllers = new ArrayList<AnimationController>();
 		for (Controller c : Controllers.getControllers()) 
