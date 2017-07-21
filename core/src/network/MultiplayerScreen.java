@@ -64,7 +64,7 @@ public class MultiplayerScreen implements Screen
 	public MultiplayerScreen(GameManager _game, String ip, int port)
 	{
 		this.game = _game;
-		game.mapGenerator.active = true;
+		game.multiplayerMapGenerator.active = true;
 
 		playerControllers = new ArrayList<AnimationController>();
 		for (Controller c : Controllers.getControllers()) 
@@ -300,9 +300,9 @@ public class MultiplayerScreen implements Screen
 			{
 				game.countdown.active = false;
 			}
-			synchronized(game.mapGenerator)
+			synchronized(game.multiplayerMapGenerator)
 			{
-				game.mapGenerator.active = false;
+				game.multiplayerMapGenerator.active = false;
 			}
 			this.dispose();
 			game.setScreen(new GameOverScreen(game));
@@ -341,7 +341,7 @@ public class MultiplayerScreen implements Screen
 
 	private void handleAnimation()
 	{
-		synchronized (game.mapGenerator.assets.clockAnimation)
+		synchronized (game.multiplayerMapGenerator.assets.clockAnimation)
 		{
 			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
 				clock.update(Gdx.graphics.getDeltaTime());

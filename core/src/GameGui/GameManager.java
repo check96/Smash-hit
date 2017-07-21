@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import GameGui.Screen.StartScreen;
+import network.MultiplayerMapGenerator;
 import videogame.Countdown;
 import videogame.GameConfig;
 import videogame.MapGenerator;
@@ -13,9 +14,11 @@ public class GameManager extends Game
 {
 	public Countdown countdown = new Countdown();
 	public MapGenerator mapGenerator;
+	public MultiplayerMapGenerator multiplayerMapGenerator;
 	public StartScreen startScreen;
 	public Preferences options;
 	public Preferences editorLevels;
+
 	
 	@Override
 	public void create()
@@ -30,8 +33,11 @@ public class GameManager extends Game
 		
 		SoundManager.menuSoundtrack.setVolume(SoundManager.musicVolume);
 		SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
+
+		multiplayerMapGenerator = new MultiplayerMapGenerator(this);
 	
 		mapGenerator = new MapGenerator(this);
+		
 		startScreen = new StartScreen(this);
 		
 		this.setScreen(startScreen);
