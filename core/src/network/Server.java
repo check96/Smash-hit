@@ -14,8 +14,7 @@ import network.threads.ServerThread;
 
 public class Server extends Thread
 {
-	public ServerSocket server;
-	public Socket socket;
+	public static ServerSocket serverSocket;
 	public static MultiplayerScreen screen;
 	private int numPlayers = 1;
 	public static ArrayList<String> usernames = new ArrayList<String>();
@@ -29,7 +28,7 @@ public class Server extends Thread
 				
 		try 
 		{
-			server = new ServerSocket(port);
+			serverSocket = new ServerSocket(port);
 			System.out.println("Server created");
 			
 		}catch (IOException e)
@@ -46,7 +45,7 @@ public class Server extends Thread
 		{
 			try
 			{
-				Socket socket = server.accept();
+				Socket socket = serverSocket.accept();
 				ServerThread c = new ServerThread(socket);
 				clients.add(c);
 				c.start();

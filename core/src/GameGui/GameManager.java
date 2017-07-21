@@ -31,16 +31,21 @@ public class GameManager extends Game
 	@Override
 	public void dispose()
 	{
+		SoundManager.gameSoundtrack.stop();
+		SoundManager.menuSoundtrack.stop();
+		
 		if(GameConfig.isServer)
 		{
 			GameConfig.server.sendData(new LogoutPacket());
-			for (ServerThread socket : Server.clients)
+			for (ServerThread client : Server.clients)
 			{
-				socket.disconnect();
+				client.interrupt();
+				client.disconnect();
 			}
+			
 			try
 			{
-				GameConfig.server.socket.close();
+				GameConfig.server.serverSocket.close();
 			} catch (IOException e)
 			{
 				e.printStackTrace();
@@ -51,7 +56,11 @@ public class GameManager extends Game
 			try 
 			{
 				if(MultiplayerScreen.client instanceof ClientThread)
+				{
+					MultiplayerScreen.client.out.println(new LogoutPacket());
+					MultiplayerScreen.client.interrupt();
 					MultiplayerScreen.client.socket.close();
+				}
 			} catch (IOException e)
 			{
 				e.printStackTrace();
