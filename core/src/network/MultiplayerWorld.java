@@ -190,12 +190,6 @@ public class MultiplayerWorld
 					delete(i,j);
 			}
 		}
-		else if(packet[0].equals("animation"))
-		{
-			int id = Integer.parseInt(packet[1]);
-			String type = packet[2];
-//			GameConfig.playersInstance.get(id)
-		}
 	}
 	
 	public static void addPlayers()
