@@ -294,8 +294,8 @@ public class MultiplayerScreen implements Screen
 		}
 		
 //		// render destroyed tools
-//		for (final ModelInstance instance : GameConfig.destroyed)
-//			batch.render(instance, environment);
+		for (final ModelInstance instance : GameConfig.destroyed)
+			batch.render(instance, environment);
 		
 		// render coins
 		for (final ModelInstance instance : GameConfig.coins)
@@ -319,7 +319,7 @@ public class MultiplayerScreen implements Screen
 				game.multiplayerMapGenerator.active = false;
 			}
 			this.dispose();
-			game.setScreen(new GameOverScreen(game));
+			game.setScreen(new MultiplayerOverScreen(game));
 		}
 	}
 
