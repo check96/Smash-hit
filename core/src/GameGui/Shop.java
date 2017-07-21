@@ -67,8 +67,9 @@ public class Shop implements Screen
 		this.game = game;
 		synchronized (game.mapGenerator)
 		{
-			game.mapGenerator.active = true;
-			game.mapGenerator.notify();
+	       	game.mapGenerator.start();
+	       	game.mapGenerator.active = true;
+	       	game.mapGenerator.notify();
 		}
 		
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));

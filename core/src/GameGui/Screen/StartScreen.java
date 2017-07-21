@@ -105,10 +105,6 @@ public class StartScreen implements Screen
         SoundManager.menuSoundtrack.play();
         game.countdown.start();
         
-        synchronized(game.mapGenerator)
-		{
-        	game.mapGenerator.start();
-		}
         synchronized(game.multiplayerMapGenerator)
      	{
             game.multiplayerMapGenerator.start();

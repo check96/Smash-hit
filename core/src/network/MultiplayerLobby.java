@@ -50,7 +50,12 @@ public class MultiplayerLobby implements Screen
         spriteBatch.end();
         
         if(ready)
+        {
+//        	if(GameConfig.isServer)
+//        		game.multiplayerMapGenerator.active = true;
+        	
         	game.setScreen(new LoadingScreen(game, multiplayerScreen));
+        }
 	}
 	
 	@Override

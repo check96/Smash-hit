@@ -108,7 +108,7 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
-				System.out.println("mammata: "+ GameConfig.ID + "   " + map[i][j].type);
+				System.out.println("ID: "+ GameConfig.ID + "   " + map[i][j].type + " in "+ map[i][j].getPosition());
 				reaction(delta);
 				return true;
 			}
@@ -135,7 +135,6 @@ public class MultiplayerWorld
 		GameConfig.SCORE += map[i][j].type.score;
 
 		boolean clock = false;
-		
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
 
