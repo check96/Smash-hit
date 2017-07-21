@@ -1,5 +1,7 @@
 package network;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -186,9 +188,16 @@ public class NetworkScreen implements Screen
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
 				GameConfig.isServer = true;
+				synchronized (GameConfig.tools)
+				{
+					GameConfig.tools.clear();
+				}
+				synchronized (GameConfig.toolsInstance)
+				{
+					GameConfig.toolsInstance.clear();
+				}
 				synchronized(game.mapGenerator)
 				{
-//					game.mapGenerator.active = true;
 					game.mapGenerator.createRoom();
 				}
 				stage.clear();

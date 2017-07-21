@@ -158,6 +158,7 @@ public class PauseScreen implements Screen
 		quit.addListener(new InputListener(){
       		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
+      			GameConfig.SCORE = 0;
       			GameConfig.LOCAL_COINS = 0;
       			game.setScreen(new GameOverScreen(game));
 	            return true;
