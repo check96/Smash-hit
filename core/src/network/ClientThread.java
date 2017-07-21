@@ -53,7 +53,9 @@ public class ClientThread extends Thread
 	{
 		String[] packet = receive.split(",");
 		
-		if(packet[0].equals("load"))
+		if(packet[0].equals("ready"))
+			MultiplayerLobby.ready = true;
+		else if(packet[0].equals("load"))
 		{
 			if(!GameConfig.isServer)
 				multiplayerScreen.game.mapGenerator.loadRoom(packet[2]);

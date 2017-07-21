@@ -51,7 +51,7 @@ public class Server extends Thread
 			catch(Exception e){}
 		}
 		
-		MultiplayerLobby.ready = true;
+		sendData("ready,");
 		sendData(MultiplayerLobby.loadPacket);
 	}	
 	
