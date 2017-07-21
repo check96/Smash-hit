@@ -32,9 +32,7 @@ public class MultiplayerMapGenerator extends Thread
 		while(true)
 		{
 			if(active && GameConfig.isServer)
-			{
 				createRoom();
-			}
 
 			synchronized(this)
 			{
@@ -155,7 +153,7 @@ public class MultiplayerMapGenerator extends Thread
 		Random rand = new Random(System.currentTimeMillis());
 
 		// initialize the map
-		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW*3][GameConfig.ROOM_COLUMN*3];
+		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		createWalls();
 
 		for (int i = 0; i < GameConfig.newTools.length; i+=2)
