@@ -264,7 +264,6 @@ public class MultiplayerScreen implements Screen
 				batch.render(GameConfig.playersInstance.get(i), environment);
 			}
 		}
-		
 		// camera update
 		synchronized(GameConfig.playerInstance)
 		{
@@ -279,22 +278,22 @@ public class MultiplayerScreen implements Screen
 		// render walls
 		synchronized (GameConfig.wallsInstance)
 		{
-			for (final ModelInstance wall : GameConfig.wallsInstance)
-				batch.render(wall, environment);
+			for(int i = 0; i<GameConfig.wallsInstance.size(); i++)
+				batch.render(GameConfig.wallsInstance.get(i), environment);
 		}
 		
 		// render tools instance
 		synchronized(GameConfig.multiplayerInstances)
 		{
-			for(final ModelInstance mod : GameConfig.multiplayerInstances)
-				batch.render(mod, environment);
+			for(int i = 0; i < GameConfig.multiplayerInstances.size(); i++)
+				batch.render(GameConfig.multiplayerInstances.get(i), environment);
 		}
 
 //		render destroyed tools
 		synchronized(GameConfig.destroyed)
 		{
-			for (final ModelInstance instance : GameConfig.destroyed)
-				batch.render(instance, environment);
+			for (int i = 0; i<GameConfig.destroyed.size(); i++)
+				batch.render(GameConfig.destroyed.get(i), environment);
 		}
 		
 		batch.end();
