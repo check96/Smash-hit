@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.math.Vector3;
 
 import GameGui.AssetHandler;
-import GameGui.GameManager;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
@@ -31,7 +30,7 @@ public class MultiplayerMapGenerator extends Thread
 	{
 		while(true)
 		{
-			if(active)
+			if(active && GameConfig.isServer)
 			{
 				createRoom();
 			}
@@ -108,10 +107,10 @@ public class MultiplayerMapGenerator extends Thread
 
 		// load tools model
 		assets.loadTools();
-		System.out.println("size  " + GameConfig.tools.size());
 		
 		// add new tools to tools
 		upgrade();				
+		System.out.println("size  " + GameConfig.tools.size());
 	}
 
 	private void uploadTools(int[][] map)
