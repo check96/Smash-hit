@@ -7,6 +7,8 @@ import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
 import entity.Walls;
+import network.Screen.MultiplayerLobby;
+import network.packets.LoadPacket;
 import videogame.GameConfig;
 
 public class MultiplayerMapGenerator
@@ -128,5 +130,18 @@ public class MultiplayerMapGenerator
 	
 		// load tools model
 		assets.loadTools();
+		
+		String send = "";
+		
+		for(int i = 0; i < GameConfig.ROOM_ROW; i++)
+			for(int j = 0; j < GameConfig.ROOM_COLUMN; j++)
+			{
+				if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
+					send += Integer.toString(GameConfig.multiplayerMap[i][j].type.id);
+				else
+					send += "0";
+			}
+		
+		MultiplayerLobby.loadPacket = new LoadPacket(send);
 	}
 }
