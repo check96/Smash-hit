@@ -189,8 +189,8 @@ public class NetworkScreen implements Screen
 				synchronized(game.mapGenerator)
 				{
 					game.mapGenerator.active = true;
-					game.mapGenerator.notify();
-//					game.mapGenerator.createRoom();
+//					game.mapGenerator.notify();
+					game.mapGenerator.createRoom();
 				}
 				stage.clear();
 				stage.addActor(username);
