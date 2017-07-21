@@ -208,7 +208,7 @@ public class MultiplayerWorld
 			GameConfig.players.get(id).setPosition(x,y,z);
 			GameConfig.players.get(id).angle = angle;
 		}
-		else if(packet[0].equals("hit"))
+		else if(packet[0].equals("door"))
 		{
 			delete(GameConfig.ROOM_ROW-1,GameConfig.ROOM_COLUMN/2);
 		}
