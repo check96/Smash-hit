@@ -27,6 +27,7 @@ import GameGui.SoundManager;
 import GameGui.Screen.PauseScreen;
 import network.MultiplayerHUD;
 import network.MultiplayerWorld;
+import network.packets.AnimationPacket;
 import network.packets.MovePacket;
 import network.threads.ClientThread;
 import videogame.Countdown;
@@ -40,7 +41,6 @@ public class MultiplayerScreen implements Screen
 	private Environment environment;
 	private MultiplayerWorld world;
 	private long hitTime = 0;
-	private long startTime = 0;
 	private boolean hitAnimation = false;
 	private MultiplayerHUD hud;
 	private ArrayList<AnimationController> playerControllers;
@@ -63,7 +63,6 @@ public class MultiplayerScreen implements Screen
 	private boolean moveRight = false;
 	
 	private final int B = 1;
-	private final int Y = 3;
 	private final int LB = 4;
 	private final int RB = 5;
 	private final int START = 7;
@@ -172,14 +171,11 @@ public class MultiplayerScreen implements Screen
 		destroyedController = new ArrayList<AnimationController>();
 		playerControllers = new ArrayList<AnimationController>();
 		
-		System.out.println(GameConfig.playersInstance.size());
-		
 		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
 			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
 			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
 		}
-		System.out.println(playerControllers.size());
 	}
 
 	private void initCamera() 
@@ -327,18 +323,21 @@ public class MultiplayerScreen implements Screen
 	{
 		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
+			client.out.println(new AnimationPacket("move"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
 
 		if(hitAnimation)
 		{
+			client.out.println(new AnimationPacket("hit"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
 
 		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
 		{
+			client.out.println(new AnimationPacket("move"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 			hitAnimation = false;

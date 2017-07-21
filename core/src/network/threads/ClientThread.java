@@ -13,7 +13,6 @@ import network.MultiplayerWorld;
 import network.Screen.MultiplayerLobby;
 import network.Screen.MultiplayerScreen;
 import network.packets.LogoutPacket;
-import network.packets.MovePacket;
 import videogame.GameConfig;
 
 public class ClientThread extends Thread
