@@ -40,8 +40,8 @@ public class MultiplayerScreen implements Screen
 	private ModelBatch batch;
 	private Environment environment;
 	private MultiplayerWorld world;
-	private long hitTime = 0;
-	private boolean hitAnimation = false;
+	private ArrayList<Long> hitTimes;
+	private ArrayList<Boolean> hitAnimations;
 	private MultiplayerHUD hud;
 	private ArrayList<AnimationController> playerControllers;
 	private ArrayList<AnimationController> destroyedController;
@@ -168,6 +168,8 @@ public class MultiplayerScreen implements Screen
 	
 	public void initAnimation()
 	{
+		hitTimes = new ArrayList<Long>();
+		hitAnimations = new ArrayList<Boolean>();
 		destroyedController = new ArrayList<AnimationController>();
 		playerControllers = new ArrayList<AnimationController>();
 		
@@ -175,6 +177,8 @@ public class MultiplayerScreen implements Screen
 		{
 			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
 			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
+			hitAnimations.add(false);
+			hitTimes.add(0l);
 		}
 	}
 
@@ -222,8 +226,8 @@ public class MultiplayerScreen implements Screen
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || keyB)
 		{
 			GameConfig.HIT = true;
-			hitAnimation = true;
-			hitTime = System.currentTimeMillis();
+			hitAnimations.set(GameConfig.ID,true);
+			hitTimes.set(GameConfig.ID, System.currentTimeMillis());
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || keyStart)
 		{
@@ -242,7 +246,6 @@ public class MultiplayerScreen implements Screen
 
 		addAnimation();
 		handleAnimation();
-//		handleSound();
 		world.update(delta);
 
 		// render player instance
@@ -303,44 +306,32 @@ public class MultiplayerScreen implements Screen
 			destroyedController.get(i).setAnimation("Armature|ArmatureAction");
 		}
 	}
-	private void handleSound()
-	{
-		if(hitAnimation)
-		{
-			if(GameConfig.HIT && GameConfig.hitted)
-			{
-				SoundManager.hitSound.play();
-			}
-			else if(!GameConfig.HIT)
-			{
-				SoundManager.hitSound.stop();
-				GameConfig.hitted = false;
-			}
-		}
-	}
 
 	private void handleAnimation()
 	{
-		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		if(hitAnimations.get(GameConfig.ID) && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			client.out.println(new AnimationPacket("move"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
 
-		if(hitAnimation)
+		if(hitAnimations.get(GameConfig.ID))
 		{
 			client.out.println(new AnimationPacket("hit"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
 
-		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
+		for(int i = 0; i < hitAnimations.size(); i++)
 		{
-			client.out.println(new AnimationPacket("endhit"));
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-			hitAnimation = false;
+			if(hitAnimations.get(i) && System.currentTimeMillis() - hitTimes.get(i) > 400)
+			{
+				client.out.println(new AnimationPacket("endHit"));
+				playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+				playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+				hitAnimations.set(i, false);
+			}
 		}
 		
 		for (AnimationController controller : destroyedController)
@@ -359,6 +350,7 @@ public class MultiplayerScreen implements Screen
 		{
 			playerControllers.get(id).setAnimation("Armature|hit",-1);
 			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+			hitAnimations.set(id, true);
 		}
 		else if(type.equals("move"))
 		{
@@ -369,6 +361,7 @@ public class MultiplayerScreen implements Screen
 		{
 			playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+			hitAnimations.set(id, false);
 		}
 	}
 	
