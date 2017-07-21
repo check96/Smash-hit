@@ -258,11 +258,12 @@ public class MultiplayerScreen implements Screen
 		synchronized(GameConfig.playersInstance)
 		{
 			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
-			{
 				GameConfig.playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
+
+			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 				GameConfig.playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
+			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 				batch.render(GameConfig.playersInstance.get(i), environment);
-			}
 		}
 		// camera update
 		cam.position.set(GameConfig.players.get(GameConfig.ID).getPosition().cpy().add(0,7,0));
@@ -380,6 +381,12 @@ public class MultiplayerScreen implements Screen
 			}
 		}
 		
+		for(int i = 0; i < playerControllers.size(); i++)
+		{
+			if(hitAnimations.get(i))
+				playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
+		}
+		
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
 		
@@ -392,41 +399,39 @@ public class MultiplayerScreen implements Screen
 
 	public synchronized void handlePlayerAnimations(int id, String type, long time)
 	{
+		int j = id;
 		if(type.equals("hit"))
 		{
 			synchronized(playerControllers)
 			{
-				playerControllers.get(id).setAnimation("Armature|hit",-1);
-				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+				playerControllers.get(j).setAnimation("Armature|hit",-1);
 			}
 			synchronized(hitAnimations)
 			{
-				hitAnimations.set(id, true);
+				hitAnimations.set(j, true);
 			}
 			
 			synchronized(hitTimes)
 			{
-				hitTimes.set(id, time);
+				hitTimes.set(j, time);
 			}
 		}
 		else if(type.equals("move"))
 		{
 			synchronized(playerControllers)
 			{
-				playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
-				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+				playerControllers.get(j).setAnimation("Armature|ArmatureAction",-1);
 			}
 		}
 		else if(type.equals("endHit"))
 		{
 			synchronized(playerControllers)
 			{
-				playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
-				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+				playerControllers.get(j).setAnimation("Armature|ArmatureAction",-1);
 			}
 			synchronized(hitAnimations)
 			{
-				hitAnimations.set(id, false);
+				hitAnimations.set(j, false);
 			}
 		}
 	}
