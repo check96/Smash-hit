@@ -188,8 +188,7 @@ public class NetworkScreen implements Screen
 				GameConfig.isServer = true;
 				synchronized(game.mapGenerator)
 				{
-					game.mapGenerator.active = true;
-//					game.mapGenerator.notify();
+//					game.mapGenerator.active = true;
 					game.mapGenerator.createRoom();
 				}
 				stage.clear();
