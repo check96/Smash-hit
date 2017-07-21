@@ -254,8 +254,8 @@ public class MultiplayerScreen implements Screen
 		handleAnimation();
 		world.update(delta);
 
-		// render player instance
-		synchronized(GameConfig.playerInstance)
+		// render players instance
+		synchronized(GameConfig.playersInstance)
 		{
 			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 			{
@@ -265,10 +265,7 @@ public class MultiplayerScreen implements Screen
 			}
 		}
 		// camera update
-		synchronized(GameConfig.playerInstance)
-		{
-			cam.position.set(GameConfig.players.get(GameConfig.ID).getPosition().cpy().add(0,7,0));
-		}
+		cam.position.set(GameConfig.players.get(GameConfig.ID).getPosition().cpy().add(0,7,0));
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;
