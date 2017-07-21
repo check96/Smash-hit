@@ -337,7 +337,7 @@ public class MultiplayerScreen implements Screen
 
 		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
 		{
-			client.out.println(new AnimationPacket("move"));
+			client.out.println(new AnimationPacket("endhit"));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 			hitAnimation = false;
@@ -361,6 +361,11 @@ public class MultiplayerScreen implements Screen
 			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
 		}
 		else if(type.equals("move"))
+		{
+			playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
+			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+		}
+		else if(type.equals("endHit"))
 		{
 			playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
