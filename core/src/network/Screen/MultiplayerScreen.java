@@ -93,7 +93,6 @@ public class MultiplayerScreen implements Screen
 		}
 
 		SoundManager.gameSoundtrack.play();
-		
 		batch = new ModelBatch();
 
 		initCamera();
@@ -107,11 +106,11 @@ public class MultiplayerScreen implements Screen
 			socket = new Socket(ip, port);
 			client = new ClientThread(socket, this);
 			client.start();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		catch (UnknownHostException e)
+		{	e.printStackTrace(); }
+		catch (IOException e)
+		{	e.printStackTrace(); }
 		world = new MultiplayerWorld(client);
 	}
 
@@ -350,26 +349,26 @@ public class MultiplayerScreen implements Screen
 
 	private void handleAnimation()
 	{
-		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
-		{
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-		}
-
-		if(hitAnimation)
-		{
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-		}
-
-		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
-		{
-			
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-			hitAnimation = false;
-		}
-		
+//		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+//		{
+//			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+//			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+//		}
+//
+//		if(hitAnimation)
+//		{
+//			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
+//			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+//		}
+//
+//		if(hitAnimation && System.currentTimeMillis()-hitTime > 400)
+//		{
+//			
+//			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+//			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+//			hitAnimation = false;
+//		}
+//		
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
 		
