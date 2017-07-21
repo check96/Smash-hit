@@ -32,7 +32,7 @@ public class Deleter
 		}
 	}
 
-	public static void remove(boolean clock, Vector3 objPosition)
+	public static void remove(Vector3 objPosition)
 	{
 		synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
 		{
@@ -42,11 +42,7 @@ public class Deleter
 				ModelInstance instance = iterator.next();
 				if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
 				{
-					if(!clock)
-					{
-						GameConfig.destroyed.add(instance);
-//						addCoinsAnimation(objPosition, money);
-					}
+					GameConfig.destroyed.add(instance);
 					
 					iterator.remove();
 					break;

@@ -48,11 +48,11 @@ public class MultiplayerScreen implements Screen
 	private MultiplayerHUD hud;
 	private ArrayList<AnimationController> playerControllers;
 	private ArrayList<AnimationController> destroyedController;
-	private ArrayList<AnimationController> coinController;
 	private Socket socket;
 	public static ClientThread client;
 
 	private Controller joystick;
+
 	//pressing button boolean
 	private boolean keyB = false;
 	private boolean keyLB = false;
@@ -181,7 +181,6 @@ public class MultiplayerScreen implements Screen
 	private void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
-		coinController = new ArrayList<AnimationController>();
 		
 		for(int i = 0; i < playersInstance.size(); i++)
 		{
@@ -253,8 +252,8 @@ public class MultiplayerScreen implements Screen
 		
 		handleInput();
 
-//		addAnimation();
-//		handleAnimation();
+		addAnimation();
+		handleAnimation();
 //		handleSound();
 		world.update(delta);
 
@@ -332,12 +331,6 @@ public class MultiplayerScreen implements Screen
 			destroyedController.add(new AnimationController(GameConfig.destroyed.get(i)));
 			destroyedController.get(i).setAnimation("Armature|ArmatureAction");
 		}
-		
-		for(int i = coinController.size(); i < GameConfig.coins.size(); i++)
-		{
-			coinController.add(new AnimationController(GameConfig.coins.get(i)));
-			coinController.get(i).setAnimation("Armature|ArmatureAction");
-		}
 	}
 	private void handleSound()
 	{
@@ -357,12 +350,6 @@ public class MultiplayerScreen implements Screen
 
 	private void handleAnimation()
 	{
-		synchronized (game.multiplayerMapGenerator.assets.clockAnimation)
-		{
-			for (AnimationController clock : game.mapGenerator.assets.clockAnimation)
-				clock.update(Gdx.graphics.getDeltaTime());
-		}
-		
 		if(!hitAnimation && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
@@ -386,16 +373,10 @@ public class MultiplayerScreen implements Screen
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
 		
-		for (AnimationController Controller : coinController)
-			Controller.update(Gdx.graphics.getDeltaTime());
-		
 		if(Countdown.getTime() %10 == 0)
 		{
 			destroyedController.clear();
 			GameConfig.destroyed.clear();
-			
-			coinController.clear();
-			GameConfig.coins.clear();
 		}
 	}
 

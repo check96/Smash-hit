@@ -85,20 +85,13 @@ public class ClientThread extends Thread
 				multiplayerScreen.getWorld().packetManager(packet, Gdx.graphics.getDeltaTime());
 	}
 	
-	public void disconnect()
+	public void disconnect() throws IOException
 	{
-		try
-		{
 			out.println(new LogoutPacket());
-			
 			this.interrupt();
 			in.close();
 			out.close();
 			socket.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -1,7 +1,6 @@
 package GameGui;
 
 import java.io.IOException;
-import java.net.Socket;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -39,17 +38,35 @@ public class GameManager extends Game
 			GameConfig.server.sendData(new LogoutPacket());
 			for (ServerThread client : Server.clients)
 			{
-				client.disconnect();
+				try
+				{
+					client.disconnect();
+				} catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
 			}
 			
-			GameConfig.server.disconnect();
-			
+			try
+			{
+				GameConfig.server.disconnect();
+			}
+			catch (IOException e)
+			{
+				System.out.println(e.getMessage());
+			}
 		}
 		else if(GameConfig.MULTIPLAYER)
 		{
 			if(MultiplayerScreen.client instanceof ClientThread)
 			{
-				MultiplayerScreen.client.disconnect();
+				try
+				{
+					MultiplayerScreen.client.disconnect();
+				} catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
 			}
 		}
 	}

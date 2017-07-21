@@ -140,7 +140,7 @@ public class MultiplayerWorld
 		if(map[i][j].type == Objects.CLOCK)
 			clock = true;
 
-		Deleter.remove(clock, map[i][j].getPosition()); 
+		Deleter.remove(map[i][j].getPosition()); 
 		map[i][j] = null;
 	}
 	
@@ -244,7 +244,6 @@ public class MultiplayerWorld
 			player.setWeapon(new Weapon(player.getPosition()));
 			
 			GameConfig.players.add(player);
-//			MultiplayerLobby.players.add(new Label)
 			
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;

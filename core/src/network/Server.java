@@ -79,17 +79,11 @@ public class Server extends Thread
 		}
 	}
 
-	public void disconnect()
+	public void disconnect() throws IOException
 	{
-		try
-		{
 			in.close();
 			out.close();
 			serverSocket.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
 	}
 }
 

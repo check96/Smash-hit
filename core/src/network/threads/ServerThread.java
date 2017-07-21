@@ -71,24 +71,16 @@ public class ServerThread extends Thread
 			GameConfig.server.sendData(line);
 	}
 	
-	public void disconnect()
+	public void disconnect() throws IOException
 	{
-		try 
-		{
-			connected = false;
-			in.close();
-			out.close();
-			socket.close();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
-		}
+		connected = false;
+		in.close();
+		out.close();
+		socket.close();
 	}
 	
 	public Socket getSocket()
 	{
 		return socket;
 	}
-	
-	
 }
