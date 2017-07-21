@@ -125,8 +125,8 @@ public class MultiplayerMapGenerator
 		// initialize the map
 		createWalls();
 
-		for (int i = 0; i < GameConfig.multiplayerMap.length; i+=2)
-			for (int j = 1; j < GameConfig.multiplayerMap[i].length-1; j++)
+		for (int i = 0; i < GameConfig.multiplayerMap.length; i+=4)
+			for (int j = 3; j < GameConfig.multiplayerMap[i].length-3; j++)
 			{
 				float x = i * GameConfig.CELL_HEIGHT;
 				float z = j * GameConfig.CELL_WIDTH;

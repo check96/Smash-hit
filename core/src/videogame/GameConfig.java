@@ -78,8 +78,8 @@ public class GameConfig
 	
 	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	
-	public static final int ROW = 45;
-	public static final int COLUMN = 30;
+	public static final int ROW = 30;
+	public static final int COLUMN = 20;
 	public static Destroyable[][] multiplayerMap = new Destroyable[ROW][COLUMN];
 	public static ArrayList<ModelInstance> multiplayerInstances  = new ArrayList<ModelInstance>();
 	public static ArrayList<Player> players = new ArrayList<Player>();
