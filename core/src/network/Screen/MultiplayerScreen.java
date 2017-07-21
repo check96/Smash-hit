@@ -172,6 +172,7 @@ public class MultiplayerScreen implements Screen
 		hitTimes = new ArrayList<Long>();
 		hitAnimations = new ArrayList<Boolean>();
 		destroyedController = new ArrayList<AnimationController>();
+		playerControllers = new ArrayList<AnimationController>();
 		
 		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
