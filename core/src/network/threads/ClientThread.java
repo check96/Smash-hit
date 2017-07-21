@@ -53,7 +53,7 @@ public class ClientThread extends Thread
 		}
 	}
 
-	private void packetManagement(String receive)
+	private synchronized void packetManagement(String receive)
 	{
 		String[] packet = receive.split(",");
 		
