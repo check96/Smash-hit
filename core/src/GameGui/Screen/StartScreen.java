@@ -32,7 +32,6 @@ public class StartScreen implements Screen
     
     public StartScreen(GameManager _game)
     {
-    	
     	game = _game;
         stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         
@@ -54,7 +53,6 @@ public class StartScreen implements Screen
         	          @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
             {
-	//        	game.setScreen(new LoadingScreen(game));
 	      		game.setScreen(new Shop(game));
             	return true;
             }

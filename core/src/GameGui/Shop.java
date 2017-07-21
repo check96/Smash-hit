@@ -66,6 +66,8 @@ public class Shop implements Screen
 	public Shop(GameManager game)
 	{
 		this.game = game;
+		game.mapGenerator.active = true;
+		
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
 		spriteBatch = new SpriteBatch();

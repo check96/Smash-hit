@@ -26,7 +26,7 @@ public class MapGenerator extends Thread
 	{
 		assets = new AssetHandler();
 		game = _game;
-		active = true;
+		active = false;
 		assets.loadModels();
 	}
 	

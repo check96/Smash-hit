@@ -186,14 +186,6 @@ public class NetworkScreen implements Screen
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
 				GameConfig.isServer = true;
-				synchronized(GameConfig.tools)
-				{
-					GameConfig.tools.clear();
-				}
-				synchronized(GameConfig.toolsInstance)
-				{
-					GameConfig.toolsInstance.clear();
-				}
 				synchronized(game.mapGenerator)
 				{
 					game.mapGenerator.active = false;
@@ -215,23 +207,12 @@ public class NetworkScreen implements Screen
 		login = new TextButton("LOGIN", skin);
 		login.setSize(200, 80);
 		login.setPosition(510, 120);
-		login.addListener(new InputListener() {
+		login.addListener(new InputListener()
+		{
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) 
 			{
 				GameConfig.username = username.getText();
-				synchronized(GameConfig.tools)
-				{
-					GameConfig.tools.clear();
-				}
-				synchronized(GameConfig.toolsInstance)
-				{
-					GameConfig.toolsInstance.clear();
-				}
-				synchronized(game.mapGenerator)
-				{
-					game.mapGenerator.active = false;
-				}
 				game.setScreen(new MultiplayerLobby(game, ip.getText(), Integer.parseInt(port.getText())));
 				return true;
 			}
