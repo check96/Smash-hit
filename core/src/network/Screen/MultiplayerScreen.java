@@ -384,7 +384,7 @@ public class MultiplayerScreen implements Screen
 		for(int i = 0; i < playerControllers.size(); i++)
 		{
 			if(hitAnimations.get(i))
-				playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
+				playerControllers.get(i).update(Gdx.graphics.getDeltaTime()/20);
 		}
 		
 		for (AnimationController controller : destroyedController)
