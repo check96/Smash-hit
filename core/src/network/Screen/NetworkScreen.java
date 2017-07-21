@@ -78,7 +78,7 @@ public class NetworkScreen implements Screen
 		numPlayersLabel = new Label("number of players", new Label.LabelStyle(font, color));
 		numPlayersLabel.setPosition(250, 305);
 
-		ip = new TextField("169.254.116.179", mySkin);	//169.254.116.179
+		ip = new TextField("127.0.0.1", mySkin);	//169.254.116.179
 		ip.setPosition(550, 370);
 		ip.setSize(220, 60);
 
@@ -187,15 +187,7 @@ public class NetworkScreen implements Screen
 			{ 
 				GameConfig.server = new Server(Integer.parseInt(port.getText()), Integer.parseInt(numPlayers.getText()));
 				GameConfig.isServer = true;
-				synchronized (GameConfig.tools)
-				{
-					GameConfig.tools.clear();
-				}
-				synchronized (GameConfig.toolsInstance)
-				{
-					GameConfig.toolsInstance.clear();
-				}
-				
+
 				game.multiplayerMapGenerator.createRoom();
 				
 				stage.clear();

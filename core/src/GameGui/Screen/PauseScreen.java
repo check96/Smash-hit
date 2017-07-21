@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -165,7 +164,7 @@ public class PauseScreen implements Screen
       			
       			if(GameConfig.MULTIPLAYER)
       			{
-      				multiplayerScreen.client.out.println(new LogoutPacket().toString());
+      				MultiplayerScreen.client.out.println(new LogoutPacket().toString());
       				game.setScreen(new MultiplayerOverScreen(game));
       			}
       			else

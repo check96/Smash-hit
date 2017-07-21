@@ -58,7 +58,7 @@ public class StartScreen implements Screen
             }
         });
  
-        // multi player
+        // multiplayer
         Button multiPlayer = new TextButton("multiplayer",mySkin);
         multiPlayer.addListener(new InputListener()
         {    
@@ -104,11 +104,6 @@ public class StartScreen implements Screen
         
         SoundManager.menuSoundtrack.play();
         game.countdown.start();
-        
-//        synchronized(game.multiplayerMapGenerator)
-//     	{
-//            game.multiplayerMapGenerator.start();
-//     	}
     }
  
     public void render(float delta)

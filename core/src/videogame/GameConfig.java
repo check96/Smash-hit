@@ -44,7 +44,6 @@ public class GameConfig
 	public static boolean xplosion1 = false;
 	public static boolean xplosion2 = false;
 	
-	
 	public static int destroyedDesks = 0;
 	public static int destroyedChairs = 0;
 	public static int destroyedDoors = 0;
@@ -70,6 +69,11 @@ public class GameConfig
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
+	
+	public static final int ROW = 45;
+	public static final int COLUMN = 30;
+	public static Destroyable[][] multiplayerMap = new Destroyable[ROW][COLUMN];
+	public static ArrayList<ModelInstance> multiplayerInstances  = new ArrayList<ModelInstance>();
 	
 	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
 	public static ArrayList<ModelInstance> coins = new ArrayList<ModelInstance>();

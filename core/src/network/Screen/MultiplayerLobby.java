@@ -6,18 +6,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import GameGui.GameManager;
 import GameGui.Screen.LoadingScreen;
-import network.MultiplayerWorld;
 import network.packet.LoadPacket;
 import network.threads.ServerLaunchThread;
 import videogame.GameConfig;
@@ -68,11 +63,7 @@ public class MultiplayerLobby implements Screen
         updateLabels();
         
         if(ready)
-        {
-        	if(GameConfig.isServer)
-        		game.multiplayerMapGenerator.active = true;
         	game.setScreen(new LoadingScreen(game, multiplayerScreen));
-        }
 	}
 	
 	private void updateLabels()

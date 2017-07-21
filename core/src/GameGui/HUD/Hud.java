@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import videogame.Countdown;
 import videogame.GameConfig;
@@ -23,23 +22,23 @@ public class Hud implements Disposable
     public Stage vortexStage;
    
     //Scene2D widgets
-    protected Label roomLabel;
-    protected Label scoreLabel;
-    protected Label timeLabel;
-    protected Label moneyLabel;
+    private Label roomLabel;
+    private Label scoreLabel;
+    private Label timeLabel;
+    private Label moneyLabel;
     
-    protected Label levelLabel;
-    protected Label pointsLabel;
-    protected Label countdownLabel;
-    protected Label coinsLabel;
-    protected Label bombLabel;
+    private Label levelLabel;
+    private Label pointsLabel;
+    private Label countdownLabel;
+    private Label coinsLabel;
+    private Label bombLabel;
     
     public SpriteBatch spriteBatch;
-    protected Texture bonus;
-    protected Texture coin;
-    protected Texture vortex;
-    protected Image vortexImage;
-    protected float x1 = 1;
+    private Texture bonus;
+    private Texture coin;
+    private Texture vortex;
+    private Image vortexImage;
+    private float x1 = 1;
     
     public Hud()
     {

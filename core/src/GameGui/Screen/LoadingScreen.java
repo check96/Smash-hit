@@ -48,10 +48,7 @@ public class LoadingScreen implements Screen
 	
         if(GameConfig.MULTIPLAYER)
         {
-        	synchronized(game.mapGenerator)
-			{
-	        	game.mapGenerator.assets.loadPlayer();
-			}
+	       	game.multiplayerMapGenerator.assets.loadPlayer();
         }
 	}
 	
@@ -70,24 +67,27 @@ public class LoadingScreen implements Screen
 
         progress = MathUtils.lerp(progress, game.mapGenerator.assets.manager.getProgress(), 0.1f);
         
-        if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
-        {
-        	if(GameConfig.MULTIPLAYER)
-        	{
+        if(GameConfig.MULTIPLAYER)
+    	{
+        	if (game.multiplayerMapGenerator.assets.manager.update() && progress >= game.multiplayerMapGenerator.assets.manager.getProgress() - 0.001f)
+    		{
         		game.countdown.active = true;
         		game.setScreen(multiplayerScreen);
-        	}
-        	else
+    		}
+    	}
+        else
+        {
+        	if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         		game.setScreen(new GameScreen(game));
         }
         
         loadingBar = new Texture(Gdx.files.internal("loading_bar/bate_"+(int)(progress*11)+".png"));
         spriteBatch.begin();
         
-        if(!GameConfig.MULTIPLAYER)
-        	spriteBatch.draw(backgroundSingle,0,0);
-        else
+        if(GameConfig.MULTIPLAYER)
         	spriteBatch.draw(backgroundMulti,0,0);
+        else
+        	spriteBatch.draw(backgroundSingle,0,0);
         
         spriteBatch.draw(loadingBar, GameConfig.Screen_Width*250/GameConfig.width, 0);
         spriteBatch.end();

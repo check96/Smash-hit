@@ -25,7 +25,6 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import GameGui.GameManager;
 import GameGui.SoundManager;
 import GameGui.HUD.MultiplayerHUD;
-import GameGui.Screen.GameOverScreen;
 import GameGui.Screen.PauseScreen;
 import network.MultiplayerWorld;
 import network.packet.MovePacket;
@@ -64,7 +63,6 @@ public class MultiplayerScreen implements Screen
 	private boolean moveBack = false;
 	private boolean moveLeft = false;
 	private boolean moveRight = false;
-	private boolean keyY = false;	
 	
 	private final int B = 1;
 	private final int Y = 3;
@@ -122,11 +120,9 @@ public class MultiplayerScreen implements Screen
 			{
 				if (buttonIndex == B)
 					keyB = true;
-				else if(buttonIndex == Y)
-					keyY = true;
-				else if (buttonIndex == RB) // && GameConfig.STATE !="tornado"
+				else if (buttonIndex == RB)
 					keyRB = true;
-				else if (buttonIndex == LB) // && GameConfig.STATE !="tornado"
+				else if (buttonIndex == LB)
 					keyLB = true;
 				else if (buttonIndex == START)
 					keyStart = true;
@@ -138,13 +134,11 @@ public class MultiplayerScreen implements Screen
 			{
 				if (buttonIndex == B)
 					keyB = false;
-				else if(buttonIndex == Y)
-					keyY = false;
-				else if (buttonIndex == RB) // && GameConfig.STATE !="tornado"
+				else if (buttonIndex == RB)
 					keyRB = false;
-				else if (buttonIndex == LB) // && GameConfig.STATE !="tornado"
+				else if (buttonIndex == LB)
 					keyLB = false;
-				else if (buttonIndex == START) // START
+				else if (buttonIndex == START)
 					keyStart = false;
 				return true;
 			}
@@ -279,25 +273,11 @@ public class MultiplayerScreen implements Screen
 		}
 		
 		// render tools instance
-		synchronized (GameConfig.toolsInstance)
-		{
-			for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
-				batch.render(mod, environment);
+		for(final ModelInstance mod : GameConfig.multiplayerInstances)
+			batch.render(mod, environment);
 
-			// render next room's model instances
-			if(GameConfig.actualLevel < GameConfig.toolsInstance.size())
-			{
-				for(final ModelInstance mod : GameConfig.toolsInstance.get(GameConfig.actualLevel))
-					batch.render(mod, environment);
-			}
-		}
-		
-//		// render destroyed tools
+//		render destroyed tools
 		for (final ModelInstance instance : GameConfig.destroyed)
-			batch.render(instance, environment);
-		
-		// render coins
-		for (final ModelInstance instance : GameConfig.coins)
 			batch.render(instance, environment);
 		
 		batch.end();
@@ -313,10 +293,7 @@ public class MultiplayerScreen implements Screen
 			{
 				game.countdown.active = false;
 			}
-			synchronized(game.multiplayerMapGenerator)
-			{
-				game.multiplayerMapGenerator.active = false;
-			}
+
 			this.dispose();
 			game.setScreen(new MultiplayerOverScreen(game));
 		}

@@ -11,7 +11,6 @@ import entity.Wall;
 import entity.Walls;
 import entity.Weapon;
 import network.Screen.MultiplayerLobby;
-import network.packet.DoorPacket;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
 import network.threads.ClientThread;
@@ -20,7 +19,6 @@ import videogame.GameConfig;
 
 public class MultiplayerWorld 
 {
-	private Destroyable[][] map;
 	public static ArrayList<String> usernames = new ArrayList<String>();
 	private ClientThread client;
 	
@@ -32,11 +30,6 @@ public class MultiplayerWorld
 
 	public void update(float delta)
 	{
-		synchronized (GameConfig.tools)
-		{
-			map = GameConfig.tools.get(GameConfig.actualLevel-1);
-		}
-		
 		int id = GameConfig.ID;
 		
 		boolean movement = GameConfig.players.get(id).move(delta, GameConfig.DIRECTION);
@@ -56,20 +49,6 @@ public class MultiplayerWorld
 		GameConfig.HIT = false;
 		
 		checkGameOver();
-		
-		synchronized (GameConfig.tools)
-		{
-			GameConfig.tools.set(GameConfig.actualLevel-1,map);
-		}
-		
-		synchronized (GameConfig.tools)
-		{
-			if(GameConfig.players.get(id).getX() > GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT * GameConfig.actualLevel)
-			{
-				GameConfig.tools.set(GameConfig.actualLevel-1, null); 
-				GameConfig.actualLevel++;
-			}
-		}		
 	}
 
 	private void checkGameOver()
@@ -100,16 +79,16 @@ public class MultiplayerWorld
 
 	private boolean checkCollsion(float delta)
 	{
-    	int	i = (int) ((GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT) % GameConfig.ROOM_ROW;
-    	int	j = (int) ((GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH) % GameConfig.ROOM_COLUMN;
+    	int	i = (int) (GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT;
+    	int	j = (int) (GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH;
     	
-		if((i == 0 && j !=5)  || (i == GameConfig.ROOM_ROW-1 && j != 5) || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
+		if(i == 0  || i == GameConfig.ROW-1 || j == 0 || j == GameConfig.COLUMN-1 )
 			if(checkWallCollision(delta))
 				client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 
-		if(map[i][j] instanceof Destroyable)
+		if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
 		{
-			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
+			if(GameConfig.players.get(GameConfig.ID).collide(GameConfig.multiplayerMap[i][j]));
 			{
 				reaction(delta);
 				return true;
@@ -134,14 +113,10 @@ public class MultiplayerWorld
 	private void delete(int i, int j)
 	{
 		// add score and coins
-		GameConfig.SCORE += map[i][j].type.score;
+		GameConfig.SCORE += GameConfig.multiplayerMap[i][j].type.score;
 
-		boolean clock = false;
-		if(map[i][j].type == Objects.CLOCK)
-			clock = true;
-
-		Deleter.remove(map[i][j].getPosition()); 
-		map[i][j] = null;
+		Deleter.remove(GameConfig.multiplayerMap[i][j].getPosition()); 
+		GameConfig.multiplayerMap[i][j] = null;
 	}
 	
 	private void hit(float delta)
@@ -156,26 +131,17 @@ public class MultiplayerWorld
 		GameConfig.players.get(GameConfig.ID).moveBack(delta, GameConfig.DIRECTION);
 		
 		// decrease tool's life
-    	if(map[i][j] instanceof Destroyable)
+    	if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
     	{
-    		if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]))
+    		if(GameConfig.players.get(GameConfig.ID).collide(GameConfig.multiplayerMap[i][j]))
     		{
-    			if(map[i][j].type == Objects.CLOCK)
-    				map[i][j].decreaseHealth(map[i][j].getHealth());
-    			else
-    				map[i][j].decreaseHealth(GameConfig.players.get(GameConfig.ID).getWeapon().getDamage()*delta);
-    		
-    			client.out.println(new HitPacket(i, j, map[i][j].getHealth()).toString());
+    			GameConfig.multiplayerMap[i][j].decreaseHealth(GameConfig.players.get(GameConfig.ID).getWeapon().getDamage()*delta);
+    			client.out.println(new HitPacket(i, j, GameConfig.multiplayerMap[i][j].getHealth()).toString());
     		}
     		
-			if(map[i][j].getHealth() == 0)
-			{
-				if(map[i][j].type == Objects.DOOR)
-					client.out.println(new DoorPacket());
-				
-				//remove tools and toolsInstance
+    		//remove tools and toolsInstance
+			if(GameConfig.multiplayerMap[i][j].getHealth() == 0)
 				delete(i,j);
-			}
     	}
 	}
 
@@ -210,10 +176,6 @@ public class MultiplayerWorld
 			GameConfig.players.get(id).setPosition(x,y,z);
 			GameConfig.players.get(id).angle = angle;
 		}
-		else if(packet[0].equals("door"))
-		{
-			delete(GameConfig.ROOM_ROW-1,GameConfig.ROOM_COLUMN/2);
-		}
 		else if(packet[0].equals("hit"))
 		{
 			int room = Integer.parseInt(packet[2]);
@@ -221,10 +183,10 @@ public class MultiplayerWorld
 			int j = Integer.parseInt(packet[4]);
 			int health = Integer.parseInt(packet[5]);
 			
-			if(GameConfig.tools.get(room)[i][j] instanceof Destroyable)
+			if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
 			{
-				GameConfig.tools.get(room)[i][j].setHealth(health);
-				if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
+				GameConfig.multiplayerMap[i][j].setHealth(health);
+				if(GameConfig.multiplayerMap[i][j].getHealth() == 0)
 				{
 					//remove tools and toolsInstance
 					delete(i,j);

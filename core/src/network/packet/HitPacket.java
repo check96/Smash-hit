@@ -7,12 +7,10 @@ public class HitPacket extends Packet
 	private int i;
 	private int j;
 	private int id;
-	private int room;
 	private int health;
 	
 	public HitPacket(int _i, int _j, int health)
 	{
-		room = GameConfig.actualLevel-1;
 		id = GameConfig.ID;
 		i = _i;
 		j = _j;
@@ -22,7 +20,7 @@ public class HitPacket extends Packet
 	@Override
 	public String toString() 
 	{
-		return ("hit," + id + "," + room + "," + i + "," + j + "," + health);
+		return ("hit," + id + "," + i + "," + j + "," + health);
 	}
 
 }
