@@ -3,7 +3,6 @@ package network;
 import java.util.Random;
 import com.badlogic.gdx.math.Vector3;
 
-import GameGui.AssetHandler;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
@@ -14,7 +13,7 @@ import videogame.GameConfig;
 
 public class MultiplayerMapGenerator
 {
-	public MultiplayerAssets assets;
+	public MultiplayerAssetsHandler assets;
 	private final int ROW;
 	private final int COLUMN;
 	
@@ -23,7 +22,7 @@ public class MultiplayerMapGenerator
 		ROW = GameConfig.ROW;
 		COLUMN = GameConfig.COLUMN;
 		
-		assets = new MultiplayerAssets();
+		assets = new MultiplayerAssetsHandler();
 		assets.loadModels();
 	}
 	
@@ -59,16 +58,16 @@ public class MultiplayerMapGenerator
 
 	public void loadRoom(String line)
 	{
-		int[][] points = new int[ROW][COLUMN];
-		
-		for(int j=0; j<points.length; j++)
+		int[][] points = new int[GameConfig.ROW][GameConfig.COLUMN];
+
+		for(int j=0; j < ROW; j++)
 		{
-			String subLine = line.substring(j * ROW, j * COLUMN + COLUMN);
-			
-			for(int k=0; k < points[j].length; k++)
+			String subLine = line.substring(j * COLUMN, j * COLUMN + COLUMN);
+			System.out.println("subline size: "+ subLine.length());
+			for(int k = 0; k < COLUMN; k++)
 				points[j][k] = subLine.charAt(k) - 48;
 		}
-
+		
 		uploadTools(points);
 
 		// clear positions near the doors
@@ -90,7 +89,6 @@ public class MultiplayerMapGenerator
 		
 		//		load map and create tools
 		Random rand = new Random(System.currentTimeMillis());
-		GameConfig.multiplayerMap = new Destroyable[ROW][COLUMN];
 		
 		for(int i = 0; i < map.length; i++)
 			for(int j = 0; j < map[i].length; j++)
@@ -125,7 +123,6 @@ public class MultiplayerMapGenerator
 		Random rand = new Random(System.currentTimeMillis());
 
 		// initialize the map
-		GameConfig.multiplayerMap = new Destroyable[ROW][COLUMN];
 		createWalls();
 
 		for (int i = 0; i < GameConfig.multiplayerMap.length; i+=2)

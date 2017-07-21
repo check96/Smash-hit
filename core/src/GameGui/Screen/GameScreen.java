@@ -27,9 +27,9 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.math.Quaternion;
 
 import GameGui.GameManager;
+import GameGui.Hud;
 import GameGui.SoundManager;
 import GameGui.TimeXplosion;
-import GameGui.HUD.Hud;
 import videogame.AI.Dijkstra;
 import videogame.Countdown;
 import videogame.GameConfig;
@@ -42,7 +42,6 @@ public class GameScreen implements Screen
 	private GameManager game;
 	private Camera cam;
 	private ModelBatch batch;
-	public static ModelInstance playerInstance;
 	private ModelInstance bomb1Instance;
 	private ModelInstance bomb2Instance;
 	private ArrayList<ModelInstance> hints;
@@ -191,7 +190,7 @@ public class GameScreen implements Screen
 		destroyedController = new ArrayList<AnimationController>();
 		coinController = new ArrayList<AnimationController>();
 
-		playerController = new AnimationController(playerInstance);
+		playerController = new AnimationController(GameConfig.playerInstance);
 		playerController.setAnimation("Armature|ArmatureAction", -1);
 	}
 
@@ -277,20 +276,16 @@ public class GameScreen implements Screen
 		if (GameConfig.bombXplosion != null)
 		{
 			new TimeXplosion();
+
+			xplosion.setPosition(GameConfig.bombXplosion.getPosition());
+			xplosion.setRotation(GameConfig.playerInstance.transform.getRotation(new Quaternion()));
+			
 			if (GameConfig.xplosion1)
-			{
-				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
-				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
 				xplosion.setScale(0.01f);
-				xplosionBatch.add(xplosion);
-			}
 			else if (GameConfig.xplosion2)
-			{
-				xplosion.setPosition(GameConfig.bombXplosion.getPosition());
-				xplosion.setRotation(playerInstance.transform.getRotation(new Quaternion()));
 				xplosion.setScale(0.05f);
-				xplosionBatch.add(xplosion);
-			}
+			
+			xplosionBatch.add(xplosion);
 		}
 	}
 
@@ -308,8 +303,8 @@ public class GameScreen implements Screen
 		world.update(delta);
 
 		// move player instance
-		playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
-		playerInstance.transform.rotate(0, 1, 0, degrees);
+		GameConfig.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+		GameConfig.playerInstance.transform.rotate(0, 1, 0, degrees);
 
 		// camera update
 		cam.position.set(GameConfig.player.getPosition().cpy().add(0, 7, 0));
@@ -320,7 +315,7 @@ public class GameScreen implements Screen
 		batch.begin(cam);
 
 		// render player instance
-		batch.render(playerInstance, environment);
+		batch.render(GameConfig.playerInstance, environment);
 
 		// render hints
 		for (final ModelInstance mod : hints)

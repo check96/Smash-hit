@@ -121,8 +121,8 @@ public class AssetHandler
 	// load player 
 	public void loadPlayer()	
 	{
-		GameScreen.playerInstance = new ModelInstance(manager.get(player, Model.class));
-		GameScreen.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
+		GameConfig.playerInstance = new ModelInstance(manager.get(player, Model.class));
+		GameConfig.playerInstance.transform.setToTranslation(GameConfig.player.getPosition());
 	}
 
 	// load model instances

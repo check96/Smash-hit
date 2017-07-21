@@ -64,22 +64,27 @@ public class GameConfig
 	public static boolean HIT	= false;
 	public static Bomb bombXplosion;
 	
-	public static Player player; 
-	public static ArrayList<Player> players = new ArrayList<Player>();
+	public static Player player;
+	public static ModelInstance playerInstance;
+	
 	public static ArrayList<Destroyable[][]> tools = new ArrayList<Destroyable[][]>();
 	public static ArrayList<Wall> walls  = new ArrayList<Wall>();
 	public static Destroyable[][] newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
+
+	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
+	public static ArrayList<ModelInstance> coins = new ArrayList<ModelInstance>();
+	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
+	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
+	
+	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	
 	public static final int ROW = 45;
 	public static final int COLUMN = 30;
 	public static Destroyable[][] multiplayerMap = new Destroyable[ROW][COLUMN];
 	public static ArrayList<ModelInstance> multiplayerInstances  = new ArrayList<ModelInstance>();
+	public static ArrayList<Player> players = new ArrayList<Player>();
+	public static ArrayList<ModelInstance> playersInstance = new ArrayList<ModelInstance>();
 	
-	public static ArrayList<ModelInstance> destroyed = new ArrayList<ModelInstance>();
-	public static ArrayList<ModelInstance> coins = new ArrayList<ModelInstance>();
-	public static ArrayList<ArrayList<ModelInstance>> toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
-	public static ArrayList<ModelInstance> newInstances  = new ArrayList<ModelInstance>();
-	public static ArrayList<ModelInstance> wallsInstance  = new ArrayList<ModelInstance>();
 	public static boolean hitted = false;
 	public static String username = "";
 	public static int ID = 0;

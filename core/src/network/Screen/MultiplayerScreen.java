@@ -24,8 +24,8 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
-import GameGui.HUD.MultiplayerHUD;
 import GameGui.Screen.PauseScreen;
+import network.MultiplayerHUD;
 import network.MultiplayerWorld;
 import network.packets.MovePacket;
 import network.threads.ClientThread;
@@ -37,8 +37,6 @@ public class MultiplayerScreen implements Screen
 	public GameManager game;
 	private Camera cam;
 	private ModelBatch batch;
-	public static ModelInstance playerInstance;
-	public static ArrayList<ModelInstance> playersInstance = new ArrayList<ModelInstance>();
 	private Environment environment;
 	private MultiplayerWorld world;
 	private long hitTime = 0;
@@ -174,9 +172,9 @@ public class MultiplayerScreen implements Screen
 	{
 		destroyedController = new ArrayList<AnimationController>();
 		
-		for(int i = 0; i < playersInstance.size(); i++)
+		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
-			playerControllers.add(new AnimationController(playersInstance.get(i)));
+			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
 			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
 		}
 	}
@@ -250,11 +248,11 @@ public class MultiplayerScreen implements Screen
 		world.update(delta);
 
 		// render player instance
-		for(int i = 0; i < playersInstance.size(); i++)
+		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
-			playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
-			playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
-			batch.render(playersInstance.get(i), environment);
+			GameConfig.playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
+			GameConfig.playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
+			batch.render(GameConfig.playersInstance.get(i), environment);
 		}
 		
 		// camera update
@@ -344,7 +342,7 @@ public class MultiplayerScreen implements Screen
 //			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 //			hitAnimation = false;
 //		}
-//		
+		
 		for (AnimationController controller : destroyedController)
 			controller.update(Gdx.graphics.getDeltaTime());
 		

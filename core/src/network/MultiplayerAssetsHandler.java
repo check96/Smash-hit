@@ -1,7 +1,5 @@
 package network;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
@@ -13,17 +11,14 @@ import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.MeshPartBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
-import GameGui.Screen.GameScreen;
 import entity.Destroyable;
 import entity.Wall;
-import network.Screen.MultiplayerScreen;
 import videogame.GameConfig;
 
-public class MultiplayerAssets
+public class MultiplayerAssetsHandler
 {
 	private String player = "player/player.g3db";		// scalato di 0.0095
 	private String desk = "desk/desk.g3db";				// scalato di 0.05       
@@ -38,7 +33,7 @@ public class MultiplayerAssets
 	public AssetManager manager;
 	private ModelBuilder modelBuilder;
 	
-	public MultiplayerAssets()
+	public MultiplayerAssetsHandler()
 	{
 		manager = new AssetManager();
 		modelBuilder = new ModelBuilder();
@@ -49,16 +44,16 @@ public class MultiplayerAssets
 		Texture wallTexture = new Texture(Gdx.files.internal("texture/wall.jpeg"));
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
-		wallModel = createPlaneModel(22,GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, wall, 0, 0, 1, 1);
+		wallModel = createPlaneModel(22,GameConfig.COLUMN*GameConfig.CELL_WIDTH+10, wall, 0, 0, 1, 1);
 		
-		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT, 1f, 10+GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH,
+		ceiling = modelBuilder.createBox(10+GameConfig.ROW * GameConfig.CELL_HEIGHT, 1f, 10 + GameConfig.COLUMN * GameConfig.CELL_WIDTH,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
 		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
 		Material floor = new Material();
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
 
-		floorModel = createPlaneModel(GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT +10, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);
+		floorModel = createPlaneModel(GameConfig.ROW*GameConfig.CELL_HEIGHT +10, GameConfig.COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);
 	}
 	
 	// load models
@@ -90,12 +85,11 @@ public class MultiplayerAssets
 	// load player 
 	public void loadPlayer()	
 	{
-	
 		for(int i = 0; i < GameConfig.players.size(); i++)
 		{
 			ModelInstance instance = new ModelInstance(manager.get(player, Model.class)); 
 			instance.transform.setToTranslation(GameConfig.players.get(i).getPosition());
-			MultiplayerScreen.playersInstance.add(instance);
+			GameConfig.playersInstance.add(instance);
 		}
 	}
 

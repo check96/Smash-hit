@@ -1,4 +1,4 @@
-package GameGui.HUD;
+package network;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -21,6 +21,8 @@ public class MultiplayerHUD implements Disposable
     //Scene2D widgets
     private Label scoreLabel;
     private Label timeLabel;
+    
+    private Label username;
     
     private Label pointsLabel;
     private Label countdownLabel;
@@ -49,16 +51,21 @@ public class MultiplayerHUD implements Disposable
         scoreLabel = new Label("SCORE", new Label.LabelStyle(font, color));
         timeLabel = new Label("TIME", new Label.LabelStyle(font, color));
         
+        username = new Label("", new Label.LabelStyle(font, color));
+        
         countdownLabel = new Label(String.format("%03d", Countdown.getTime()), new Label.LabelStyle(font, color));
         pointsLabel = new Label(String.format("%06d", GameConfig.SCORE), new Label.LabelStyle(font, color));
+        Label name = new Label("", new Label.LabelStyle(font, color));
         
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(scoreLabel).expandX().padTop(10);
+        table.add(username).expandX().padTop(10);
         table.add(timeLabel).expandX().padTop(10);
-       
+        
         //add a second row to our table
         table.row();
         table.add(pointsLabel).expandX();
+        table.add(name).expandX();
         table.add(countdownLabel).expandX();
         
         //add tables to the stage
@@ -70,7 +77,8 @@ public class MultiplayerHUD implements Disposable
     	// update labels
     	countdownLabel.setText(String.format("%02d", Countdown.getTime()));
     	pointsLabel.setText(String.format("%06d", GameConfig.SCORE));
-   		
+    	username.setText(MultiplayerWorld.usernames.get(GameConfig.ID));
+    	
     	spriteBatch.begin();
     	spriteBatch.enableBlending();
         spriteBatch.end(); 

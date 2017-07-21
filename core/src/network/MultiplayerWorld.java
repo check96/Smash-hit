@@ -178,7 +178,6 @@ public class MultiplayerWorld
 		}
 		else if(packet[0].equals("hit"))
 		{
-			int room = Integer.parseInt(packet[2]);
 			int i = Integer.parseInt(packet[3]);
 			int j = Integer.parseInt(packet[4]);
 			int health = Integer.parseInt(packet[5]);
@@ -186,12 +185,17 @@ public class MultiplayerWorld
 			if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
 			{
 				GameConfig.multiplayerMap[i][j].setHealth(health);
+
+				//remove tools and toolsInstance
 				if(GameConfig.multiplayerMap[i][j].getHealth() == 0)
-				{
-					//remove tools and toolsInstance
 					delete(i,j);
-				}
 			}
+		}
+		else if(packet[0].equals("animation"))
+		{
+			int id = Integer.parseInt(packet[1]);
+			String type = packet[2];
+//			GameConfig.playersInstance.get(id)
 		}
 	}
 	
