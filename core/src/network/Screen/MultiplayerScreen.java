@@ -173,15 +173,12 @@ public class MultiplayerScreen implements Screen
 		hitAnimations = new ArrayList<Boolean>();
 		destroyedController = new ArrayList<AnimationController>();
 		playerControllers = new ArrayList<AnimationController>();
-		synchronized(GameConfig.playerInstance)
+		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
 		{
-			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
-			{
-				playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
-				playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
-				hitAnimations.add(false);
-				hitTimes.add(0l);
-			}
+			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
+			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
+			hitAnimations.add(false);
+			hitTimes.add(0l);
 		}
 	}
 
