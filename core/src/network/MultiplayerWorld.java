@@ -108,6 +108,7 @@ public class MultiplayerWorld
 		{
 			if(GameConfig.players.get(GameConfig.ID).collide(map[i][j]));
 			{
+				System.out.println("mammata: "+ GameConfig.ID + "   " + map[i][j].type);
 				reaction(delta);
 				return true;
 			}

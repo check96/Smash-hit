@@ -108,6 +108,7 @@ public class MultiplayerMapGenerator extends Thread
 
 		// load tools model
 		assets.loadTools();
+		System.out.println("size  " + GameConfig.tools.size());
 		
 		// add new tools to tools
 		upgrade();				
@@ -215,11 +216,11 @@ public class MultiplayerMapGenerator extends Thread
 		else
 			GameConfig.server.sendData(new LoadPacket(send));
 
-		// load tools model
-		assets.loadTools();
-
-		// add new tools to tools
-		upgrade();		
+//		// load tools model
+//		assets.loadTools();
+//
+//		// add new tools to tools
+//		upgrade();		
 	}
 	// clone newTools and newInstances and add them to tools and toolsInstance
 	@SuppressWarnings("unchecked")
