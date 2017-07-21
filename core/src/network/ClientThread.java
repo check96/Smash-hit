@@ -57,8 +57,6 @@ public class ClientThread extends Thread
 		{
 			if(!GameConfig.isServer)
 				multiplayerScreen.game.mapGenerator.loadRoom(packet[2]);
-			
-			MultiplayerLobby.ready = true;
 		}
 		else if(packet[0].equals("login"))
 		{
