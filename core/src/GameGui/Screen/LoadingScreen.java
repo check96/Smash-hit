@@ -72,7 +72,6 @@ public class LoadingScreen implements Screen
         
         if (game.mapGenerator.assets.manager.update() && progress >= game.mapGenerator.assets.manager.getProgress() - 0.001f) 
         {
-        	System.out.println("finish");
         	if(GameConfig.MULTIPLAYER)
         		game.setScreen(multiplayerScreen);
         	else

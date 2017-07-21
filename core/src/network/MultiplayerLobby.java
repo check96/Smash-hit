@@ -45,11 +45,6 @@ public class MultiplayerLobby implements Screen
         if(ready)
         	game.setScreen(new LoadingScreen(game, multiplayerScreen));
 	}
-
-	public void loadMap()
-	{
-		game.mapGenerator.active = true;
-	}
 	
 	@Override
 	public void show() { Gdx.input.setInputProcessor(null);}
