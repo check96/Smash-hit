@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import GameGui.Deleter;
 import entity.Destroyable;
-import entity.Objects;
 import entity.Player;
 import entity.Wall;
 import entity.Walls;
@@ -82,7 +81,7 @@ public class MultiplayerWorld
     	int	i = (int) (GameConfig.players.get(GameConfig.ID).getX() + 4.5f)/ GameConfig.CELL_HEIGHT;
     	int	j = (int) (GameConfig.players.get(GameConfig.ID).getZ() + 3.5f) / GameConfig.CELL_WIDTH;
     	
-		if(i == 0  || i == GameConfig.ROW-1 || j == 0 || j == GameConfig.COLUMN-1 )
+		if(i == 0  || i == GameConfig.ROOM_ROW-1 || j == 0 || j == GameConfig.ROOM_COLUMN-1 )
 			if(checkWallCollision(delta))
 				client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 

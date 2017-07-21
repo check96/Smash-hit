@@ -44,16 +44,16 @@ public class MultiplayerAssetsHandler
 		Texture wallTexture = new Texture(Gdx.files.internal("texture/wall.jpeg"));
 		wall = new Material();
 		wall.set(new TextureAttribute(TextureAttribute.Diffuse, wallTexture));
-		wallModel = createPlaneModel(22,GameConfig.COLUMN*GameConfig.CELL_WIDTH+10, wall, 0, 0, 1, 1);
+		wallModel = createPlaneModel(22,GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, wall, 0, 0, 1, 1);
 		
-		ceiling = modelBuilder.createBox(10+GameConfig.ROW * GameConfig.CELL_HEIGHT, 1f, 10 + GameConfig.COLUMN * GameConfig.CELL_WIDTH,
+		ceiling = modelBuilder.createBox(10+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT, 1f, 10 + GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH,
 						       new Material(ColorAttribute.createDiffuse(Color.WHITE)),Usage.Position | Usage.Normal);
 		
 		Texture floorTexture = new Texture(Gdx.files.internal("texture/floor.jpeg"));
 		Material floor = new Material();
 		floor.set(new TextureAttribute(TextureAttribute.Diffuse, floorTexture));		
 
-		floorModel = createPlaneModel(GameConfig.ROW*GameConfig.CELL_HEIGHT +10, GameConfig.COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);
+		floorModel = createPlaneModel(GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT +10, GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH+10, floor, 0, 0, 1, 1);
 	}
 	
 	// load models
