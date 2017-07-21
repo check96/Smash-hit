@@ -173,13 +173,15 @@ public class MultiplayerScreen implements Screen
 		hitAnimations = new ArrayList<Boolean>();
 		destroyedController = new ArrayList<AnimationController>();
 		playerControllers = new ArrayList<AnimationController>();
-		
-		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
+		synchronized(GameConfig.playerInstance)
 		{
-			playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
-			playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
-			hitAnimations.add(false);
-			hitTimes.add(0l);
+			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
+			{
+				playerControllers.add(new AnimationController(GameConfig.playersInstance.get(i)));
+				playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
+				hitAnimations.add(false);
+				hitTimes.add(0l);
+			}
 		}
 	}
 
@@ -256,15 +258,21 @@ public class MultiplayerScreen implements Screen
 		world.update(delta);
 
 		// render player instance
-		for(int i = 0; i < GameConfig.playersInstance.size(); i++)
+		synchronized(GameConfig.playerInstance)
 		{
-			GameConfig.playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
-			GameConfig.playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
-			batch.render(GameConfig.playersInstance.get(i), environment);
+			for(int i = 0; i < GameConfig.playersInstance.size(); i++)
+			{
+				GameConfig.playersInstance.get(i).transform.setToTranslation(GameConfig.players.get(i).getPosition());
+				GameConfig.playersInstance.get(i).transform.rotate(0,1,0,90+GameConfig.players.get(i).angle);
+				batch.render(GameConfig.playersInstance.get(i), environment);
+			}
 		}
 		
 		// camera update
-		cam.position.set(GameConfig.players.get(GameConfig.ID).getPosition().cpy().add(0,7,0));
+		synchronized(GameConfig.playerInstance)
+		{
+			cam.position.set(GameConfig.players.get(GameConfig.ID).getPosition().cpy().add(0,7,0));
+		}
 		
 		cam.update();
 		GameConfig.DIRECTION = cam.direction;
@@ -279,12 +287,18 @@ public class MultiplayerScreen implements Screen
 		}
 		
 		// render tools instance
-		for(final ModelInstance mod : GameConfig.multiplayerInstances)
-			batch.render(mod, environment);
+		synchronized(GameConfig.multiplayerInstances)
+		{
+			for(final ModelInstance mod : GameConfig.multiplayerInstances)
+				batch.render(mod, environment);
+		}
 
 //		render destroyed tools
-		for (final ModelInstance instance : GameConfig.destroyed)
-			batch.render(instance, environment);
+		synchronized(GameConfig.destroyed)
+		{
+			for (final ModelInstance instance : GameConfig.destroyed)
+				batch.render(instance, environment);
+		}
 		
 		batch.end();
 

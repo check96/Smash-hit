@@ -71,7 +71,7 @@ public class Server extends Thread
 		}
 	}
 	
-	public void sendData(String line)
+	public synchronized void sendData(String line)
 	{
 		for(int i = 0; i < clients.size(); i++)
 		{
