@@ -34,19 +34,17 @@ public class Deleter
 
 	public static void remove(Vector3 objPosition)
 	{
-		synchronized (GameConfig.toolsInstance.get(GameConfig.actualLevel-1))
+		ListIterator<ModelInstance> iterator = GameConfig.multiplayerInstances.listIterator();
+		
+		while(iterator.hasNext())
 		{
-			ListIterator<ModelInstance> iterator = GameConfig.toolsInstance.get(GameConfig.actualLevel-1).listIterator();
-			while(iterator.hasNext())
+			ModelInstance instance = iterator.next();
+			if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
 			{
-				ModelInstance instance = iterator.next();
-				if(instance.transform.getTranslation(new Vector3()).equals(objPosition))
-				{
-					GameConfig.destroyed.add(instance);
-					
-					iterator.remove();
-					break;
-				}
+				GameConfig.destroyed.add(instance);
+				
+				iterator.remove();
+				break;
 			}
 		}
 	}
