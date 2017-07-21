@@ -74,7 +74,6 @@ public class MultiplayerScreen implements Screen
 	{
 		this.game = _game;
 
-		playerControllers = new ArrayList<AnimationController>();
 		for (Controller c : Controllers.getControllers()) 
 		{
 			if(c.getName().contains("XBOX") && c.getName().contains("360")) 
@@ -309,27 +308,34 @@ public class MultiplayerScreen implements Screen
 
 	private void handleAnimation()
 	{
-		if(hitAnimations.get(GameConfig.ID) && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		if(!hitAnimations.get(GameConfig.ID) && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 		{
-			client.out.println(new AnimationPacket("move"));
+			client.out.println(new AnimationPacket("move", 0l));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
 
 		if(hitAnimations.get(GameConfig.ID))
 		{
-			client.out.println(new AnimationPacket("hit"));
+			client.out.println(new AnimationPacket("hit", hitTimes.get(GameConfig.ID)));
 			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
 			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
 		}
-
+		
+		if(hitAnimations.get(GameConfig.ID) && System.currentTimeMillis() - hitTimes.get(GameConfig.ID) > 400)
+		{
+			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+			hitAnimations.set(GameConfig.ID, false);
+		}
+		
 		for(int i = 0; i < hitAnimations.size(); i++)
 		{
 			if(hitAnimations.get(i) && System.currentTimeMillis() - hitTimes.get(i) > 400)
 			{
-				client.out.println(new AnimationPacket("endHit"));
-				playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-				playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+				client.out.println(new AnimationPacket("endHit",0l));
+				playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
+				playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
 				hitAnimations.set(i, false);
 			}
 		}
@@ -344,24 +350,28 @@ public class MultiplayerScreen implements Screen
 		}
 	}
 
-	public void handlePlayerAnimations(int id, String type)
+	public void handlePlayerAnimations(int id, String type, long time)
 	{
-		if(type.equals("hit"))
+		synchronized(playerControllers)
 		{
-			playerControllers.get(id).setAnimation("Armature|hit",-1);
-			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
-			hitAnimations.set(id, true);
-		}
-		else if(type.equals("move"))
-		{
-			playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
-		}
-		else if(type.equals("endHit"))
-		{
-			playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
-			hitAnimations.set(id, false);
+			if(type.equals("hit"))
+			{
+				playerControllers.get(id).setAnimation("Armature|hit",-1);
+				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+				hitAnimations.set(id, true);
+				hitTimes.set(id, time);
+			}
+			else if(type.equals("move"))
+			{
+				playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
+				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+			}
+			else if(type.equals("endHit"))
+			{
+				playerControllers.get(id).setAnimation("Armature|ArmatureAction",-1);
+				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
+				hitAnimations.set(id, false);
+			}
 		}
 	}
 	

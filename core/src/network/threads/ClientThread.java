@@ -82,8 +82,9 @@ public class ClientThread extends Thread
 		{
 			int id = Integer.parseInt(packet[1]);
 			String type = packet[2];
+			long time = Long.parseLong(packet[3]);
 			
-			multiplayerScreen.handlePlayerAnimations(id, type);
+			multiplayerScreen.handlePlayerAnimations(id, type, time);
 		}
 		else
 			multiplayerScreen.getWorld().packetManager(packet, Gdx.graphics.getDeltaTime());
