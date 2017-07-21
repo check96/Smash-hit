@@ -79,7 +79,7 @@ public class MultiplayerMapGenerator extends Thread
 		}
 	}
 
-	public void loadRoom(String line)
+	public void loadRoom(String line, int level)
 	{
 		int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
@@ -109,8 +109,7 @@ public class MultiplayerMapGenerator extends Thread
 		assets.loadTools();
 		
 		// add new tools to tools
-		upgrade();				
-		System.out.println("size  " + GameConfig.tools.size());
+		upgrade(level);				
 	}
 
 	private void uploadTools(int[][] map)
@@ -211,25 +210,25 @@ public class MultiplayerMapGenerator extends Thread
 					send += Integer.toString(GameConfig.newTools[i][j].type.id);
 		
 		if(GameConfig.tools.isEmpty())
-			MultiplayerLobby.loadPacket = new LoadPacket(send);
+			MultiplayerLobby.loadPacket = new LoadPacket(send,0);
 		else
-			GameConfig.server.sendData(new LoadPacket(send));
+			GameConfig.server.sendData(new LoadPacket(send, GameConfig.level));
 
 		// load tools model
 		assets.loadTools();
 
 		// add new tools to tools
-		upgrade();		
+		upgrade(GameConfig.level);		
 	}
 	// clone newTools and newInstances and add them to tools and toolsInstance
 	@SuppressWarnings("unchecked")
-	public void upgrade()
+	public void upgrade(int level)
 	{
 		GameConfig.level++;
 		synchronized(GameConfig.tools)
 		{
 			Destroyable[][] array = (Destroyable[][]) GameConfig.newTools.clone();
-			GameConfig.tools.add(array);
+			GameConfig.tools.set(level, array);
 			
 			if(GameConfig.actualLevel >= 3)
 				GameConfig.tools.set(GameConfig.actualLevel-3,null);
