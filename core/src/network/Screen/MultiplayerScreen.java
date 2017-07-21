@@ -332,7 +332,7 @@ public class MultiplayerScreen implements Screen
 				synchronized(hitAnimations)
 				{
 					playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime()/2);
 				}
 			}
 		}
@@ -344,7 +344,7 @@ public class MultiplayerScreen implements Screen
 				synchronized(playerControllers)
 				{
 					playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
-					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime()/2);
 				}
 			}
 		}
@@ -355,7 +355,7 @@ public class MultiplayerScreen implements Screen
 				if(hitAnimations.get(GameConfig.ID) && System.currentTimeMillis() - hitTimes.get(GameConfig.ID) > 400)
 				{
 					playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime()/2);
 					hitAnimations.set(GameConfig.ID, false);
 				}
 			}
@@ -373,7 +373,7 @@ public class MultiplayerScreen implements Screen
 						synchronized(playerControllers)
 						{
 							playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
-							playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
+							playerControllers.get(i).update(Gdx.graphics.getDeltaTime()/2);
 						}
 						hitAnimations.set(i, false);
 					}
@@ -384,7 +384,7 @@ public class MultiplayerScreen implements Screen
 		for(int i = 0; i < playerControllers.size(); i++)
 		{
 			if(hitAnimations.get(i))
-				playerControllers.get(i).update(Gdx.graphics.getDeltaTime()/20);
+				playerControllers.get(i).update(Gdx.graphics.getDeltaTime()/2);
 		}
 		
 		for (AnimationController controller : destroyedController)
