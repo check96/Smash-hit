@@ -1,4 +1,4 @@
-package network.packet;
+package network.packets;
 
 import com.badlogic.gdx.math.Vector3;
 

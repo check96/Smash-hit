@@ -10,7 +10,7 @@ import GameGui.Screen.StartScreen;
 import network.MultiplayerMapGenerator;
 import network.Server;
 import network.Screen.MultiplayerScreen;
-import network.packet.LogoutPacket;
+import network.packets.LogoutPacket;
 import network.threads.ClientThread;
 import network.threads.ServerThread;
 import videogame.Countdown;

@@ -27,7 +27,7 @@ import GameGui.SoundManager;
 import GameGui.HUD.MultiplayerHUD;
 import GameGui.Screen.PauseScreen;
 import network.MultiplayerWorld;
-import network.packet.MovePacket;
+import network.packets.MovePacket;
 import network.threads.ClientThread;
 import videogame.Countdown;
 import videogame.GameConfig;

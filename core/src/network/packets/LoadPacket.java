@@ -1,4 +1,4 @@
-package network.packet;
+package network.packets;
 
 import videogame.GameConfig;
 

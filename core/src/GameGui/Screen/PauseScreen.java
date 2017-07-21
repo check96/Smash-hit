@@ -25,7 +25,7 @@ import GameGui.GameManager;
 import GameGui.SoundManager;
 import network.Screen.MultiplayerOverScreen;
 import network.Screen.MultiplayerScreen;
-import network.packet.LogoutPacket;
+import network.packets.LogoutPacket;
 import videogame.GameConfig;
 
 public class PauseScreen implements Screen

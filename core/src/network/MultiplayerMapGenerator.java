@@ -9,7 +9,7 @@ import entity.Objects;
 import entity.Wall;
 import entity.Walls;
 import network.Screen.MultiplayerLobby;
-import network.packet.LoadPacket;
+import network.packets.LoadPacket;
 import videogame.GameConfig;
 
 public class MultiplayerMapGenerator

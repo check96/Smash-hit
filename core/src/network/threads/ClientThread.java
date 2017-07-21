@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import network.MultiplayerWorld;
 import network.Screen.MultiplayerLobby;
 import network.Screen.MultiplayerScreen;
-import network.packet.LogoutPacket;
+import network.packets.LogoutPacket;
 import videogame.GameConfig;
 
 public class ClientThread extends Thread

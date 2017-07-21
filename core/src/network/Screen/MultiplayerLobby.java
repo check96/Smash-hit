@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import GameGui.GameManager;
 import GameGui.Screen.LoadingScreen;
-import network.packet.LoadPacket;
+import network.packets.LoadPacket;
 import network.threads.ServerLaunchThread;
 import videogame.GameConfig;
 

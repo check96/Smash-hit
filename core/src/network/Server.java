@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import network.Screen.MultiplayerLobby;
 import network.Screen.MultiplayerScreen;
-import network.packet.Packet;
+import network.packets.Packet;
 import network.threads.ServerThread;
 
 public class Server extends Thread
