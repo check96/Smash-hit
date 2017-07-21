@@ -53,7 +53,6 @@ public class MultiplayerLobby implements Screen
         {
 //        	if(GameConfig.isServer)
 //        		game.multiplayerMapGenerator.active = true;
-        	
         	game.setScreen(new LoadingScreen(game, multiplayerScreen));
         }
 	}
