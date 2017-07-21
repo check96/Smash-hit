@@ -1,4 +1,4 @@
-package network;
+package network.Screen;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -26,7 +26,9 @@ import GameGui.SoundManager;
 import GameGui.HUD.MultiplayerHUD;
 import GameGui.Screen.GameOverScreen;
 import GameGui.Screen.PauseScreen;
+import network.MultiplayerWorld;
 import network.packet.MovePacket;
+import network.threads.ClientThread;
 import videogame.Countdown;
 import videogame.GameConfig;
 
@@ -47,7 +49,7 @@ public class MultiplayerScreen implements Screen
 	private ArrayList<AnimationController> destroyedController;
 	private ArrayList<AnimationController> coinController;
 	private Socket socket;
-	private ClientThread client;
+	public ClientThread client;
 
 	private Controller joystick;
 	private final int B = 1;
@@ -214,9 +216,7 @@ public class MultiplayerScreen implements Screen
 			hitTime = System.currentTimeMillis();
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-		{
-			PAUSE = true;
-		}
+			game.setScreen(new PauseScreen(game, this));
 	}
 	
 	public void render(float delta) 
@@ -228,13 +228,6 @@ public class MultiplayerScreen implements Screen
 		
 		if(joystick == null)
 			handleInput();
-
-		if(PAUSE)
-		{
-			PAUSE = false;
-			game.countdown.active = false;
-			game.setScreen(new PauseScreen(game, this));
-		}
 
 //		addAnimation();
 //		handleAnimation();

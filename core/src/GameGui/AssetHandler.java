@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import GameGui.Screen.GameScreen;
 import entity.Destroyable;
 import entity.Wall;
-import network.MultiplayerScreen;
+import network.Screen.MultiplayerScreen;
 import videogame.GameConfig;
 
 public class AssetHandler

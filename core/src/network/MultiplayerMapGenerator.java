@@ -12,6 +12,7 @@ import entity.Objects;
 import entity.Wall;
 import entity.Walls;
 import network.packet.LoadPacket;
+import network.packet.MultiplayerLobby;
 import videogame.GameConfig;
 
 public class MultiplayerMapGenerator extends Thread
@@ -209,7 +210,6 @@ public class MultiplayerMapGenerator extends Thread
 				else
 					send += Integer.toString(GameConfig.newTools[i][j].type.id);
 		
-		System.out.println("create size: "+GameConfig.tools.size());
 		if(GameConfig.tools.isEmpty())
 			MultiplayerLobby.loadPacket = new LoadPacket(send);
 		else

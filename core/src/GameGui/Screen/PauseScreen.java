@@ -24,7 +24,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
-import network.MultiplayerScreen;
+import network.Screen.MultiplayerOverScreen;
+import network.Screen.MultiplayerScreen;
+import network.packet.LogoutPacket;
 import videogame.GameConfig;
 
 public class PauseScreen implements Screen
@@ -160,7 +162,14 @@ public class PauseScreen implements Screen
             {
       			GameConfig.SCORE = 0;
       			GameConfig.LOCAL_COINS = 0;
-      			game.setScreen(new GameOverScreen(game));
+      			
+      			if(GameConfig.MULTIPLAYER)
+      			{
+      				multiplayerScreen.client.out.println(new LogoutPacket().toString());
+      				game.setScreen(new MultiplayerOverScreen(game));
+      			}
+      			else
+      				game.setScreen(new GameOverScreen(game));
 	            return true;
             }
         });

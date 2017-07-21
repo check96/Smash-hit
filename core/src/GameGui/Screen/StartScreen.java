@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import GameGui.GameManager;
 import GameGui.Shop;
 import GameGui.SoundManager;
-import network.NetworkScreen;
+import network.Screen.NetworkScreen;
 import videogame.GameConfig;
 
 public class StartScreen implements Screen 

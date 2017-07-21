@@ -1,4 +1,4 @@
-package network;
+package network.threads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import network.MultiplayerWorld;
 import videogame.Countdown;
 import videogame.GameConfig;
 
@@ -67,8 +68,6 @@ public class ServerThread extends Thread
 			MultiplayerWorld.usernames.add(packet[1]);
 			GameConfig.server.sendData(send);
 		}
-		else if(packet[0].equals("time"))
-			Countdown.increment(5);
 		else
 			GameConfig.server.sendData(line);
 	}

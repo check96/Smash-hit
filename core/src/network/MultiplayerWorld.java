@@ -13,6 +13,7 @@ import entity.Weapon;
 import network.packet.DoorPacket;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
+import network.threads.ClientThread;
 import videogame.Countdown;
 import videogame.GameConfig;
 
@@ -222,7 +223,6 @@ public class MultiplayerWorld
 			if(GameConfig.tools.get(room)[i][j] instanceof Destroyable)
 			{
 				GameConfig.tools.get(room)[i][j].setHealth(health);
-			
 				if(GameConfig.tools.get(room)[i][j].getHealth() == 0)
 				{
 					//remove tools and toolsInstance

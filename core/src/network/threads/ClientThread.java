@@ -1,4 +1,4 @@
-package network;
+package network.threads;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +9,9 @@ import java.net.Socket;
 
 import com.badlogic.gdx.Gdx;
 
+import network.MultiplayerWorld;
+import network.Screen.MultiplayerScreen;
+import network.packet.MultiplayerLobby;
 import videogame.GameConfig;
 
 public class ClientThread extends Thread
@@ -68,6 +71,9 @@ public class ClientThread extends Thread
 				MultiplayerWorld.usernames.add(usernames[i]);
 
 			MultiplayerWorld.addPlayers();
+		}
+		else if(packet[0].equals("logout"))
+		{
 		}
 		else
 				multiplayerScreen.getWorld().packetManager(packet, Gdx.graphics.getDeltaTime());

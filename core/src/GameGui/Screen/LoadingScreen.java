@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import GameGui.GameManager;
 import GameGui.SoundManager;
-import network.MultiplayerScreen;
+import network.Screen.MultiplayerScreen;
 import videogame.GameConfig;
 
 public class LoadingScreen implements Screen
