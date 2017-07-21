@@ -63,7 +63,7 @@ public class MultiplayerMapGenerator
 		for(int j=0; j < ROW; j++)
 		{
 			String subLine = line.substring(j * COLUMN, j * COLUMN + COLUMN);
-			System.out.println("subline size: "+ subLine.length());
+
 			for(int k = 0; k < COLUMN; k++)
 				points[j][k] = subLine.charAt(k) - 48;
 		}
@@ -125,8 +125,8 @@ public class MultiplayerMapGenerator
 		// initialize the map
 		createWalls();
 
-		for (int i = 0; i < GameConfig.multiplayerMap.length; i+=4)
-			for (int j = 3; j < GameConfig.multiplayerMap[i].length-3; j++)
+		for (int i = 0; i < GameConfig.multiplayerMap.length; i+=3)
+			for (int j = 2 ; j < GameConfig.multiplayerMap[i].length-2; j++)
 			{
 				float x = i * GameConfig.CELL_HEIGHT;
 				float z = j * GameConfig.CELL_WIDTH;

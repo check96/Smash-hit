@@ -178,9 +178,9 @@ public class MultiplayerWorld
 		}
 		else if(packet[0].equals("hit"))
 		{
-			int i = Integer.parseInt(packet[3]);
-			int j = Integer.parseInt(packet[4]);
-			int health = Integer.parseInt(packet[5]);
+			int i = Integer.parseInt(packet[2]);
+			int j = Integer.parseInt(packet[3]);
+			int health = Integer.parseInt(packet[4]);
 			
 			if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
 			{
