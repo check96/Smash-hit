@@ -197,7 +197,6 @@ public class NetworkScreen implements Screen
 				synchronized(game.mapGenerator)
 				{
 					game.mapGenerator.active = false;
-					game.mapGenerator.active = false;
 					game.mapGenerator.createRoom();
 				}
 				stage.clear();
@@ -221,6 +220,18 @@ public class NetworkScreen implements Screen
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) 
 			{
 				GameConfig.username = username.getText();
+				synchronized(GameConfig.tools)
+				{
+					GameConfig.tools.clear();
+				}
+				synchronized(GameConfig.toolsInstance)
+				{
+					GameConfig.toolsInstance.clear();
+				}
+				synchronized(game.mapGenerator)
+				{
+					game.mapGenerator.active = false;
+				}
 				game.setScreen(new MultiplayerLobby(game, ip.getText(), Integer.parseInt(port.getText())));
 				return true;
 			}
