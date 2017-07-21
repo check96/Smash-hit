@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -66,10 +65,13 @@ public class Shop implements Screen
 	public Shop(GameManager game)
 	{
 		this.game = game;
-		game.mapGenerator.active = true;
+		synchronized (game.mapGenerator)
+		{
+			game.mapGenerator.active = true;
+			game.mapGenerator.notify();
+		}
 		
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-		
 		spriteBatch = new SpriteBatch();
         background = new Texture(Gdx.files.internal("texture/shop_background.png"));
         
