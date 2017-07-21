@@ -46,7 +46,6 @@ public class MultiplayerLobby implements Screen
        
         if(GameConfig.server == null)
         {
-        	game.multiplayerMapGenerator.active = false;
         	GameConfig.tools.clear();
         	GameConfig.toolsInstance.clear();
         }

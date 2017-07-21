@@ -15,7 +15,7 @@ import network.Screen.MultiplayerLobby;
 import network.packet.LoadPacket;
 import videogame.GameConfig;
 
-public class MultiplayerMapGenerator extends Thread
+public class MultiplayerMapGenerator
 {
 	public AssetHandler assets;
 	public boolean active = false;
@@ -27,7 +27,7 @@ public class MultiplayerMapGenerator extends Thread
 		assets.loadModels();
 	}
 	
-	public void run()
+/*	public void run()
 	{
 		while(true)
 		{
@@ -45,7 +45,7 @@ public class MultiplayerMapGenerator extends Thread
 				}
 			}
 		}
-	}
+	}*/
 	
 	private void createWalls()
 	{
