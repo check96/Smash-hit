@@ -5,6 +5,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import javax.sql.rowset.spi.SyncResolver;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -225,8 +227,14 @@ public class MultiplayerScreen implements Screen
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || keyB)
 		{
 			GameConfig.HIT = true;
-			hitAnimations.set(GameConfig.ID,true);
-			hitTimes.set(GameConfig.ID, System.currentTimeMillis());
+			synchronized (hitAnimations)
+			{
+				hitAnimations.set(GameConfig.ID,true);
+			}
+			synchronized(hitTimes)
+			{
+				hitTimes.set(GameConfig.ID, System.currentTimeMillis());
+			}
 		}
 		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || keyStart)
 		{
@@ -306,37 +314,42 @@ public class MultiplayerScreen implements Screen
 		}
 	}
 
-	private void handleAnimation()
+	private synchronized void handleAnimation()
 	{
-		if(!hitAnimations.get(GameConfig.ID) && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
+		synchronized(hitAnimations)
 		{
-			client.out.println(new AnimationPacket("move", 0l));
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-		}
-
-		if(hitAnimations.get(GameConfig.ID))
-		{
-			client.out.println(new AnimationPacket("hit", hitTimes.get(GameConfig.ID)));
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-		}
-		
-		if(hitAnimations.get(GameConfig.ID) && System.currentTimeMillis() - hitTimes.get(GameConfig.ID) > 400)
-		{
-			playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
-			playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
-			hitAnimations.set(GameConfig.ID, false);
-		}
-		
-		for(int i = 0; i < hitAnimations.size(); i++)
-		{
-			if(hitAnimations.get(i) && System.currentTimeMillis() - hitTimes.get(i) > 400)
+			if(!hitAnimations.get(GameConfig.ID) && (GameConfig.ON || GameConfig.BACK || GameConfig.RIGHT || GameConfig.LEFT))
 			{
-				client.out.println(new AnimationPacket("endHit",0l));
-				playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
-				playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
-				hitAnimations.set(i, false);
+				client.out.println(new AnimationPacket("move", 0l));
+				playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+				playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+			}
+	
+			if(hitAnimations.get(GameConfig.ID))
+			{
+				client.out.println(new AnimationPacket("hit", hitTimes.get(GameConfig.ID)));
+				playerControllers.get(GameConfig.ID).setAnimation("Armature|hit",-1);
+				playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+			}
+			synchronized(hitTimes)
+			{
+				if(hitAnimations.get(GameConfig.ID) && System.currentTimeMillis() - hitTimes.get(GameConfig.ID) > 400)
+				{
+					playerControllers.get(GameConfig.ID).setAnimation("Armature|ArmatureAction",-1);
+					playerControllers.get(GameConfig.ID).update(Gdx.graphics.getDeltaTime());
+					hitAnimations.set(GameConfig.ID, false);
+				}
+			}
+			
+			for(int i = 0; i < hitAnimations.size(); i++)
+			{
+				if(hitAnimations.get(i) && System.currentTimeMillis() - hitTimes.get(i) > 400)
+				{
+					client.out.println(new AnimationPacket("endHit",0l));
+					playerControllers.get(i).setAnimation("Armature|ArmatureAction",-1);
+					playerControllers.get(i).update(Gdx.graphics.getDeltaTime());
+					hitAnimations.set(i, false);
+				}
 			}
 		}
 		
@@ -350,16 +363,20 @@ public class MultiplayerScreen implements Screen
 		}
 	}
 
-	public void handlePlayerAnimations(int id, String type, long time)
+	public synchronized void handlePlayerAnimations(int id, String type, long time)
 	{
-		synchronized(playerControllers)
+		synchronized(hitAnimations)
 		{
 			if(type.equals("hit"))
 			{
 				playerControllers.get(id).setAnimation("Armature|hit",-1);
 				playerControllers.get(id).update(Gdx.graphics.getDeltaTime());
 				hitAnimations.set(id, true);
-				hitTimes.set(id, time);
+				
+				synchronized(hitTimes)
+				{
+					hitTimes.set(id, time);
+				}
 			}
 			else if(type.equals("move"))
 			{
