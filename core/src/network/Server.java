@@ -51,8 +51,8 @@ public class Server extends Thread
 			catch(Exception e){}
 		}
 		
-		sendData("ready,");
 		sendData(MultiplayerLobby.loadPacket);
+		sendData("ready,");
 	}	
 	
 	public void sendData(Packet packet)
