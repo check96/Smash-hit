@@ -49,7 +49,7 @@ public class MultiplayerScreen implements Screen
 	private ArrayList<AnimationController> destroyedController;
 	private ArrayList<AnimationController> coinController;
 	private Socket socket;
-	public ClientThread client;
+	public static ClientThread client;
 
 	private Controller joystick;
 	private final int B = 1;

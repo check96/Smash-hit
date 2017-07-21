@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
-import GameGui.Shop;
 import GameGui.SoundManager;
 import videogame.GameConfig;
 

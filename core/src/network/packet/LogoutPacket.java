@@ -2,7 +2,7 @@ package network.packet;
 
 import videogame.GameConfig;
 
-public class LogoutPacket
+public class LogoutPacket extends Packet
 {
 	private int id;
 	
