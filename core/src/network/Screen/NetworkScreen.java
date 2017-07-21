@@ -21,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import GameGui.GameManager;
 import network.Server;
-import network.packet.MultiplayerLobby;
 import videogame.GameConfig;
 
 public class NetworkScreen implements Screen 
@@ -79,7 +78,7 @@ public class NetworkScreen implements Screen
 		numPlayersLabel = new Label("number of players", new Label.LabelStyle(font, color));
 		numPlayersLabel.setPosition(250, 305);
 
-		ip = new TextField("169.254.116.179", mySkin);	//169.254.116.179
+		ip = new TextField("127.0.0.1", mySkin);	//169.254.116.179
 		ip.setPosition(550, 370);
 		ip.setSize(220, 60);
 

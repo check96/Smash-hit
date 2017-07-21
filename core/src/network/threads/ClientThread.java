@@ -8,10 +8,14 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import network.MultiplayerWorld;
+import network.Screen.MultiplayerLobby;
 import network.Screen.MultiplayerScreen;
-import network.packet.MultiplayerLobby;
+import network.packet.LogoutPacket;
 import videogame.GameConfig;
 
 public class ClientThread extends Thread
@@ -74,9 +78,27 @@ public class ClientThread extends Thread
 		}
 		else if(packet[0].equals("logout"))
 		{
+			int id = Integer.parseInt(packet[1]);
+			MultiplayerWorld.usernames.set(id, "");
 		}
 		else
 				multiplayerScreen.getWorld().packetManager(packet, Gdx.graphics.getDeltaTime());
+	}
+	
+	public void disconnect()
+	{
+		try
+		{
+			out.println(new LogoutPacket());
+			
+			this.interrupt();
+			in.close();
+			out.close();
+			socket.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 
 }

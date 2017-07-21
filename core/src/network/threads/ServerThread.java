@@ -76,8 +76,11 @@ public class ServerThread extends Thread
 		try 
 		{
 			connected = false;
+			in.close();
+			out.close();
 			socket.close();
-		} catch (IOException e) {
+		} catch (IOException e)
+		{
 			e.printStackTrace();
 		}
 	}

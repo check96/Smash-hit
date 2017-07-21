@@ -11,8 +11,8 @@ import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
 import entity.Walls;
+import network.Screen.MultiplayerLobby;
 import network.packet.LoadPacket;
-import network.packet.MultiplayerLobby;
 import videogame.GameConfig;
 
 public class MultiplayerMapGenerator extends Thread
@@ -155,7 +155,7 @@ public class MultiplayerMapGenerator extends Thread
 		Random rand = new Random(System.currentTimeMillis());
 
 		// initialize the map
-		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
+		GameConfig.newTools = new Destroyable[GameConfig.ROOM_ROW*3][GameConfig.ROOM_COLUMN*3];
 		createWalls();
 
 		for (int i = 0; i < GameConfig.newTools.length; i+=2)

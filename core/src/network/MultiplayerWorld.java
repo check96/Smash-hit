@@ -10,6 +10,7 @@ import entity.Player;
 import entity.Wall;
 import entity.Walls;
 import entity.Weapon;
+import network.Screen.MultiplayerLobby;
 import network.packet.DoorPacket;
 import network.packet.HitPacket;
 import network.packet.MovePacket;
@@ -230,15 +231,12 @@ public class MultiplayerWorld
 				}
 			}
 		}
-		else if(packet[0].equals("time"))
-		{
-			Countdown.increment(5);
-		}
 	}
 	
 	public static void addPlayers()
 	{
 		GameConfig.players.clear();
+		MultiplayerLobby.players.clear();
 		
 		for(int i = 0; i < usernames.size(); i++)
 		{
@@ -246,6 +244,7 @@ public class MultiplayerWorld
 			player.setWeapon(new Weapon(player.getPosition()));
 			
 			GameConfig.players.add(player);
+//			MultiplayerLobby.players.add(new Label)
 			
 			if(usernames.get(i).equals(GameConfig.username))
 				GameConfig.ID = i;

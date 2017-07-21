@@ -7,8 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import network.Screen.MultiplayerLobby;
 import network.Screen.MultiplayerScreen;
-import network.packet.MultiplayerLobby;
 import network.packet.Packet;
 import network.threads.ServerThread;
 
@@ -74,7 +74,22 @@ public class Server extends Thread
 	public void sendData(String line)
 	{
 		for(int i = 0; i < clients.size(); i++)
+		{
 			clients.get(i).out.println(line);
+		}
+	}
+
+	public void disconnect()
+	{
+		try
+		{
+			in.close();
+			out.close();
+			serverSocket.close();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }
 

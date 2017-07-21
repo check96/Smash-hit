@@ -39,31 +39,17 @@ public class GameManager extends Game
 			GameConfig.server.sendData(new LogoutPacket());
 			for (ServerThread client : Server.clients)
 			{
-				client.interrupt();
 				client.disconnect();
 			}
 			
-			try
-			{
-				GameConfig.server.serverSocket.close();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			GameConfig.server.disconnect();
+			
 		}
 		else if(GameConfig.MULTIPLAYER)
 		{
-			try 
+			if(MultiplayerScreen.client instanceof ClientThread)
 			{
-				if(MultiplayerScreen.client instanceof ClientThread)
-				{
-					MultiplayerScreen.client.out.println(new LogoutPacket());
-					MultiplayerScreen.client.interrupt();
-					MultiplayerScreen.client.socket.close();
-				}
-			} catch (IOException e)
-			{
-				e.printStackTrace();
+				MultiplayerScreen.client.disconnect();
 			}
 		}
 	}

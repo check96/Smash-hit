@@ -11,6 +11,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
@@ -52,15 +53,26 @@ public class MultiplayerScreen implements Screen
 	public static ClientThread client;
 
 	private Controller joystick;
+	//pressing button boolean
+	private boolean keyB = false;
+	private boolean keyLB = false;
+	private boolean keyRB = false;
+	private boolean keyStart = false;
+	
+	//movement analog boolean
+	private boolean moveOn = false;
+	private boolean moveBack = false;
+	private boolean moveLeft = false;
+	private boolean moveRight = false;
+	private boolean keyY = false;	
+	
 	private final int B = 1;
 	private final int Y = 3;
 	private final int LB = 4;
 	private final int RB = 5;
-    private final int START = 7;
-	private boolean PAUSE = false;
+	private final int START = 7;
 
 	public MultiplayerScreen() { }
-		
 	public MultiplayerWorld getWorld() {return world;}
 	
 	public MultiplayerScreen(GameManager _game, String ip, int port)
@@ -103,58 +115,69 @@ public class MultiplayerScreen implements Screen
 		world = new MultiplayerWorld(client);
 	}
 
-	private void initJoystick()
+	private void initJoystick() 
 	{
-		joystick.addListener(new ControllerAdapter()
-		{
+		joystick.addListener(new ControllerAdapter() 
+		{			
 			@Override
-			public boolean buttonDown(Controller controller, int buttonIndex)
+			public boolean buttonDown(Controller controller, int buttonIndex) 
 			{
-				if(buttonIndex == B)		// B
-				{
-					GameConfig.HIT = true;
-					if(GameConfig.STATE.equals("hit"))
-					{
-	//						SoundManager.hitSound.play(SoundManager.soundVolume);
-						hitAnimation = true;
-						hitTime = System.currentTimeMillis();
-					}
-				}
-				else if(buttonIndex == START)		// START
-					PAUSE = true;
+				if (buttonIndex == B)
+					keyB = true;
+				else if(buttonIndex == Y)
+					keyY = true;
+				else if (buttonIndex == RB) // && GameConfig.STATE !="tornado"
+					keyRB = true;
+				else if (buttonIndex == LB) // && GameConfig.STATE !="tornado"
+					keyLB = true;
+				else if (buttonIndex == START)
+					keyStart = true;
+				return true;
+			}
+			
+			@Override
+			public boolean buttonUp(Controller controller, int buttonIndex) 
+			{
+				if (buttonIndex == B)
+					keyB = false;
+				else if(buttonIndex == Y)
+					keyY = false;
+				else if (buttonIndex == RB) // && GameConfig.STATE !="tornado"
+					keyRB = false;
+				else if (buttonIndex == LB) // && GameConfig.STATE !="tornado"
+					keyLB = false;
+				else if (buttonIndex == START) // START
+					keyStart = false;
+				return true;
+			}
+			@Override
+			public boolean povMoved(Controller controller, int povIndex, PovDirection value)
+			{
+				if(value == PovDirection.north)
+					moveOn = true;
+				else
+					moveOn = false;
+				
+				if(value == PovDirection.south)
+					moveBack = true;
+				else
+					moveBack = false;
+				
+				if(value == PovDirection.east)
+					moveRight = true;
+				else 
+					moveRight = false;
+				
+				if(value == PovDirection.west)
+					moveLeft = true;
+				else 
+					moveLeft = false;
 				
 				return true;
 			}
-
-		@Override
-		public boolean axisMoved(Controller controller, int axisIndex, float value)
-		{
-		//			if(axisIndex == AXIS_RX)// && value == -1)
-		//				GameConfig.LEFT = true;
-		//			if(axisIndex == AXIS_RX)// && value == 1)
-		//				GameConfig.RIGHT = true;
-		//			if(axisIndex == AXIS_RY)// && value == -1)
-		//				GameConfig.ON = true;
-		//			if(axisIndex == AXIS_RY )//&& value == 1)
-		//				GameConfig.BACK = true;
-//			
-//			if(axisIndex == AXIS_LX && value == -1)
-//			{
-//				cam.direction.rotate(4,0,1,0);
-//				degrees += 4;
-//			}
-//			if(axisIndex == AXIS_LX && value == 1)
-//			{
-//				cam.direction.rotate(-4,0,1,0);
-//				degrees -= 4;
-//			}
-			
-			return true;
-		}
-	});
+		});
+	}
 	
-}
-
 	private void initAnimation()
 	{
 		destroyedController = new ArrayList<AnimationController>();
@@ -188,46 +211,47 @@ public class MultiplayerScreen implements Screen
 
 	public void handleInput() 
 	{
-		if (Gdx.input.isKeyPressed(Input.Keys.A))
+		if (Gdx.input.isKeyPressed(Input.Keys.A) || moveLeft)
 			GameConfig.LEFT = true;
-		else if (Gdx.input.isKeyPressed(Input.Keys.D))
+		else if (Gdx.input.isKeyPressed(Input.Keys.D) || moveRight)
 			GameConfig.RIGHT = true;
-		else if (Gdx.input.isKeyPressed(Input.Keys.W))
+		else if (Gdx.input.isKeyPressed(Input.Keys.W) || moveOn)
 			GameConfig.ON = true;
-		else if (Gdx.input.isKeyPressed(Input.Keys.S))
+		else if (Gdx.input.isKeyPressed(Input.Keys.S) || moveBack)
 			GameConfig.BACK = true;		
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT))
+		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || keyLB)
 		{
 			cam.direction.rotate(4,0,1,0);
 			GameConfig.players.get(GameConfig.ID).angle += 4;
 			
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(), GameConfig.players.get(GameConfig.ID).angle));
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || keyRB)
 		{
 			cam.direction.rotate(-4,0,1,0);
 			GameConfig.players.get(GameConfig.ID).angle -= 4;
 			client.out.println(new MovePacket(GameConfig.players.get(GameConfig.ID).getPosition(),GameConfig.players.get(GameConfig.ID).angle));
 		}
-		if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || keyB)
 		{
 			GameConfig.HIT = true;
 			hitAnimation = true;
 			hitTime = System.currentTimeMillis();
 		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+		if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || keyStart)
+		{
+			keyStart = false;
 			game.setScreen(new PauseScreen(game, this));
+		}
 	}
 	
 	public void render(float delta) 
 	{
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl20.glEnable(GL20.GL_BLEND);
 		
-		if(joystick == null)
-			handleInput();
+		handleInput();
 
 //		addAnimation();
 //		handleAnimation();
