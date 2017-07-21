@@ -13,8 +13,6 @@ import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
 import entity.Walls;
-import network.MultiplayerLobby;
-import network.packet.LoadPacket;
 
 public class MapGenerator extends Thread
 {

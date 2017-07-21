@@ -34,10 +34,8 @@ public class GameManager extends Game
 		SoundManager.menuSoundtrack.setVolume(SoundManager.musicVolume);
 		SoundManager.gameSoundtrack.setVolume(SoundManager.musicVolume);
 
-		multiplayerMapGenerator = new MultiplayerMapGenerator(this);
-	
+		multiplayerMapGenerator = new MultiplayerMapGenerator();
 		mapGenerator = new MapGenerator(this);
-		
 		startScreen = new StartScreen(this);
 		
 		this.setScreen(startScreen);

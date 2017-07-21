@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import GameGui.AssetHandler;
 import GameGui.GameManager;
-import editor.Editor;
 import entity.Destroyable;
 import entity.Objects;
 import entity.Wall;
@@ -19,13 +18,11 @@ import videogame.GameConfig;
 public class MultiplayerMapGenerator extends Thread
 {
 	public AssetHandler assets;
-	private GameManager game;
 	public boolean active = false;
 
-	public MultiplayerMapGenerator(GameManager _game)
+	public MultiplayerMapGenerator()
 	{
 		assets = new AssetHandler();
-		game = _game;
 		active = false;
 		assets.loadModels();
 	}
@@ -85,7 +82,6 @@ public class MultiplayerMapGenerator extends Thread
 
 	public void loadRoom(String line)
 	{
-		Random rand = new Random(System.currentTimeMillis());
 		int[][] points = new int[GameConfig.ROOM_ROW][GameConfig.ROOM_COLUMN];
 		
 		for(int j=0; j<points.length; j++)
