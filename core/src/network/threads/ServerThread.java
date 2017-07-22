@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import network.MultiplayerWorld;
+import network.Server;
 import network.packets.LogoutPacket;
 import videogame.GameConfig;
 
@@ -75,6 +76,22 @@ public class ServerThread extends Thread
 			send += packet[1];
 			MultiplayerWorld.usernames.add(packet[1]);
 			GameConfig.server.sendData(send);
+		}
+		else if(packet[0].equals("logout"))
+		{
+			int i = Integer.parseInt(packet[1]);
+			try {
+				Server.clients.get(i).disconnect();
+			} catch (IOException e)
+			{
+				try
+				{
+					disconnect();
+				} catch (IOException e1)
+				{
+					System.out.println(e1.getMessage());
+				}
+			}
 		}
 		else
 			GameConfig.server.sendData(line);

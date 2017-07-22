@@ -66,7 +66,7 @@ public class Server extends Thread
 		
 		for(int i = 0; i < clients.size(); i++)
 		{
-			if(i != id || code.equals("load"))
+			if((i != id || code.equals("load")) && clients.get(i) instanceof ServerThread)
 				clients.get(i).out.println(packet.toString());
 		}
 	}
@@ -75,7 +75,8 @@ public class Server extends Thread
 	{
 		for(int i = 0; i < clients.size(); i++)
 		{
-			clients.get(i).out.println(line);
+			if(clients.get(i) instanceof ServerThread)
+				clients.get(i).out.println(line);
 		}
 	}
 
