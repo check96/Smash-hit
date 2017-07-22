@@ -144,16 +144,6 @@ public class MultiplayerAssetsHandler
 												wallInst.transform.rotate(0,1,0,-90);
 												wallInst.transform.rotate(0,0,1,90);
 											break;
-					case FOREWARD_LEFT_WALL:	wallInst = new ModelInstance(wallModel);
-												wallInst.transform.setToTranslation(obj.getPosition());
-												wallInst.transform.rotate(0,1,0,-90);
-												wallInst.transform.rotate(0,0,1,90);
-											break;
-					case FOREWARD_RIGHT_WALL:	wallInst = new ModelInstance(wallModel);
-												wallInst.transform.setToTranslation(obj.getPosition());
-												wallInst.transform.rotate(0,1,0,-90);
-												wallInst.transform.rotate(0,0,1,90);
-									break;
 					case LEFT_WALL:		wallInst = new ModelInstance(wallModel);
 										wallInst.transform.setToTranslation(obj.getPosition());
 										wallInst.transform.rotate(0,0,1,90);

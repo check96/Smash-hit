@@ -34,14 +34,8 @@ public class MultiplayerMapGenerator
 		GameConfig.walls.add(new Wall(new Vector3(-4.3f , 0 , -2 + GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.BACK_WALL));
 		
 		//create front upper wall
-		GameConfig.walls.add(new Wall(new Vector3(-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,17.4f,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_UPPER_WALL));
+		GameConfig.walls.add(new Wall(new Vector3(-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT, 0,-2 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_UPPER_WALL));
 		
-		//create front left wall
-		GameConfig.walls.add(new Wall(new Vector3(-5 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT,0,-52 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_LEFT_WALL));
-		
-		//create front right wall
-		GameConfig.walls.add(new Wall(new Vector3(-5 +GameConfig.ROOM_ROW*GameConfig.CELL_HEIGHT,0,54 +GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2), Walls.FOREWARD_RIGHT_WALL));
-
 		//create ceiling
 		GameConfig.walls.add(new Wall(new Vector3(GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT/2, 10.6f, GameConfig.ROOM_COLUMN * GameConfig.CELL_WIDTH/2),Walls.CEILING));
 		

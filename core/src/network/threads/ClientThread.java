@@ -44,11 +44,19 @@ public class ClientThread extends Thread
 		{
 			try
 			{
- 				String receive = in.readLine();
- 				packetManagement(receive);
+				String receive = "";
+				receive = in.readLine();
+
+				if(!receive.equals(""))
+ 					packetManagement(receive);
  			} catch (IOException e)
 			{
-				e.printStackTrace();
+				try {
+					disconnect();
+				} catch (IOException e1)
+				{
+					System.out.println(e1.getMessage());
+				}
 			}
 		}
 	}
@@ -75,8 +83,20 @@ public class ClientThread extends Thread
 		}
 		else if(packet[0].equals("logout"))
 		{
-			int id = Integer.parseInt(packet[1]);
-			MultiplayerWorld.usernames.set(id, "");
+			int j = Integer.parseInt(packet[1]);
+
+			if(packet[2].equals("client"))
+				MultiplayerWorld.usernames.set(j, "");
+			else if(packet[2].equals("server"))
+			{
+				try
+				{
+					disconnect();
+				} catch (IOException e)
+				{
+					System.out.println(e.getMessage());
+				}
+			}
 		}
 		else if(packet[0].equals("animation"))
 		{
@@ -92,7 +112,7 @@ public class ClientThread extends Thread
 	
 	public void disconnect() throws IOException
 	{
-			out.println(new LogoutPacket());
+			out.println(new LogoutPacket("client"));
 			this.interrupt();
 			in.close();
 			out.close();

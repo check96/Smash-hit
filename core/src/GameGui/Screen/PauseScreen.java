@@ -164,7 +164,7 @@ public class PauseScreen implements Screen
       			
       			if(GameConfig.MULTIPLAYER)
       			{
-      				MultiplayerScreen.client.out.println(new LogoutPacket().toString());
+      				MultiplayerScreen.client.out.println(new LogoutPacket("client").toString());
       				game.setScreen(new MultiplayerOverScreen(game));
       			}
       			else

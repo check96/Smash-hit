@@ -25,7 +25,6 @@ public class GameManager extends Game
 	public StartScreen startScreen;
 	public Preferences options;
 	public Preferences editorLevels;
-
 	
 	@Override
 	public void dispose()
@@ -35,7 +34,7 @@ public class GameManager extends Game
 		
 		if(GameConfig.isServer)
 		{
-			GameConfig.server.sendData(new LogoutPacket());
+			GameConfig.server.sendData(new LogoutPacket("server"));
 			for (ServerThread client : Server.clients)
 			{
 				try

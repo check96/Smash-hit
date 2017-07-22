@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import network.MultiplayerWorld;
+import network.packets.LogoutPacket;
 import videogame.GameConfig;
 
 public class ServerThread extends Thread
@@ -37,12 +38,20 @@ public class ServerThread extends Thread
 	{
 		while(true)
 		{
-			String line;
-			try {
+			String line = "";
+			try
+			{
 				line = in.readLine();
 				packetManagement(line);
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException e)
+			{
+				try
+				{
+					disconnect();
+				} catch (IOException e1)
+				{
+					System.out.println(e1.getMessage());
+				}
 			}
 		}
 	}
@@ -74,6 +83,8 @@ public class ServerThread extends Thread
 	public void disconnect() throws IOException
 	{
 		connected = false;
+		GameConfig.server.sendData(new LogoutPacket("server"));
+		this.interrupt();
 		in.close();
 		out.close();
 		socket.close();
