@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import videogame.AI.Vertex;
 
-public abstract class AbstractGameObject implements ICollidable
+public abstract class AbstractGameObject implements IGameObject
 {
 	protected Vector3 Position;
 	protected Vector3 Size;
@@ -39,7 +39,7 @@ public abstract class AbstractGameObject implements ICollidable
 	public final float getY() 	 {return this.Position.y;}
 	public final float getZ() 	 {return this.Position.z;}
 	
-	public boolean collide(ICollidable c)
+	public boolean collide(IGameObject c)
 	{		
 		AbstractGameObject box =(AbstractGameObject) c;
 		
@@ -68,7 +68,7 @@ public abstract class AbstractGameObject implements ICollidable
 			for(int i=0; i<vertex.size(); i++)
 				if(point.X <= vertex.get(0).X && point.X >= vertex.get(2).X && 
 				   point.Z <= vertex.get(1).Z && point.Z >= vertex.get(0).Z)
-						return true;
+							return true;
 		}
 		return false;
 	}

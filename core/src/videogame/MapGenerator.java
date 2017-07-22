@@ -36,7 +36,7 @@ public class MapGenerator extends Thread
 			{
 				if(!GameConfig.EDITOR)
 					createRoom();
-				else if(GameConfig.EDITOR)
+				else
 			  	{
 					GameConfig.EDITOR = false;
 					for(int i = 1; i <= Editor.numLevels; i++)
@@ -51,7 +51,7 @@ public class MapGenerator extends Thread
 			{
 				try 
 				{
-					this.wait(5000);
+					this.wait(10000);
 				} catch (InterruptedException e)
 				{
 					e.printStackTrace();
@@ -127,8 +127,8 @@ public class MapGenerator extends Thread
 
 		
 		// 	create door
-		GameConfig.newTools[0][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(-5f+GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT,
-				-5, 1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2), 0, Objects.DOOR);
+		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
+				-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
 		// load tools model
 		assets.loadTools();
@@ -226,7 +226,6 @@ public class MapGenerator extends Thread
 		GameConfig.newTools[GameConfig.ROOM_ROW-1][GameConfig.ROOM_COLUMN/2] = new Destroyable(new Vector3(
 		-5 + GameConfig.ROOM_ROW * GameConfig.CELL_HEIGHT* (GameConfig.level),-5,1.5f+GameConfig.ROOM_COLUMN*GameConfig.CELL_WIDTH/2),0, Objects.DOOR);
 
-
 		//create the vortex
 		if(rand.nextBoolean())
 		{
@@ -257,6 +256,7 @@ public class MapGenerator extends Thread
 		// add new tools to tools
 		upgrade();		
 	}
+	
 	// clone newTools and newInstances and add them to tools and toolsInstance
 	@SuppressWarnings("unchecked")
 	public void upgrade()
@@ -267,8 +267,9 @@ public class MapGenerator extends Thread
 			Destroyable[][] array = (Destroyable[][]) GameConfig.newTools.clone();
 			GameConfig.tools.add(array);
 			
-			if(GameConfig.actualLevel >= 3)
-				GameConfig.tools.set(GameConfig.actualLevel-3,null);
+			System.out.println(GameConfig.tools.size());
+//			if(GameConfig.actualLevel >= 3)
+//				GameConfig.tools.set(GameConfig.actualLevel-3,null);
 		}
 		
 		synchronized(GameConfig.toolsInstance)

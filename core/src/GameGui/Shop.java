@@ -67,7 +67,6 @@ public class Shop implements Screen
 		this.game = game;
 		synchronized (game.mapGenerator)
 		{
-	       	game.mapGenerator.start();
 	       	game.mapGenerator.active = true;
 	       	game.mapGenerator.notify();
 		}

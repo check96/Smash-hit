@@ -45,6 +45,9 @@ public class GameOverScreen implements Screen
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
+//		GameConfig.tools.clear();
+//		GameConfig.walls.clear();
+//		GameConfig.toolsInstance.clear();
 		GameConfig.coinsMultiplier = 1;
 		
 		money = new SpriteBatch();

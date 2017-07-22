@@ -61,21 +61,10 @@ public class Dijkstra
     		
             path.remove(path.size()-1);
 	        computePaths(clock);
-	        
-	        double door_clock = Math.sqrt(Math.pow((clock.x-start.x),2)+Math.pow((clock.y-start.y),2));
-	        double player_clock = Math.sqrt(Math.pow((clock.x-end.x),2)+Math.pow((clock.y-end.y),2));
-	        double door_player = Math.sqrt(Math.pow((end.x-start.x),2)+Math.pow((end.y-start.y),2));
-	        
-//	        if(door_clock + player_clock > door_player*3.5) 
-//	        	path.clear();
         }
     	
         for (Vertex vertex = end; vertex != null; vertex = vertex.previous)
             path.add(vertex);
-       
-//        System.out.println("Distance from "+ start.toString() + " to " + end.toString() + " is: "+ end.minDistance);
-//        System.out.println("Path: " + path);
-//        System.out.println();
        return path;
     }
     

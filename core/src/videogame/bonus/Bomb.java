@@ -51,8 +51,7 @@ public class Bomb extends AbstractGameObject
 	    		active = false;
 	    	else if(checkWallCollision())
 	    	{
-	    	//	if(x != GameConfig.ROOM_ROW-1 && y != 5)
-	    			active = false;
+	    		active = false;
 	    	}
 		}
 	}

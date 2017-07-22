@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import GameGui.GameManager;
+import GameGui.Shop;
 import editor.Editor;
 import videogame.GameConfig;
 
@@ -89,7 +90,7 @@ public class EditorScreen implements Screen
 	  		public boolean touchDown (InputEvent event, float x, float y, int pointer, int button)
 	        {
 	  			GameConfig.EDITOR = true;
-				game.setScreen(new LoadingScreen(game));
+				game.setScreen(new Shop(game));
 	            return true;
 	        }
 	    });

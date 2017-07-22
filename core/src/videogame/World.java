@@ -20,7 +20,7 @@ public class World
 	public World()
 	{ 
 		GameConfig.LOCAL_COINS = 0;
-		GameConfig.player = new Player(new Vector3(0,-4.8f,45), 4);
+		GameConfig.player = new Player(new Vector3(2,-4.8f,45), 4);
 		Weapon weapon = new Weapon(new Vector3(0.5f,-4.5f,20));
 		GameConfig.player.setWeapon(weapon);
 	}

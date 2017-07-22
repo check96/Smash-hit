@@ -117,17 +117,12 @@ public class GameConfig
 		
 		Countdown.reset();
 		tools.clear();
-		tools = new ArrayList<Destroyable[][]>();
 		newTools = new Destroyable[ROOM_ROW][ROOM_COLUMN];
 		
 		toolsInstance.clear();
-		toolsInstance  = new ArrayList<ArrayList<ModelInstance>>();
 		newInstances.clear();
-		newInstances  = new ArrayList<ModelInstance>();
 		
 		walls.clear();
-		walls  = new ArrayList<Wall>();
 		wallsInstance.clear();
-		wallsInstance  = new ArrayList<ModelInstance>();
 	}
 }

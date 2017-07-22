@@ -104,6 +104,7 @@ public class StartScreen implements Screen
         
         SoundManager.menuSoundtrack.play();
         game.countdown.start();
+        game.mapGenerator.start();
     }
  
     public void render(float delta)
