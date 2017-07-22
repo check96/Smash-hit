@@ -1,11 +1,9 @@
 package GameGui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
-import videogame.GameConfig;
 
 public class SoundManager
 {

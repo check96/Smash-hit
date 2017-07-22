@@ -273,7 +273,7 @@ public class GameScreen implements Screen
 
 	public void drawBonus()
 	{
-		if (GameConfig.bombXplosion != null)
+		if (GameConfig.bombXplosion instanceof Bomb)
 		{
 			new TimeXplosion();
 

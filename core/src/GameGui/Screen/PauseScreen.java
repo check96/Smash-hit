@@ -168,7 +168,15 @@ public class PauseScreen implements Screen
       				game.setScreen(new MultiplayerOverScreen(game));
       			}
       			else
+      			{
+      				GameConfig.destroyedDesks = 0;
+      				GameConfig.destroyedChairs = 0;
+      				GameConfig.destroyedDoors = 0;
+      				GameConfig.destroyedPlants = 0;
+      				GameConfig.destroyedLockers = 0;
+      				GameConfig.destroyedObjects = 0;
       				game.setScreen(new GameOverScreen(game));
+      			}
 	            return true;
             }
         });

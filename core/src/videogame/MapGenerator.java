@@ -267,9 +267,8 @@ public class MapGenerator extends Thread
 			Destroyable[][] array = (Destroyable[][]) GameConfig.newTools.clone();
 			GameConfig.tools.add(array);
 			
-			System.out.println(GameConfig.tools.size());
-//			if(GameConfig.actualLevel >= 3)
-//				GameConfig.tools.set(GameConfig.actualLevel-3,null);
+			if(GameConfig.actualLevel >= 3)
+				GameConfig.tools.set(GameConfig.actualLevel-3,null);
 		}
 		
 		synchronized(GameConfig.toolsInstance)

@@ -45,9 +45,6 @@ public class GameOverScreen implements Screen
 		game = _game;
 		stage = new Stage(new ExtendViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
 		
-//		GameConfig.tools.clear();
-//		GameConfig.walls.clear();
-//		GameConfig.toolsInstance.clear();
 		GameConfig.coinsMultiplier = 1;
 		
 		money = new SpriteBatch();
@@ -113,12 +110,15 @@ public class GameOverScreen implements Screen
 		else
 			score = new Label("Score: "+ GameConfig.SCORE, new Label.LabelStyle(font, color));
 		
+		int destroy = GameConfig.destroyedDesks + GameConfig.destroyedChairs + GameConfig.destroyedDoors +
+						GameConfig.destroyedPlants + GameConfig.destroyedLockers;
+		
 		destroyedDesks = new Label("Desks Destroyed: "+ GameConfig.destroyedDesks, new Label.LabelStyle(font, color));
         destroyedChairs = new Label("Chairs Destroyed: "+ GameConfig.destroyedChairs, new Label.LabelStyle(font, color));
         destroyedDoors = new Label("Doors Destroyed: "+ GameConfig.destroyedDoors, new Label.LabelStyle(font, color));
         destroyedPlants = new Label("Plants Destroyed: "+ GameConfig.destroyedPlants, new Label.LabelStyle(font, color));
         destroyedLockers = new Label("Lockers Destroyed: "+ GameConfig.destroyedLockers, new Label.LabelStyle(font, color));
-        destroyedObjects = new Label("Total Objects Destroyed: "+ GameConfig.destroyedObjects, new Label.LabelStyle(font, color));
+        destroyedObjects = new Label("Total Objects Destroyed: "+ destroy, new Label.LabelStyle(font, color));
         
         table.add(score).expandX();
         table.row();
