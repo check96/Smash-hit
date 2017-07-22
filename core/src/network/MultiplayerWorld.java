@@ -111,11 +111,14 @@ public class MultiplayerWorld
 
 	private void delete(int i, int j)
 	{
-		// add score and coins
-		GameConfig.SCORE += GameConfig.multiplayerMap[i][j].type.score;
+		// add score
+		if(GameConfig.multiplayerMap[i][j] instanceof Destroyable)
+		{
+			GameConfig.SCORE += GameConfig.multiplayerMap[i][j].type.score;
+			Deleter.remove(GameConfig.multiplayerMap[i][j].getPosition()); 
+			GameConfig.multiplayerMap[i][j] = null;
+		}
 
-		Deleter.remove(GameConfig.multiplayerMap[i][j].getPosition()); 
-		GameConfig.multiplayerMap[i][j] = null;
 	}
 	
 	private void hit(float delta)
